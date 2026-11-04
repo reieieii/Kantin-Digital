@@ -1,0 +1,17 @@
+# Konfigurasi Database MySQL untuk phpMyAdmin
+# Copy paste ini ke file .env Anda
+
+# Database Configuration
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=kantin_web
+DB_USERNAME=root
+DB_PASSWORD=
+
+# Cara setup:
+# 1. Buka phpMyAdmin di http://localhost/phpmyadmin
+# 2. Buat database baru dengan nama "kantin_web"
+# 3. Copy konfigurasi di atas ke file .env
+# 4. Jalankan: php artisan migrate
+# 5. Jalankan: php artisan db:seed
