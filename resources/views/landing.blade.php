@@ -376,9 +376,6 @@
                 <a href="{{ route('stands.index') }}" class="btn-primary text-white px-8 py-4 rounded-full font-semibold text-center">
                     <i class="fa-solid fa-cart-shopping mr-2"></i>Mulai Belanja Sekarang
                 </a>
-                <button class="btn-secondary text-white px-8 py-4 rounded-full font-semibold">
-                    <i class="fas fa-info-circle mr-2"></i>Info Lebih Lanjut
-                </button>
             </div>
         </div>
     </section>
