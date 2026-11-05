@@ -42,6 +42,16 @@ class User extends Authenticatable
         return $this->role === 'user';
     }
 
+    public function isPenjaga(): bool
+    {
+        return $this->role === 'penjaga';
+    }
+
+    public function stand()
+    {
+        return $this->belongsTo(\App\Models\Stand::class);
+    }
+
     public function favorits()
     {
         return $this->hasMany(Favorit::class);

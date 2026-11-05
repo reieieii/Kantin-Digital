@@ -119,12 +119,16 @@
                 <nav class="hidden md:flex items-center space-x-8">
                     <a href="{{ url('/') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Beranda</a>
                     <a href="{{ url('/stands') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Daftar Stand</a>
-                    <a href="{{ url('/cart') }}" class="relative text-white/80 hover:text-white transition-all p-2 bg-white/10 rounded-xl border border-white/10 group">
-                        <i class="fas fa-shopping-cart text-lg"></i>
-                        <span id="cart-count" class="absolute -top-1 -right-1 bg-gradient-to-br from-orange-400 to-orange-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span>
+                    <a href="{{ url('/cart') }}" class="relative text-white/80 hover:text-white transition-all p-2 group" style="background:rgba(255,255,255,0.1); border-radius:0.75rem; border:1px solid rgba(255,255,255,0.1); display:inline-flex; align-items:center; justify-content:center; width:2.5rem; height:2.5rem;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span id="cart-count" class="absolute -top-1 -right-1 text-white font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm" style="background:linear-gradient(135deg,#f97316,#ea580c); font-size:10px;">0</span>
                     </a>
                     <a href="{{ url('/pembelians') }}" class="btn-orange-gradient text-sm font-black text-white px-6 py-2.5 rounded-xl hover:scale-105 transition-all shadow-md hover:shadow-lg shadow-orange-900/20 text-center">
-                        <i class="fas fa-receipt mr-2"></i>Pesanan
+                        <i class="fas fa-receipt mr-2"></i>Pesanan Saya
                     </a>
                 </nav>
             </div>

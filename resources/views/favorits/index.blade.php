@@ -62,7 +62,7 @@
                         <i class="fas fa-shopping-cart text-lg"></i>
                     </a>
                     <a href="{{ url('/pembelians') }}" class="btn-orange-gradient text-sm font-black text-white px-6 py-2.5 rounded-xl hover:scale-105 transition-all shadow-md text-center">
-                        <i class="fas fa-receipt mr-2"></i>Pesanan
+                        <i class="fas fa-receipt mr-2"></i>Pesanan Saya
                     </a>
                 </nav>
             </div>

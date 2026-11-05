@@ -36,10 +36,14 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            // Admin diarahkan ke dashboard admin
             if (Auth::user()->isAdmin()) {
                 return redirect()->route('admin.dashboard')
                     ->with('success', 'Selamat datang, Admin ' . Auth::user()->name . '!');
+            }
+
+            if (Auth::user()->isPenjaga()) {
+                return redirect()->route('penjaga.dashboard')
+                    ->with('success', 'Selamat datang, ' . Auth::user()->name . '!');
             }
 
             return redirect()->intended(route('landing'))

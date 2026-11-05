@@ -118,7 +118,7 @@
                         <span id="cart-count" class="absolute -top-1 -right-1 bg-gradient-to-br from-orange-400 to-orange-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span>
                     </a>
                     <a href="{{ url('/pembelians') }}" class="btn-orange-gradient text-sm font-black text-white px-6 py-2.5 rounded-xl hover:scale-105 transition-all shadow-md hover:shadow-lg shadow-orange-900/20 text-center">
-                        <i class="fas fa-receipt mr-2"></i>Pesanan
+                        <i class="fas fa-receipt mr-2"></i>Pesanan Saya
                     </a>
                 </nav>
             </div>

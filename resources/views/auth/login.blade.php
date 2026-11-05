@@ -133,15 +133,6 @@
                     </div>
                 @endif
 
-                <!-- Social Buttons -->
-                <div class="space-y-3 mb-8">
-                    {{-- Google — mengarah ke route OAuth --}}
-                    <a href="{{ route('auth.google') }}" class="w-full btn-social py-3 sm:py-3.5 rounded-xl flex items-center justify-center space-x-3 no-underline">
-                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5">
-                        <span class="text-gray-300 font-medium tracking-wide text-sm">Continue with Google</span>
-                    </a>
-                </div>
-
                 <!-- Divider -->
                 <div class="flex items-center my-6">
                     <div class="flex-grow border-t border-gray-700"></div>

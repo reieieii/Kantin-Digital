@@ -74,6 +74,24 @@ Route::middleware('auth')->group(function () {
     Route::post('/favorit/toggle', [FavoritController::class, 'toggle'])->name('favorit.toggle');
 });
 
+// ─── Penjaga Stand Routes ─────────────────────────────────────────────────────
+Route::prefix('penjaga')->name('penjaga.')->middleware(['auth', 'penjaga'])->group(function () {
+    // Dashboard
+    Route::get('/', [\App\Http\Controllers\Penjaga\DashboardController::class, 'index'])->name('dashboard');
+
+    // Stand sendiri
+    Route::get ('stand/edit',   [\App\Http\Controllers\Penjaga\StandController::class, 'edit'])->name('stand.edit');
+    Route::put ('stand/update', [\App\Http\Controllers\Penjaga\StandController::class, 'update'])->name('stand.update');
+
+    // Produk CRUD
+    Route::resource('produks', \App\Http\Controllers\Penjaga\ProdukController::class)->except(['show']);
+
+    // Pesanan
+    Route::get   ('pesanans',                     [\App\Http\Controllers\Penjaga\PesananController::class, 'index'])->name('pesanans.index');
+    Route::get   ('pesanans/{pesanan}',            [\App\Http\Controllers\Penjaga\PesananController::class, 'show'])->name('pesanans.show');
+    Route::patch ('pesanans/{pesanan}/status',     [\App\Http\Controllers\Penjaga\PesananController::class, 'updateStatus'])->name('pesanans.updateStatus');
+});
+
 // Cart
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
