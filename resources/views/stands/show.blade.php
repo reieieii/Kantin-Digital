@@ -39,7 +39,55 @@
                 plusBtn.classList.remove('opacity-50', 'cursor-not-allowed');
             }
         }
-        
+
+        // ── Toggle Favorit ──────────────────────────────────────────────────
+        function toggleFavorit(btn, produkId) {
+            @auth
+            $.ajax({
+                url: '{{ route("favorit.toggle") }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    produk_id: produkId,
+                },
+                success: function(res) {
+                    const icon = btn.querySelector('i');
+                    if (res.favorited) {
+                        // Aktif: jadi merah, ikon solid
+                        btn.classList.add('text-red-500');
+                        btn.classList.remove('text-slate-400');
+                        icon.classList.replace('far', 'fas');
+                        showFavNotif('Ditambahkan ke Menu Favorit ❤️');
+                    } else {
+                        // Non-aktif: abu, ikon outline
+                        btn.classList.remove('text-red-500');
+                        btn.classList.add('text-slate-400');
+                        icon.classList.replace('fas', 'far');
+                        showFavNotif('Dihapus dari Menu Favorit');
+                    }
+                },
+                error: function() {
+                    showFavNotif('Gagal memperbarui favorit', true);
+                }
+            });
+            @else
+            // Belum login — arahkan ke halaman login
+            window.location.href = '{{ route("login") }}';
+            @endauth
+        }
+
+        function showFavNotif(msg, isError = false) {
+            const el = document.createElement('div');
+            el.className = 'fixed bottom-6 right-6 z-[9999] px-5 py-3 rounded-2xl shadow-2xl text-sm font-bold text-white transition-all duration-500';
+            el.style.background = isError
+                ? 'rgba(239,68,68,0.9)'
+                : 'rgba(16,185,129,0.9)';
+            el.style.backdropFilter = 'blur(10px)';
+            el.innerText = msg;
+            document.body.appendChild(el);
+            setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 500); }, 2500);
+        }
+
         function addToCart(productId) {
             const quantity = quantities[productId] || 1;
             
@@ -504,8 +552,8 @@
                 </a>
                 
                 <div class="hidden md:flex items-center space-x-10">
-                    <a href="{{ url('/') }}" class="text-sm font-bold text-white/80 hover:text-white transition-colors">Beranda</a>
-                    <a href="{{ url('/stands') }}" class="text-sm font-bold text-white/80 hover:text-white transition-colors">Daftar Stand</a>
+                    <a href="{{ url('/') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Beranda</a>
+                    <a href="{{ url('/stands') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Daftar Stand</a>
                     <a href="{{ url('/cart') }}" class="relative text-white/80 hover:text-white transition-all p-2 bg-white/10 rounded-xl border border-white/10 group">
                         <i class="fas fa-shopping-cart text-lg"></i>
                         <span id="cart-count" class="absolute -top-1 -right-1 bg-gradient-to-br from-orange-400 to-orange-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span>
@@ -548,16 +596,16 @@
             </div>
             
             <div class="container mx-auto">
-                <div class="grid md:grid-cols-2 gap-12 items-center relative z-10 p-8 md:p-16">
+                <div class="grid md:grid-cols-2 gap-8 items-center relative z-10 p-6 md:p-10">
                     <div class="order-2 md:order-1 slide-in">
-                        <div class="flex items-center space-x-3 mb-6">
+                        <div class="flex items-center space-x-3 mb-4">
                             @if($stand->status_buka)
-                                <span class="bg-green-100 text-green-700 px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest flex items-center shadow-sm">
-                                    <span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span> Buka Sekarang
+                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest flex items-center shadow-sm">
+                                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full mr-2 animate-pulse"></span> Buka Sekarang
                                 </span>
                             @else
-                                <span class="bg-red-100 text-red-700 px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest flex items-center shadow-sm">
-                                    <span class="w-2 h-2 bg-red-500 rounded-full mr-2"></span> Tutup Sementara
+                                <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest flex items-center shadow-sm">
+                                    <span class="w-1.5 h-1.5 bg-red-500 rounded-full mr-2"></span> Tutup Sementara
                                 </span>
                             @endif
                             <span class="bg-blue-50 text-blue-700 px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest flex items-center border border-blue-100">
@@ -565,26 +613,26 @@
                             </span>
                         </div>
                         
-                        <h1 class="text-3xl md:text-5xl font-bold text-slate-900 mb-5 leading-tight">
+                        <h1 class="text-2xl md:text-3xl font-bold text-slate-900 mb-3 leading-tight">
                             {{ $stand->nama_stand }}
                         </h1>
-                        <p class="text-lg text-slate-500 mb-8 max-w-xl leading-relaxed">
+                        <p class="text-sm text-slate-500 mb-6 max-w-xl leading-relaxed">
                             {{ $stand->deskripsi }}
                         </p>
                         
-                        <div class="flex flex-wrap gap-8 mb-8">
-                            <div class="flex items-center space-x-4">
-                                <div class="w-12 h-12 bg-white rounded-2xl shadow-md flex items-center justify-center border border-slate-50">
-                                    <i class="fas fa-user-tie text-blue-600"></i>
+                        <div class="flex flex-wrap gap-6 mb-6">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-9 h-9 bg-white rounded-xl shadow-md flex items-center justify-center border border-slate-50">
+                                    <i class="fas fa-user-tie text-blue-600 text-sm"></i>
                                 </div>
                                 <div>
                                     <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Pemilik</p>
                                     <p class="text-sm font-bold text-slate-800">{{ $stand->pemilik }}</p>
                                 </div>
                             </div>
-                            <div class="flex items-center space-x-4">
-                                <div class="w-12 h-12 bg-white rounded-2xl shadow-md flex items-center justify-center border border-slate-50">
-                                    <i class="fas fa-phone-alt text-blue-600"></i>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-9 h-9 bg-white rounded-xl shadow-md flex items-center justify-center border border-slate-50">
+                                    <i class="fas fa-phone-alt text-blue-600 text-sm"></i>
                                 </div>
                                 <div>
                                     <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Kontak</p>
@@ -593,14 +641,11 @@
                             </div>
                         </div>
                         
-                        <div class="flex flex-wrap gap-4">
-                            <a href="#produk-section" class="btn-buy px-10 py-4 rounded-2xl font-black text-white shadow-[0_10px_30px_rgba(102,126,234,0.3)] hover:shadow-[0_15px_35px_rgba(102,126,234,0.4)] transition-all flex items-center group">
+                        <div class="flex flex-wrap gap-3">
+                            <a href="#produk-section" class="btn-buy px-7 py-3 rounded-xl font-black text-white shadow-[0_8px_20px_rgba(102,126,234,0.3)] hover:shadow-[0_12px_28px_rgba(102,126,234,0.4)] transition-all flex items-center group text-sm">
                                 <span>Lihat Menu Lengkap</span>
-                                <i class="fas fa-arrow-down ml-3 group-hover:translate-y-1 transition-transform"></i>
+                                <i class="fas fa-arrow-down ml-2.5 group-hover:translate-y-1 transition-transform"></i>
                             </a>
-                            <button class="bg-white text-slate-800 px-10 py-4 rounded-2xl font-black border border-slate-200 hover:bg-slate-50 transition-all shadow-sm">
-                                Ikuti Stand
-                            </button>
                         </div>
                     </div>
                     
@@ -622,16 +667,16 @@
                             <img src="{{ $bannerImg ?? $fallbackImg }}"
                                  alt="{{ $stand->nama_stand }}"
                                  onerror="this.onerror=null;this.src='{{ $fallbackImg }}';"
-                                 class="w-full max-w-[450px] h-[450px] object-cover rounded-[3rem] shadow-[0_25px_60px_rgba(0,0,0,0.1)] border-[10px] border-white mx-auto">
+                                 class="w-full max-w-[320px] h-[320px] object-cover rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border-[8px] border-white mx-auto">
                             
                             <!-- Floating Badge -->
-                            <div class="absolute -bottom-10 -left-6 bg-white p-6 rounded-[2rem] shadow-2xl z-20 hidden lg:block border border-slate-50 text-left">
-                                <div class="flex items-center space-x-4">
-                                    <div class="bg-yellow-400 w-12 h-12 rounded-2xl flex items-center justify-center">
-                                        <i class="fas fa-star text-white text-lg"></i>
+                            <div class="absolute -bottom-8 -left-4 bg-white p-4 rounded-[1.5rem] shadow-2xl z-20 hidden lg:block border border-slate-50 text-left">
+                                <div class="flex items-center space-x-3">
+                                    <div class="bg-yellow-400 w-9 h-9 rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-star text-white text-sm"></i>
                                     </div>
                                     <div>
-                                        <p class="text-xl font-black text-slate-800">4.9/5.0</p>
+                                        <p class="text-base font-black text-slate-800">4.9/5.0</p>
                                         <p class="text-xs text-slate-400 font-bold">Rating Stand</p>
                                     </div>
                                 </div>
@@ -672,15 +717,15 @@
             </div>
             
             @if($stand->produks->count() > 0)
-                <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+                <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     @foreach($stand->produks as $produk)
-                        <div class="product-card bg-white rounded-[3rem] overflow-hidden border border-slate-100 group flex flex-col h-full hover:border-blue-100" 
+                        <div class="product-card bg-white rounded-2xl overflow-hidden border border-slate-100 group flex flex-col h-full hover:border-blue-100 hover:shadow-lg transition-all" 
                              data-name="{{ strtolower($produk->nama_produk) }}" 
                              data-category="{{ $produk->kategori }}">
                              
-                            <!-- Modern Card Image Wrapper -->
-                            <div class="relative h-64 overflow-hidden p-3 pb-0">
-                                <div class="w-full h-full overflow-hidden rounded-[2.2rem] relative">
+                            <!-- Card Image -->
+                            <div class="relative h-44 overflow-hidden p-2 pb-0">
+                                <div class="w-full h-full overflow-hidden rounded-xl relative">
                                     @php
                                         $foodPlaceholders = [
                                             'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?auto=format&fit=crop&q=80&w=500', // nasi goreng
@@ -719,43 +764,48 @@
                                 </div>
                                 
                                 <!-- Status Badge Overlay -->
-                                <div class="absolute top-6 left-6 z-20">
+                                <div class="absolute top-4 left-4 z-20">
                                     @if($produk->tersedia && $produk->stock > 0)
-                                        <span class="bg-white/95 backdrop-blur-md text-green-600 px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-widest shadow-lg border border-white">
-                                            <i class="fas fa-check-circle mr-2"></i> Tersedia
+                                        <span class="bg-white/95 backdrop-blur-md text-green-600 px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest shadow-md border border-white">
+                                            <i class="fas fa-check-circle mr-1"></i> Tersedia
                                         </span>
                                     @else
-                                        <span class="bg-white/95 backdrop-blur-md text-red-500 px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-widest shadow-lg border border-white">
-                                            <i class="fas fa-clock mr-2"></i> Habis
+                                        <span class="bg-white/95 backdrop-blur-md text-red-500 px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest shadow-md border border-white">
+                                            <i class="fas fa-clock mr-1"></i> Habis
                                         </span>
                                     @endif
                                 </div>
 
-                                <!-- Like Button -->
-                                <button class="absolute top-6 right-6 w-11 h-11 bg-white/95 backdrop-blur-md rounded-2xl flex items-center justify-center text-slate-400 hover:text-red-500 hover:scale-110 transition-all duration-300 shadow-lg border border-white opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0">
-                                    <i class="far fa-heart text-xl"></i>
+                                <!-- Like / Favorit Button -->
+                                @auth
+                                <button
+                                    onclick="toggleFavorit(this, {{ $produk->id }})"
+                                    data-produk-id="{{ $produk->id }}"
+                                    class="favorit-btn absolute top-4 right-4 w-9 h-9 bg-white/95 backdrop-blur-md rounded-xl flex items-center justify-center transition-all duration-300 shadow-md border border-white opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 {{ in_array($produk->id, $userFavorits) ? 'text-red-500' : 'text-slate-400 hover:text-red-500 hover:scale-110' }}">
+                                    <i class="{{ in_array($produk->id, $userFavorits) ? 'fas' : 'far' }} fa-heart text-sm"></i>
                                 </button>
+                                @endauth
                             </div>
                             
-                            <!-- Enhanced Product Info -->
-                            <div class="p-6 flex flex-col flex-1">
-                                <div class="flex justify-between items-center mb-3">
-                                    <span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-lg text-[10px] font-bold uppercase tracking-wider">{{ $produk->kategori }}</span>
+                            <!-- Product Info -->
+                            <div class="p-4 flex flex-col flex-1">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-md text-xs font-bold uppercase tracking-wider">{{ $produk->kategori }}</span>
                                     <div class="flex items-center text-yellow-400">
-                                        <i class="fas fa-star text-[10px] mr-1.5"></i>
+                                        <i class="fas fa-star text-xs mr-1"></i>
                                         <span class="text-slate-900 font-bold text-xs">4.8</span>
-                                        <span class="text-slate-400 text-[10px] font-medium ml-1">(120)</span>
+                                        <span class="text-slate-400 text-xs font-medium ml-1">(120)</span>
                                     </div>
                                 </div>
                                 
-                                <h4 class="text-lg font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-1 h-7">{{ $produk->nama_produk }}</h4>
-                                <p class="text-xs text-slate-450 mb-6 font-medium leading-relaxed line-clamp-2 h-8">{{ $produk->deskripsi }}</p>
+                                <h4 class="text-sm font-bold text-slate-900 mb-1 group-hover:text-blue-600 transition-colors line-clamp-1">{{ $produk->nama_produk }}</h4>
+                                <p class="text-xs text-slate-400 mb-3 leading-relaxed line-clamp-2">{{ $produk->deskripsi }}</p>
                                 
                                 <div class="mt-auto">
-                                    <div class="flex items-center justify-between mb-6">
+                                    <div class="flex items-center justify-between mb-3">
                                         <div>
                                             <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Harga</p>
-                                            <p class="text-xl font-bold text-slate-900 leading-none">Rp{{ number_format($produk->harga, 0, ',', '.') }}</p>
+                                            <p class="text-base font-bold text-slate-900 leading-none">Rp{{ number_format($produk->harga, 0, ',', '.') }}</p>
                                         </div>
                                         <div class="text-right">
                                             <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Stok</p>
@@ -763,11 +813,11 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Premium Interaction Buttons -->
-                                    <div class="flex gap-3">
+                                    <!-- Action Buttons -->
+                                    <div class="flex gap-2">
                                         @if($produk->tersedia && $produk->stock > 0)
                                             <button onclick="addToCart({{ $produk->id }})" 
-                                                    class="w-12 h-11 bg-slate-900 text-white rounded-xl font-bold text-sm hover:bg-slate-800 transition-all flex items-center justify-center shadow-lg active:scale-95">
+                                                    class="w-10 h-10 bg-slate-900 text-white rounded-lg font-bold text-sm hover:bg-slate-800 transition-all flex items-center justify-center shadow-md active:scale-95">
                                                 <i class="fas fa-plus"></i>
                                             </button>
                                             <button type="button" 
@@ -776,14 +826,14 @@
                                                     data-name="{{ $produk->nama_produk }}"
                                                     data-price="{{ $produk->harga }}"
                                                     data-image="{{ $productImg }}"
-                                                    class="flex-1 btn-buy h-11 rounded-xl font-semibold text-white text-xs shadow-md flex items-center justify-center gap-2 group/btn active:scale-95">
+                                                    class="flex-1 btn-buy h-10 rounded-lg font-bold text-white text-xs shadow-md flex items-center justify-center gap-1.5 group/btn active:scale-95">
                                                 <span class="uppercase tracking-widest">Beli Sekarang</span>
-                                                <i class="fas fa-shopping-cart text-[10px] group-hover/btn:translate-x-1 transition-transform"></i>
+                                                <i class="fas fa-shopping-cart text-xs group-hover/btn:translate-x-0.5 transition-transform"></i>
                                             </button>
                                         @else
-                                            <button class="w-full bg-slate-50 text-slate-400 h-11 rounded-xl font-bold text-[10px] cursor-not-allowed flex items-center justify-center gap-2 border border-slate-100" disabled>
+                                            <button class="w-full bg-slate-50 text-slate-400 h-10 rounded-lg font-bold text-xs cursor-not-allowed flex items-center justify-center gap-1.5 border border-slate-100" disabled>
                                                 <i class="fas fa-info-circle"></i>
-                                                <span class="uppercase tracking-widest">Maaf, Stok Habis</span>
+                                                <span class="uppercase tracking-widest">Stok Habis</span>
                                             </button>
                                         @endif
                                     </div>
@@ -925,8 +975,8 @@
                 </div>
 
                 <!-- Tombol Bayar -->
-                <button onclick="processModalPayment()" id="modalPayBtn" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-black shadow-xl shadow-slate-200 hover:bg-slate-800 transition-all flex items-center justify-center gap-3 active:scale-95">
-                    <i class="fas fa-credit-card text-xs"></i>
+                <button onclick="processModalPayment()" id="modalPayBtn" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-black text-lg shadow-xl shadow-slate-200 hover:bg-slate-800 transition-all flex items-center justify-center gap-3 active:scale-95">
+                    <i class="fas fa-credit-card text-base"></i>
                     <span>Bayar Sekarang</span>
                 </button>
             </div>

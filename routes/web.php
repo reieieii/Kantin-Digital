@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FavoritController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\StandController as AdminStandController;
 use App\Http\Controllers\Admin\ProdukController as AdminProdukController;
@@ -31,6 +33,12 @@ Route::middleware('guest')->group(function () {
 
     Route::get('/auth/google',          [AuthController::class, 'redirectToGoogle'])->name('auth.google');
     Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+
+    // ─── Forgot & Reset Password ─────────────────────────────────────────────
+    Route::get ('/forgot-password',        [PasswordResetController::class, 'showForgotForm'])->name('password.forgot');
+    Route::post('/forgot-password',        [PasswordResetController::class, 'sendResetLink'])->name('password.email');
+    Route::get ('/reset-password',         [PasswordResetController::class, 'showResetForm'])->name('password.reset.form');
+    Route::post('/reset-password',         [PasswordResetController::class, 'resetPassword'])->name('password.reset');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
@@ -59,6 +67,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 // Stands
 Route::get('/stands', [App\Http\Controllers\StandController::class, 'index'])->name('stands.index');
 Route::get('/stands/{stand}', [App\Http\Controllers\StandController::class, 'show'])->name('stands.show');
+
+// ─── Favorit Routes (butuh login) ────────────────────────────────────────────
+Route::middleware('auth')->group(function () {
+    Route::get ('/favorit',        [FavoritController::class, 'index'])->name('favorit.index');
+    Route::post('/favorit/toggle', [FavoritController::class, 'toggle'])->name('favorit.toggle');
+});
 
 // Cart
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

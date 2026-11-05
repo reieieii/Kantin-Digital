@@ -41,4 +41,14 @@ class User extends Authenticatable
     {
         return $this->role === 'user';
     }
+
+    public function favorits()
+    {
+        return $this->hasMany(Favorit::class);
+    }
+
+    public function hasFavorit(int $produkId): bool
+    {
+        return $this->favorits()->where('produk_id', $produkId)->exists();
+    }
 }

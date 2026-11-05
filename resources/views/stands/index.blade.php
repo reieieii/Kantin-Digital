@@ -104,8 +104,8 @@
                     </a>
                 </div>
                 <nav class="hidden md:flex items-center space-x-8">
-                    <a href="{{ url('/') }}" class="text-sm font-bold text-white/80 hover:text-white transition-colors">Beranda</a>
-                    <a href="{{ url('/stands') }}" class="text-sm font-bold text-white/80 hover:text-white transition-colors">Daftar Stand</a>
+                    <a href="{{ url('/') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Beranda</a>
+                    <a href="{{ url('/stands') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Daftar Stand</a>
                     <a href="{{ url('/cart') }}" class="relative text-white/80 hover:text-white transition-all p-2 bg-white/10 rounded-xl border border-white/10 group">
                         <i class="fas fa-shopping-cart text-lg"></i>
                         <span id="cart-count" class="absolute -top-1 -right-1 bg-gradient-to-br from-orange-400 to-orange-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span>
@@ -127,21 +127,21 @@
         @if($stands->count() > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach($stands as $stand)
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition cursor-pointer" onclick="window.location.href='{{ route('stands.show', $stand->id) }}'">
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 cursor-pointer flex flex-col"
+                         onclick="window.location.href='{{ route('stands.show', $stand->id) }}'">
+
                         <!-- Foto Stand -->
                         <div class="relative">
                             @php
                                 $standImg = null;
                                 if (!empty($stand->gambar)) {
                                     if (str_starts_with($stand->gambar, 'http')) {
-                                        // URL eksternal (seeder lama / placeholder) — cek apakah bukan placeholder warna
                                         if (str_contains($stand->gambar, 'via.placeholder.com') || str_contains($stand->gambar, 'placeholder')) {
-                                            $standImg = null; // akan pakai fallback
+                                            $standImg = null;
                                         } else {
                                             $standImg = $stand->gambar;
                                         }
                                     } else {
-                                        // File upload dari admin — pakai storage
                                         $standImg = asset('storage/' . $stand->gambar);
                                     }
                                 }
@@ -150,49 +150,50 @@
                             <img src="{{ $standImg ?? $fallbackImg }}"
                                  alt="{{ $stand->nama_stand }}"
                                  onerror="this.onerror=null;this.src='{{ $fallbackImg }}';"
-                                 class="w-full h-48 object-cover">
+                                 class="w-full h-44 object-cover">
+
+                            <!-- Status Badge -->
                             @if($stand->status_buka)
-                                <span class="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                                <span class="absolute top-2 right-2 bg-green-500 text-white px-2.5 py-1 rounded-full text-xs font-bold shadow">
                                     <i class="fas fa-check-circle mr-1"></i>Buka
                                 </span>
                             @else
-                                <span class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                                <span class="absolute top-2 right-2 bg-red-500 text-white px-2.5 py-1 rounded-full text-xs font-bold shadow">
                                     <i class="fas fa-times-circle mr-1"></i>Tutup
                                 </span>
                             @endif
                         </div>
-                        
+
                         <!-- Info Stand -->
-                        <div class="p-6">
-                            <h3 class="font-semibold text-xl text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">{{ $stand->nama_stand }}</h3>
-                            <p class="text-sm text-slate-500 mb-4 font-medium leading-relaxed line-clamp-2 h-10">{{ $stand->deskripsi }}</p>
-                            
+                        <div class="p-5 flex flex-col flex-1">
+                            <!-- Nama & Deskripsi -->
+                            <h3 class="font-bold text-base text-slate-900 mb-1.5 leading-snug">{{ $stand->nama_stand }}</h3>
+                            <p class="text-sm text-slate-500 mb-4 leading-relaxed line-clamp-2">{{ $stand->deskripsi }}</p>
+
                             <!-- Produk Populer -->
-                            <div class="border-t border-slate-100 pt-4">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Produk Populer</p>
-                                @php
-                                    $produkPopuler = $stand->produks->take(3);
-                                @endphp
+                            <div class="border-t border-slate-100 pt-3 flex-1">
+                                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2.5">Produk Populer</p>
+                                @php $produkPopuler = $stand->produks->take(3); @endphp
                                 @foreach($produkPopuler as $produk)
-                                    <div class="flex justify-between items-center mb-3 last:mb-0">
-                                        <div class="flex-1">
-                                            <p class="text-sm font-semibold text-slate-800 line-clamp-1">{{ $produk->nama_produk }}</p>
-                                            <p class="text-[10px] text-slate-400 font-medium">Stok: {{ $produk->stock }} pcs</p>
+                                    <div class="flex justify-between items-start mb-2.5 last:mb-0 gap-2">
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm font-semibold text-slate-800 truncate">{{ $produk->nama_produk }}</p>
+                                            <p class="text-xs text-slate-400 mt-0.5">Stok: {{ $produk->stock }} pcs</p>
                                         </div>
-                                        <p class="text-sm font-bold text-blue-600">Rp {{ number_format($produk->harga, 0, ',', '.') }}</p>
+                                        <p class="text-sm font-bold text-blue-600 whitespace-nowrap">Rp {{ number_format($produk->harga, 0, ',', '.') }}</p>
                                     </div>
                                 @endforeach
                             </div>
-                            
+
                             <!-- Info Pemilik -->
-                            <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
-                                <div class="flex items-center text-slate-400">
-                                    <i class="fas fa-user-circle mr-2 text-xs"></i>
-                                    <span class="text-[11px] font-bold uppercase tracking-wider">{{ $stand->pemilik }}</span>
+                            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-1">
+                                <div class="flex items-center gap-1.5 text-slate-500 min-w-0">
+                                    <i class="fas fa-user-circle text-sm flex-shrink-0"></i>
+                                    <span class="text-sm font-semibold uppercase tracking-wide truncate">{{ $stand->pemilik }}</span>
                                 </div>
-                                <div class="flex items-center text-blue-500">
-                                    <i class="fas fa-phone-alt mr-2 text-[10px]"></i>
-                                    <span class="text-[11px] font-black tracking-wider">{{ $stand->no_telepon }}</span>
+                                <div class="flex items-center gap-1.5 text-blue-500 flex-shrink-0">
+                                    <i class="fas fa-phone-alt text-xs"></i>
+                                    <span class="text-sm font-bold">{{ $stand->no_telepon }}</span>
                                 </div>
                             </div>
                         </div>
@@ -203,7 +204,7 @@
             <div class="text-center py-12">
                 <i class="fas fa-store-slash text-6xl text-gray-300 mb-4"></i>
                 <h3 class="text-xl font-semibold text-gray-600 mb-2">Belum ada stand tersedia</h3>
-                <p class="text-gray-500">Silakan hubungi admin untuk menambahkan stand</p>
+                <p class="text-sm text-gray-500">Silakan hubungi admin untuk menambahkan stand</p>
             </div>
         @endif
     </main>

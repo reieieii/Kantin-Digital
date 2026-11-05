@@ -117,8 +117,8 @@
                     </a>
                 </div>
                 <nav class="hidden md:flex items-center space-x-8">
-                    <a href="{{ url('/') }}" class="text-sm font-bold text-white/80 hover:text-white transition-colors">Beranda</a>
-                    <a href="{{ url('/stands') }}" class="text-sm font-bold text-white/80 hover:text-white transition-colors">Daftar Stand</a>
+                    <a href="{{ url('/') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Beranda</a>
+                    <a href="{{ url('/stands') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Daftar Stand</a>
                     <a href="{{ url('/cart') }}" class="relative text-white/80 hover:text-white transition-all p-2 bg-white/10 rounded-xl border border-white/10 group">
                         <i class="fas fa-shopping-cart text-lg"></i>
                         <span id="cart-count" class="absolute -top-1 -right-1 bg-gradient-to-br from-orange-400 to-orange-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span>
@@ -216,7 +216,7 @@
                                 <a href="{{ url('/stands') }}" class="block w-full bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-300 transition text-center mt-2">
                                     <i class="fas fa-arrow-left mr-2"></i>Lanjut Belanja
                                 </a>
-                                <a href="{{ route('pembelians.payment') }}" class="block w-full btn-primary py-3 rounded-lg font-semibold text-center mt-2 border-0 inline-block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
+                                <a href="{{ route('pembelians.payment') }}" class="block w-full btn-primary py-4 rounded-lg font-bold text-lg text-center mt-2 border-0 inline-block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 shadow-lg">
                                     <i class="fas fa-credit-card mr-2"></i>Checkout
                                 </a>
                             </div>
@@ -229,7 +229,7 @@
                 <i class="fas fa-shopping-cart text-6xl text-gray-300 mb-4"></i>
                 <h3 class="text-xl font-semibold text-gray-600 mb-2">Keranjang Belanja Kosong</h3>
                 <p class="text-gray-500 mb-4">Belum ada produk di keranjang Anda</p>
-                <a href="{{ url('/stands') }}" class="btn-primary px-6 py-3 rounded-lg font-semibold inline-block border-0 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
+                <a href="{{ url('/stands') }}" class="btn-primary px-8 py-4 rounded-lg font-bold text-lg inline-block border-0 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 shadow-lg">
                     <i class="fas fa-store mr-2"></i>Mulai Belanja
                 </a>
             </div>

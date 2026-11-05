@@ -21,4 +21,9 @@ class Produk extends Model
     {
         return $this->belongsTo(Stand::class);
     }
+
+    public function favorits()
+    {
+        return $this->hasMany(Favorit::class);
+    }
 }

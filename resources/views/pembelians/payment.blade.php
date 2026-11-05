@@ -120,8 +120,8 @@
                     </a>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="{{ route('landing') }}" class="text-sm font-bold text-white/80 hover:text-white transition-colors">Beranda</a>
-                    <a href="{{ route('stands.index') }}" class="text-sm font-bold text-white/80 hover:text-white transition-colors">Daftar Stand</a>
+                    <a href="{{ route('landing') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Beranda</a>
+                    <a href="{{ route('stands.index') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Daftar Stand</a>
                     <a href="{{ route('cart.index') }}" class="relative text-white/80 hover:text-white transition-all p-2 bg-white/10 rounded-xl border border-white/10 group">
                         <i class="fas fa-shopping-cart text-lg"></i>
                         <span id="cart-count" class="absolute -top-1 -right-1 bg-gradient-to-br from-orange-400 to-orange-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span>
@@ -265,8 +265,8 @@
                         <!-- Tombol Bayar -->
                         <div class="pt-4">
                             <button type="submit" 
-                                    class="w-full bg-slate-900 text-white py-5 rounded-[1.5rem] font-black shadow-2xl shadow-slate-200 hover:bg-slate-800 transition-all flex items-center justify-center gap-3 active:scale-95 group">
-                                <i class="fas fa-lock text-xs group-hover:animate-bounce"></i>
+                                    class="w-full bg-slate-900 text-white py-6 rounded-[1.5rem] font-black text-lg shadow-2xl shadow-slate-200 hover:bg-slate-800 transition-all flex items-center justify-center gap-3 active:scale-95 group">
+                                <i class="fas fa-lock text-base group-hover:animate-bounce"></i>
                                 <span>Konfirmasi & Bayar Sekarang</span>
                             </button>
                             <p class="text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-6">
@@ -290,7 +290,7 @@
                             <i class="fas fa-shopping-basket text-3xl text-slate-200"></i>
                         </div>
                         <p class="text-slate-500 font-bold">Keranjang belanja kosong</p>
-                        <a href="{{ route('stands.index') }}" class="inline-block mt-4 text-indigo-600 font-black text-sm uppercase tracking-widest hover:text-indigo-700 transition">
+                        <a href="{{ route('stands.index') }}" class="inline-block mt-4 text-indigo-600 font-black text-base uppercase tracking-widest hover:text-indigo-700 transition">
                             Mulai Belanja <i class="fas fa-arrow-right ml-1"></i>
                         </a>
                     </div>

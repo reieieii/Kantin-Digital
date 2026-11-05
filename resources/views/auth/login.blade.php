@@ -140,20 +140,6 @@
                         <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5">
                         <span class="text-gray-300 font-medium tracking-wide text-sm">Continue with Google</span>
                     </a>
-
-                    {{-- Apple — belum tersedia --}}
-                    <button type="button" disabled title="Fitur Apple Login belum tersedia"
-                        class="w-full btn-social py-3 sm:py-3.5 rounded-xl flex items-center justify-center space-x-3 cursor-not-allowed opacity-50">
-                        <i class="fab fa-apple text-white text-xl"></i>
-                        <span class="text-gray-400 font-medium tracking-wide text-sm">Continue with Apple <span class="text-xs">(segera hadir)</span></span>
-                    </button>
-
-                    {{-- Facebook — belum tersedia --}}
-                    <button type="button" disabled title="Fitur Facebook Login belum tersedia"
-                        class="w-full btn-social py-3 sm:py-3.5 rounded-xl flex items-center justify-center space-x-3 cursor-not-allowed opacity-50">
-                        <i class="fab fa-facebook text-blue-500 text-xl"></i>
-                        <span class="text-gray-400 font-medium tracking-wide text-sm">Continue with Facebook <span class="text-xs">(segera hadir)</span></span>
-                    </button>
                 </div>
 
                 <!-- Divider -->
@@ -197,7 +183,7 @@
                             <input type="checkbox" name="remember" class="w-4 h-4 rounded accent-orange-500">
                             <span class="text-xs text-gray-400">Ingat saya</span>
                         </label>
-                        <a href="#" class="text-xs text-gray-400 hover:text-white transition">Forgot Password?</a>
+                        <a href="{{ route('password.forgot') }}" class="text-xs text-gray-400 hover:text-white transition">Forgot Password?</a>
                     </div>
 
                     <button type="submit" class="w-full btn-gradient text-white font-bold py-4 rounded-xl mt-4 text-sm tracking-widest uppercase">

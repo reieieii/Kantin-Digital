@@ -100,8 +100,8 @@
                     </a>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="{{ route('landing') }}" class="text-sm font-bold text-white/80 hover:text-white transition-colors">Beranda</a>
-                    <a href="{{ route('stands.index') }}" class="text-sm font-bold text-white/80 hover:text-white transition-colors">Daftar Stand</a>
+                    <a href="{{ route('landing') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Beranda</a>
+                    <a href="{{ route('stands.index') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Daftar Stand</a>
                     <a href="{{ route('cart.index') }}" class="relative text-white/80 hover:text-white transition-all p-2 bg-white/10 rounded-xl border border-white/10 group">
                         <i class="fas fa-shopping-cart text-lg"></i>
                         <span id="cart-count" class="absolute -top-1 -right-1 bg-gradient-to-br from-orange-400 to-orange-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span>
@@ -179,7 +179,7 @@
                     <div class="text-center py-8">
                         <i class="fas fa-shopping-cart text-gray-400 text-5xl mb-4"></i>
                         <p class="text-gray-600">Keranjang belanja kosong</p>
-                        <a href="{{ route('stands.index') }}" class="inline-block mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                        <a href="{{ route('stands.index') }}" class="inline-block mt-4 bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition font-bold text-lg shadow-lg">
                             <i class="fas fa-shopping-bag mr-2"></i>Mulai Belanja
                         </a>
                     </div>
@@ -214,7 +214,7 @@
 
                         <!-- Tombol Checkout -->
                         <button type="submit" form="checkout-form" 
-                                class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition">
+                                class="w-full bg-green-500 text-white py-4 rounded-lg font-bold text-lg hover:bg-green-600 transition shadow-lg">
                             <i class="fas fa-check-circle mr-2"></i>Buat Pesanan
                         </button>
                     </div>

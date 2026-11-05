@@ -111,8 +111,8 @@
                     </a>
                 </div>
                 <nav class="hidden md:flex items-center space-x-8">
-                    <a href="{{ url('/') }}" class="text-sm font-bold text-white/80 hover:text-white transition-colors">Beranda</a>
-                    <a href="{{ url('/stands') }}" class="text-sm font-bold text-white/80 hover:text-white transition-colors">Daftar Stand</a>
+                    <a href="{{ url('/') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Beranda</a>
+                    <a href="{{ url('/stands') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Daftar Stand</a>
                     <a href="{{ url('/cart') }}" class="relative text-white/80 hover:text-white transition-all p-2 bg-white/10 rounded-xl border border-white/10 group">
                         <i class="fas fa-shopping-cart text-lg"></i>
                         <span id="cart-count" class="absolute -top-1 -right-1 bg-gradient-to-br from-orange-400 to-orange-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span>
@@ -140,85 +140,63 @@
             </div>
 
             <!-- Info Pembelian -->
-            <div class="grid md:grid-cols-2 gap-8 mb-8">
-                <div>
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Informasi Pembelian</h2>
-                    <div class="space-y-3">
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Kode Pembelian:</span>
-                            <span class="font-semibold">{{ $pembelian->kode_pembelian }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Nama Pembeli:</span>
-                            <span class="font-semibold">{{ $pembelian->nama_pembeli }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Email:</span>
-                            <span class="font-semibold">{{ $pembelian->email ?: '-' }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">No. Telepon:</span>
-                            <span class="font-semibold">{{ $pembelian->no_telepon ?: '-' }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Kelas:</span>
-                            <span class="font-semibold">{{ $pembelian->alamat ?: '-' }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Total Harga:</span>
-                            <span class="font-bold text-xl text-blue-600">Rp {{ number_format($pembelian->total_harga, 0, ',', '.') }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Status:</span>
-                            @if($pembelian->status == 'pending')
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                    Pending
-                                </span>
-                            @elseif($pembelian->status == 'diproses')
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                    Diproses
-                                </span>
-                            @elseif($pembelian->status == 'selesai')
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    Selesai
-                                </span>
-                            @elseif($pembelian->status == 'dibatalkan')
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                    Dibatalkan
-                                </span>
-                            @endif
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Tanggal:</span>
-                            <span class="font-semibold">{{ $pembelian->created_at->format('d/m/Y H:i') }}</span>
-                        </div>
-                        @if($pembelian->catatan)
-                            <div class="mt-4">
-                                <span class="text-gray-600">Catatan:</span>
-                                <p class="mt-2 text-gray-800 bg-gray-100 p-3 rounded">{{ $pembelian->catatan }}</p>
-                            </div>
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Informasi Pembelian</h2>
+                <div class="space-y-3">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Kode Pembelian:</span>
+                        <span class="font-semibold">{{ $pembelian->kode_pembelian }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Nama Pembeli:</span>
+                        <span class="font-semibold">{{ $pembelian->nama_pembeli }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Email:</span>
+                        <span class="font-semibold">{{ $pembelian->email ?: '-' }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">No. Telepon:</span>
+                        <span class="font-semibold">{{ $pembelian->no_telepon ?: '-' }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Kelas:</span>
+                        <span class="font-semibold">{{ $pembelian->alamat ?: '-' }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Total Harga:</span>
+                        <span class="font-bold text-xl text-blue-600">Rp {{ number_format($pembelian->total_harga, 0, ',', '.') }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Status:</span>
+                        @if($pembelian->status == 'pending')
+                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                Pending
+                            </span>
+                        @elseif($pembelian->status == 'diproses')
+                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                Diproses
+                            </span>
+                        @elseif($pembelian->status == 'selesai')
+                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Selesai
+                            </span>
+                        @elseif($pembelian->status == 'dibatalkan')
+                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                Dibatalkan
+                            </span>
                         @endif
                     </div>
-                </div>
-                
-                <!-- Update Status -->
-                <div>
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Update Status</h2>
-                    <form action="{{ route('pembelians.updateStatus', $pembelian->id) }}" method="POST" class="space-y-4">
-                        @csrf
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Status Pembelian</label>
-                            <select name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option value="pending" {{ $pembelian->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                <option value="diproses" {{ $pembelian->status == 'diproses' ? 'selected' : '' }}>Diproses</option>
-                                <option value="selesai" {{ $pembelian->status == 'selesai' ? 'selected' : '' }}>Selesai</option>
-                                <option value="dibatalkan" {{ $pembelian->status == 'dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
-                            </select>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Tanggal:</span>
+                        <span class="font-semibold">{{ $pembelian->created_at->format('d/m/Y H:i') }}</span>
+                    </div>
+                    @if($pembelian->catatan)
+                        <div class="mt-4">
+                            <span class="text-gray-600">Catatan:</span>
+                            <p class="mt-2 text-gray-800 bg-gray-100 p-3 rounded">{{ $pembelian->catatan }}</p>
                         </div>
-                        <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition">
-                            <i class="fas fa-save mr-2"></i>Update Status
-                        </button>
-                    </form>
+                    @endif
                 </div>
             </div>
         </div>

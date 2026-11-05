@@ -90,12 +90,9 @@ class AuthController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        Auth::login($user);
-
-        $request->session()->regenerate();
-
-        return redirect()->route('landing')
-            ->with('success', 'Akun berhasil dibuat. Selamat datang, ' . $user->name . '!');
+        // Jangan auto-login — arahkan ke halaman login untuk masuk manual
+        return redirect()->route('login')
+            ->with('success', 'Akun berhasil dibuat! Silakan login dengan akun yang baru kamu daftarkan.');
     }
 
     // ─── Logout ────────────────────────────────────────────────────────────────

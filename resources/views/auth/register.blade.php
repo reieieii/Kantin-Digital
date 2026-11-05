@@ -131,25 +131,14 @@
                 @endif
 
                 <!-- Social Buttons -->
-                <div class="flex space-x-4 mb-8">
+                <div class="mb-8">
                     {{-- Google --}}
                     <a href="{{ route('auth.google') }}"
-                        class="flex-1 btn-social py-3 sm:py-3.5 rounded-xl flex items-center justify-center"
+                        class="w-full btn-social py-3 sm:py-3.5 rounded-xl flex items-center justify-center space-x-3 no-underline"
                         title="Daftar dengan Google">
-                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-6 h-6">
+                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5">
+                        <span class="text-gray-300 font-medium tracking-wide text-sm">Continue with Google</span>
                     </a>
-                    {{-- Apple — belum tersedia --}}
-                    <button type="button" disabled
-                        class="flex-1 btn-social py-3 sm:py-3.5 rounded-xl flex items-center justify-center opacity-50 cursor-not-allowed"
-                        title="Apple Login belum tersedia">
-                        <i class="fab fa-apple text-white text-2xl"></i>
-                    </button>
-                    {{-- Facebook — belum tersedia --}}
-                    <button type="button" disabled
-                        class="flex-1 btn-social py-3 sm:py-3.5 rounded-xl flex items-center justify-center opacity-50 cursor-not-allowed"
-                        title="Facebook Login belum tersedia">
-                        <i class="fab fa-facebook text-blue-500 text-2xl"></i>
-                    </button>
                 </div>
 
                 <!-- Divider -->

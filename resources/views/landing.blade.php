@@ -110,10 +110,10 @@
                 </div>
                 
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#beranda" class="nav-link text-white hover:text-yellow-300">Beranda</a>
-                    <a href="#tentang" class="nav-link text-white hover:text-yellow-300">Tentang</a>
-                    <a href="#layanan" class="nav-link text-white hover:text-yellow-300">Layanan</a>
-                    <a href="#kontak" class="nav-link text-white hover:text-yellow-300">Kontak</a>
+                    <a href="#beranda" class="nav-link text-white hover:text-yellow-300 text-base font-medium">Beranda</a>
+                    <a href="#tentang" class="nav-link text-white hover:text-yellow-300 text-base font-medium">Tentang</a>
+                    <a href="#layanan" class="nav-link text-white hover:text-yellow-300 text-base font-medium">Layanan</a>
+                    <a href="#kontak" class="nav-link text-white hover:text-yellow-300 text-base font-medium">Kontak</a>
                 </div>
                 
                 <div class="flex items-center space-x-4">
@@ -152,8 +152,8 @@
                         <a href="{{ route('login') }}" class="text-white hover:text-yellow-300 font-semibold hidden md:block transition mr-2">Masuk</a>
                     @endauth
 
-                    <a href="{{ route('stands.index') }}" class="btn-primary text-white px-5 sm:px-6 py-2 rounded-full font-semibold text-sm sm:text-base">
-                        <i class="fa-solid fa-store sm:mr-2"></i><span class="hidden sm:inline">Mulai Belanja</span><span class="sm:hidden">Belanja</span>
+                    <a href="{{ route('stands.index') }}" class="btn-primary text-white px-6 py-2.5 rounded-full font-semibold text-sm shadow-md">
+                        <i class="fa-solid fa-store mr-2"></i><span class="hidden sm:inline">Mulai Belanja</span><span class="sm:hidden">Belanja</span>
                     </a>
                     <button class="md:hidden text-white" onclick="toggleMobileMenu()">
                         <i class="fas fa-bars text-xl"></i>
@@ -165,10 +165,10 @@
         <!-- Mobile Menu -->
         <div id="mobileMenu" class="hidden md:hidden bg-white/10 backdrop-blur-lg border-b border-white/20">
             <div class="container mx-auto px-6 py-4 space-y-3">
-                <a href="#beranda" class="block text-white hover:text-yellow-300 transition">Beranda</a>
-                <a href="#tentang" class="block text-white hover:text-yellow-300 transition">Tentang</a>
-                <a href="#layanan" class="block text-white hover:text-yellow-300 transition">Layanan</a>
-                <a href="#kontak" class="block text-white hover:text-yellow-300 transition">Kontak</a>
+                <a href="#beranda" class="block text-white hover:text-yellow-300 transition text-base">Beranda</a>
+                <a href="#tentang" class="block text-white hover:text-yellow-300 transition text-base">Tentang</a>
+                <a href="#layanan" class="block text-white hover:text-yellow-300 transition text-base">Layanan</a>
+                <a href="#kontak" class="block text-white hover:text-yellow-300 transition text-base">Kontak</a>
                 <div class="border-t border-white/20 pt-2 mt-2">
                     @auth
                         <div class="flex items-center space-x-3 mb-3">
@@ -219,9 +219,9 @@
                         <a href="{{ route('stands.index') }}" class="btn-primary text-white px-8 py-4 rounded-full font-semibold text-center">
                             <i class="fa-solid fa-cart-shopping mr-2"></i>Pesan Sekarang
                         </a>
-                        <button class="btn-secondary text-white px-8 py-4 rounded-full font-semibold">
+                        <a href="{{ route('favorit.index') }}" class="btn-secondary text-white px-8 py-4 rounded-full font-semibold">
                             <i class="fas fa-heart mr-2"></i>Menu Favorit
-                        </button>
+                        </a>
                     </div>
                     
                     <!-- Stats -->
