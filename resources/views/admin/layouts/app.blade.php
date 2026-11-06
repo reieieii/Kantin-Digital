@@ -104,6 +104,12 @@
                 <span>Rekap Harian</span>
             </a>
 
+            <a href="{{ route('admin.reset.index') }}"
+                class="sidebar-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-red-400 text-sm {{ request()->routeIs('admin.reset.*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-rotate-left w-5 text-center"></i>
+                <span>Reset Stand</span>
+            </a>
+
             <p class="text-xs text-slate-500 uppercase tracking-widest px-3 mt-5 mb-2 font-semibold">Lainnya</p>
 
             <a href="{{ route('landing') }}" target="_blank"

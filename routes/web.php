@@ -70,6 +70,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // Rekap Harian (read-only)
     Route::get ('rekap',       [\App\Http\Controllers\Admin\RekapHarianController::class, 'index'])->name('rekap.index');
     Route::post('rekap/reset', [\App\Http\Controllers\Admin\RekapHarianController::class, 'reset'])->name('rekap.reset');
+
+    // Halaman Reset terpisah
+    Route::get('reset', function () {
+        $stands = \App\Models\Stand::orderBy('nama_stand')->get();
+        return view('admin.reset.index', compact('stands'));
+    })->name('reset.index');
 });
 
 

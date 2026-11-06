@@ -72,66 +72,6 @@
         </div>
     </form>
 
-    {{-- ── PANEL RESET ────────────────────────────────────────────────── --}}
-    <div class="bg-red-900/20 border border-red-700/40 rounded-2xl p-5">
-        <div class="flex items-start gap-3 mb-4">
-            <div class="w-9 h-9 bg-red-600/20 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
-                <i class="fas fa-rotate-left text-red-400"></i>
-            </div>
-            <div>
-                <h3 class="font-bold text-red-300 text-sm">Reset Rekap Harian & Pendapatan Stand</h3>
-                <p class="text-slate-400 text-xs mt-1">
-                    Gunakan fitur ini saat <strong class="text-white">pergantian penjaga</strong> setiap minggunya.
-                    Reset akan <strong class="text-red-300">menghapus semua pesanan (dashboard & menu pesanan)</strong>,
-                    <strong class="text-red-300">catatan rekap harian</strong>, dan
-                    <strong class="text-red-300">total pendapatan</strong> stand yang dipilih —
-                    semua mulai dari nol untuk penjaga baru.
-                </p>
-            </div>
-        </div>
-
-        <form action="{{ route('admin.rekap.reset') }}" method="POST" id="formReset">
-            @csrf
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-
-                {{-- Pilih Stand --}}
-                <div>
-                    <label class="text-xs text-slate-400 block mb-1">Stand yang Direset</label>
-                    <select name="stand_id"
-                        class="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-red-500">
-                        <option value="">🔴 Semua Stand (Hati-hati!)</option>
-                        @foreach($stands as $s)
-                            <option value="{{ $s->id }}">{{ $s->nama_stand }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                {{-- Konfirmasi ketik RESET --}}
-                <div>
-                    <label class="text-xs text-slate-400 block mb-1">
-                        Ketik <span class="text-red-400 font-bold">RESET</span> untuk konfirmasi
-                    </label>
-                    <input type="text" name="konfirmasi" id="inputKonfirmasi"
-                           placeholder="Ketik RESET di sini"
-                           autocomplete="off"
-                           class="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-red-500 tracking-widest">
-                    @error('konfirmasi')
-                        <p class="text-red-400 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                {{-- Tombol --}}
-                <div class="flex items-end">
-                    <button type="button" id="btnReset"
-                        class="w-full bg-red-600 hover:bg-red-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold px-5 py-2.5 rounded-xl text-sm transition flex items-center justify-center gap-2"
-                        disabled>
-                        <i class="fas fa-rotate-left"></i> Eksekusi Reset
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-
     {{-- ── TABEL REKAP ────────────────────────────────────────────────── --}}
     <div class="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden">
         <div class="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
@@ -224,37 +164,3 @@
 
 </div>
 @endsection
-
-@push('scripts')
-<script>
-(function () {
-    const input  = document.getElementById('inputKonfirmasi');
-    const btn    = document.getElementById('btnReset');
-    const form   = document.getElementById('formReset');
-
-    // Enable tombol hanya kalau input persis "RESET" (case-insensitive)
-    input.addEventListener('input', function () {
-        btn.disabled = this.value.trim().toUpperCase() !== 'RESET';
-    });
-
-    // Konfirmasi dialog sebelum submit
-    btn.addEventListener('click', function () {
-        const standSelect = form.querySelector('[name="stand_id"]');
-        const standLabel  = standSelect.options[standSelect.selectedIndex].text;
-        const target      = standSelect.value ? '"' + standLabel + '"' : 'SEMUA STAND';
-
-        const ok = confirm(
-            '⚠️ PERHATIAN!\n\n' +
-            'Kamu akan mereset SEMUA DATA stand ' + target + ':\n' +
-            '• Seluruh pesanan (dashboard & menu pesanan)\n' +
-            '• Semua catatan rekap harian\n' +
-            '• Total pendapatan → Rp 0\n\n' +
-            'Tindakan ini TIDAK BISA DIBATALKAN.\n\n' +
-            'Lanjutkan?'
-        );
-
-        if (ok) form.submit();
-    });
-})();
-</script>
-@endpush
