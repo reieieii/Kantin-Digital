@@ -199,10 +199,10 @@
                     <div id="qr-section" class="hidden mt-8 animate-fade-in">
                         <div class="bg-indigo-50/50 rounded-3xl p-8 text-center border border-indigo-100 border-dashed">
                             <p class="text-xs font-black text-indigo-600 uppercase tracking-widest mb-4">Pindai QRIS Sekarang</p>
-                            <div class="w-48 h-48 mx-auto bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-indigo-50">
-                                <i class="fas fa-qrcode text-7xl text-slate-200"></i>
+                            <div class="mx-auto mb-6">
+                                <img src="{{ asset('images/qris.jpeg') }}" alt="QRIS ReivanGH" class="w-64 h-auto rounded-2xl mx-auto object-contain shadow-sm">
                             </div>
-                            <p class="text-sm font-bold text-slate-600">Buka aplikasi <span id="payment-app" class="text-indigo-600 italic">QRIS</span></p>
+                            <p class="text-sm font-bold text-slate-600">Scan dengan <span id="payment-app" class="text-indigo-600 italic">QRIS</span></p>
                             <p class="text-2xl font-black text-slate-900 mt-2 tracking-tight">Rp {{ number_format($totalHarga, 0, ',', '.') }}</p>
                         </div>
                     </div>

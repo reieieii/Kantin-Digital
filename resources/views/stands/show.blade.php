@@ -931,8 +931,8 @@
                 <div id="modalQrSection" class="hidden mb-6">
                     <div class="bg-gray-50 rounded-lg p-4 text-center">
                         <h5 class="font-semibold text-gray-800 mb-3">Scan QR Code</h5>
-                        <div class="w-32 h-32 mx-auto bg-white rounded-lg flex items-center justify-center mb-3">
-                            <i class="fas fa-qrcode text-4xl text-gray-400"></i>
+                        <div class="mx-auto mb-3">
+                            <img src="{{ asset('images/qris.jpeg') }}" alt="QRIS ReivanGH" class="w-48 h-auto rounded-lg mx-auto object-contain">
                         </div>
                         <p class="text-sm text-gray-600">Scan dengan <span id="modalPaymentApp">QRIS</span></p>
                     </div>
