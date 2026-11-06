@@ -2,7 +2,7 @@
 
 @section('title', 'Dashboard')
 @section('page-title', 'Dashboard')
-@section('page-subtitle', 'Selamat datang, ' . Auth::user()->name)
+@section('page-subtitle', 'Selamat datang, ' . (Auth::user()->stand->nama_stand ?? Auth::user()->name))
 
 @section('content')
 <div class="mt-6 space-y-6">

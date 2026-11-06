@@ -47,10 +47,10 @@
         <div class="px-4 py-4 border-b border-slate-700">
             <div class="flex items-center space-x-3 bg-slate-700/50 rounded-xl p-3">
                 <div class="w-9 h-9 bg-gradient-to-br from-emerald-500 to-teal-400 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
-                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                    {{ strtoupper(substr(Auth::user()->stand->nama_stand ?? Auth::user()->name, 0, 1)) }}
                 </div>
                 <div class="overflow-hidden">
-                    <p class="text-sm font-semibold truncate">{{ Auth::user()->name }}</p>
+                    <p class="text-sm font-semibold truncate">{{ Auth::user()->stand->nama_stand ?? Auth::user()->name }}</p>
                     <p class="text-xs text-emerald-400 truncate">{{ Auth::user()->stand->nama_stand ?? 'Stand' }}</p>
                 </div>
             </div>
@@ -135,9 +135,9 @@
                 <div class="w-px h-6 bg-slate-600"></div>
                 <div class="flex items-center space-x-2 text-sm">
                     <div class="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-400 rounded-full flex items-center justify-center font-bold text-xs">
-                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                        {{ strtoupper(substr(Auth::user()->stand->nama_stand ?? Auth::user()->name, 0, 1)) }}
                     </div>
-                    <span class="text-slate-300 hidden sm:block">{{ Auth::user()->name }}</span>
+                    <span class="text-slate-300 hidden sm:block">{{ Auth::user()->stand->nama_stand ?? Auth::user()->name }}</span>
                 </div>
             </div>
         </header>
