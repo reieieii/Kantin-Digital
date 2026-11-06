@@ -31,9 +31,10 @@ class DashboardController extends Controller
             ->pluck('detail_pembelians.pembelian_id')
             ->unique();
 
-        $totalPesanan  = Pembelian::whereIn('id', $pesananIds)->count();
+        $totalPesanan   = Pembelian::whereIn('id', $pesananIds)->count();
         $pesananPending = Pembelian::whereIn('id', $pesananIds)->where('status', 'pending')->count();
         $pesananProses  = Pembelian::whereIn('id', $pesananIds)->where('status', 'diproses')->count();
+        $pesananSelesai = Pembelian::whereIn('id', $pesananIds)->where('status', 'selesai')->count();
 
         // 5 pesanan terbaru
         $pesananTerbaru = Pembelian::with('detailPembelians.produk')
@@ -44,7 +45,8 @@ class DashboardController extends Controller
 
         return view('penjaga.dashboard', compact(
             'stand', 'totalProduk', 'produkTersedia', 'stokHabis',
-            'totalPesanan', 'pesananPending', 'pesananProses', 'pesananTerbaru'
+            'totalPesanan', 'pesananPending', 'pesananProses', 'pesananSelesai',
+            'pesananTerbaru'
         ));
     }
 }

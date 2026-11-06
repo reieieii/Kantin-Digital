@@ -78,9 +78,29 @@ class PesananController extends Controller
             'status' => 'required|in:pending,diproses,selesai,dibatalkan',
         ]);
 
-        $pesanan->update(['status' => $request->status]);
+        $stand      = Auth::user()->stand;
+        $statusLama = $pesanan->status;
+        $statusBaru = $request->status;
+
+        // Hitung subtotal item milik stand ini dalam pesanan ini
+        $subtotalStand = DB::table('detail_pembelians')
+            ->join('produks', 'detail_pembelians.produk_id', '=', 'produks.id')
+            ->where('detail_pembelians.pembelian_id', $pesanan->id)
+            ->where('produks.stand_id', $stand->id)
+            ->sum('detail_pembelians.subtotal');
+
+        // Akumulasi pendapatan secara atomik
+        if ($statusBaru === 'selesai' && $statusLama !== 'selesai') {
+            // Pesanan baru selesai → tambah pendapatan
+            $stand->tambahPendapatan((float) $subtotalStand);
+        } elseif ($statusLama === 'selesai' && $statusBaru !== 'selesai') {
+            // Pesanan di-rollback dari selesai → kurangi pendapatan
+            $stand->kurangiPendapatan((float) $subtotalStand);
+        }
+
+        $pesanan->update(['status' => $statusBaru]);
 
         return redirect()->back()
-            ->with('success', 'Status pesanan berhasil diubah ke "' . ucfirst($request->status) . '".');
+            ->with('success', 'Status pesanan berhasil diubah ke "' . ucfirst($statusBaru) . '".');
     }
 }
