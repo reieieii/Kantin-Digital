@@ -17,6 +17,22 @@
         @endforeach
     </div>
 
+    {{-- Total Pendapatan --}}
+    <div class="bg-gradient-to-r from-emerald-700 to-teal-700 rounded-2xl border border-emerald-600 px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-lg">
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-coins text-yellow-300 text-lg"></i>
+            </div>
+            <div>
+                <p class="text-emerald-200 text-xs font-semibold uppercase tracking-wider">Total Pendapatan</p>
+                <p class="text-white text-xs mt-0.5">Akumulasi dari <span class="font-bold">{{ $stats['selesai'] }}</span> pesanan selesai</p>
+            </div>
+        </div>
+        <p class="text-3xl font-extrabold text-white tracking-tight">
+            Rp {{ number_format($stand->total_pendapatan, 0, ',', '.') }}
+        </p>
+    </div>
+
     {{-- Filter --}}
     <form method="GET" class="flex gap-3 flex-wrap">
         <input type="text" name="search" value="{{ request('search') }}"
