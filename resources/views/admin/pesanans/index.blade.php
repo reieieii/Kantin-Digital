@@ -34,7 +34,7 @@
     <input type="hidden" name="status" value="{{ request('status') }}">
     <div class="flex flex-wrap gap-3 items-end">
         <div class="flex-1 min-w-[200px]">
-            <label class="text-xs text-slate-400 block mb-1">Cari Pesanan</label>
+            <label class="text-xs text-slate-400 block mb-1">Filter Pesanan</label>
             <input type="text" name="search" value="{{ request('search') }}"
                 placeholder="Kode, nama, atau email..."
                 class="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
@@ -48,7 +48,7 @@
             </select>
         </div>
         <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-xl text-sm font-medium transition">
-            <i class="fas fa-search mr-1"></i>Cari
+            <i class="fas fa-filter mr-1"></i>Filter
         </button>
         @if(request()->hasAny(['search','metode']))
             <a href="{{ route('admin.pesanans.index', ['status' => request('status')]) }}" class="text-slate-400 hover:text-white text-sm px-2">Reset</a>
