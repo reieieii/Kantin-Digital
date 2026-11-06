@@ -120,9 +120,9 @@ class RekapHarianController extends Controller
             'catatan'           => 'nullable|string|max:1000',
         ]);
 
-        // Strip format ribuan (titik) jika masih ada, pastikan numerik murni
-        $pendapatan  = (float) str_replace('.', '', $request->total_pendapatan);
-        $keuntungan  = (float) str_replace('.', '', $request->total_keuntungan);
+        // Strip titik ribuan (safety) & cast ke tipe yang benar
+        $pendapatan = (float) str_replace('.', '', $request->total_pendapatan);
+        $keuntungan = (float) str_replace('.', '', $request->total_keuntungan);
 
         RekapHarian::updateOrCreate(
             ['stand_id' => $stand->id, 'tanggal' => $request->tanggal],

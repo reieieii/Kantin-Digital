@@ -10,6 +10,7 @@
     {{-- ── FORM REKAP ─────────────────────────────────────────────────── --}}
     <div class="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden">
 
+        {{-- Header form --}}
         <div class="px-6 py-4 border-b border-slate-700 flex items-center gap-3">
             <div class="w-9 h-9 bg-emerald-600/20 rounded-xl flex items-center justify-center">
                 <i class="fas fa-clipboard-list text-emerald-400"></i>
@@ -23,103 +24,109 @@
         <div class="p-6">
 
             {{-- Pilih Tanggal + tombol Ambil Data --}}
-            <div class="mb-1">
-                <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Pilih Tanggal</label>
-                <div class="flex flex-col sm:flex-row gap-3">
+            <div class="flex flex-col sm:flex-row gap-3 mb-6">
+                <div class="flex-1">
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
+                        Pilih Tanggal
+                    </label>
                     <input type="date" id="pilihTanggal"
                            value="{{ $today->toDateString() }}"
                            max="{{ $today->toDateString() }}"
-                           class="flex-1 bg-slate-700 border border-slate-600 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500">
+                           class="w-full bg-slate-700 border border-slate-600 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500">
+                </div>
+                <div class="flex items-end">
                     <button type="button" id="btnAmbilData"
-                        class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold px-6 py-3 rounded-xl transition flex items-center justify-center gap-2 text-sm whitespace-nowrap">
+                        class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold px-6 py-3 rounded-xl transition flex items-center gap-2 text-sm">
                         <i class="fas fa-download" id="iconAmbil"></i>
                         <span id="labelAmbil">Ambil Data</span>
                     </button>
                 </div>
             </div>
 
-            {{-- Info hari / status -- hanya tampil setelah Ambil Data --}}
-            <div id="infoBox" class="hidden mt-4 bg-slate-900/60 rounded-xl px-5 py-4 border border-slate-700 flex flex-col sm:flex-row sm:items-center gap-2">
-                <div class="flex items-center gap-3 flex-1">
-                    <i class="fas fa-calendar-day text-emerald-400 text-lg"></i>
-                    <div>
-                        <p class="text-white font-bold text-base" id="labelHariTanggal">—</p>
-                        <p class="text-slate-500 text-xs" id="labelStatusRekap">—</p>
-                    </div>
-                </div>
-                <span id="badgeSudah" class="hidden bg-yellow-500/20 text-yellow-400 text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
-                    Sudah Direkap
-                </span>
-            </div>
-
-            {{-- Form simpan -- hanya tampil setelah Ambil Data --}}
-            <form action="{{ route('penjaga.rekap.store') }}" method="POST" id="formRekap" class="hidden mt-5">
+            {{-- Form simpan --}}
+            <form action="{{ route('penjaga.rekap.store') }}" method="POST" id="formRekap">
                 @csrf
-                <input type="hidden" name="tanggal" id="inputTanggal">
-                <input type="hidden" name="hari"    id="inputHari">
 
-                {{-- hidden numeric yang dikirim ke server (tanpa titik) --}}
-                <input type="hidden" name="total_pendapatan"   id="hidPendapatan">
-                <input type="hidden" name="total_keuntungan"   id="hidKeuntungan">
-                <input type="hidden" name="total_pesanan"      id="hidTotalPesanan">
-                <input type="hidden" name="pesanan_selesai"    id="hidSelesai">
-                <input type="hidden" name="pesanan_dibatalkan" id="hidDibatalkan">
+                <input type="hidden" name="tanggal" id="inputTanggal" value="{{ $today->toDateString() }}">
+                <input type="hidden" name="hari"    id="inputHari"    value="{{ $hariIni }}">
+                {{-- Hidden numerik murni yang dikirim ke server --}}
+                <input type="hidden" name="total_pendapatan"   id="hidPendapatan"   value="0">
+                <input type="hidden" name="total_keuntungan"   id="hidKeuntungan"   value="0">
+                <input type="hidden" name="total_pesanan"      id="hidTotalPesanan" value="0">
+                <input type="hidden" name="pesanan_selesai"    id="hidSelesai"      value="0">
+                <input type="hidden" name="pesanan_dibatalkan" id="hidDibatalkan"   value="0">
 
+                {{-- Info hari + tanggal --}}
+                <div class="bg-slate-900/60 rounded-xl px-5 py-4 mb-5 flex flex-col sm:flex-row sm:items-center gap-2 border border-slate-700">
+                    <div class="flex items-center gap-3 flex-1">
+                        <i class="fas fa-calendar-day text-emerald-400 text-lg"></i>
+                        <div>
+                            <p class="text-white font-bold text-base" id="labelHariTanggal">
+                                {{ $hariIni }}, {{ $today->format('d/m/Y') }}
+                            </p>
+                            <p class="text-slate-500 text-xs" id="labelStatusRekap">
+                                @if($rekapHariIni) <span class="text-yellow-400">⚠ Sudah pernah direkap — simpan ulang untuk update</span>
+                                @else Data hari ini belum direkap @endif
+                            </p>
+                        </div>
+                    </div>
+                    <span id="badgeSudah"
+                        class="{{ $rekapHariIni ? '' : 'hidden' }} bg-yellow-500/20 text-yellow-400 text-xs font-bold px-3 py-1 rounded-full">
+                        Sudah Direkap
+                    </span>
+                </div>
+
+                {{-- Grid data --}}
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-5">
 
-                    {{-- Total Pendapatan --}}
                     <div>
                         <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
                             <i class="fas fa-coins text-yellow-400 mr-1"></i>Total Pendapatan (Rp)
                         </label>
+                        {{-- display input: diformat ribuan, tidak dikirim langsung --}}
                         <input type="text" id="dispPendapatan" inputmode="numeric"
-                               placeholder="0"
-                               class="w-full bg-slate-700 border border-emerald-600/50 rounded-xl px-4 py-3 text-emerald-300 font-bold text-sm focus:outline-none focus:border-emerald-500"
-                               autocomplete="off">
+                               placeholder="Contoh: 60.000"
+                               autocomplete="off"
+                               class="w-full bg-slate-700 border border-emerald-600/50 rounded-xl px-4 py-3 text-emerald-300 font-bold text-sm focus:outline-none focus:border-emerald-500">
                     </div>
 
-                    {{-- Total Keuntungan --}}
                     <div>
                         <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
                             <i class="fas fa-chart-line text-blue-400 mr-1"></i>Total Keuntungan (Rp)
                         </label>
                         <input type="text" id="dispKeuntungan" inputmode="numeric"
-                               placeholder="Isi manual atau biarkan 0"
-                               class="w-full bg-slate-700 border border-blue-600/50 rounded-xl px-4 py-3 text-blue-300 font-bold text-sm focus:outline-none focus:border-blue-500"
-                               autocomplete="off">
+                               placeholder="Isi manual, contoh: 30.000"
+                               autocomplete="off"
+                               class="w-full bg-slate-700 border border-blue-600/50 rounded-xl px-4 py-3 text-blue-300 font-bold text-sm focus:outline-none focus:border-blue-500">
                     </div>
 
-                    {{-- Total Pesanan --}}
                     <div>
                         <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
                             <i class="fas fa-shopping-bag text-slate-400 mr-1"></i>Total Pesanan
                         </label>
                         <input type="text" id="dispTotalPesanan" inputmode="numeric"
-                               placeholder="0" readonly
+                               placeholder="—" readonly
                                class="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white text-sm focus:outline-none cursor-default">
                     </div>
 
-                    {{-- Pesanan Selesai --}}
                     <div>
                         <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
                             <i class="fas fa-check-circle text-emerald-400 mr-1"></i>Pesanan Selesai
                         </label>
                         <input type="text" id="dispSelesai" inputmode="numeric"
-                               placeholder="0" readonly
+                               placeholder="—" readonly
                                class="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white text-sm focus:outline-none cursor-default">
                     </div>
 
-                    {{-- Pesanan Dibatalkan --}}
                     <div>
                         <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
                             <i class="fas fa-times-circle text-red-400 mr-1"></i>Pesanan Dibatalkan
                         </label>
                         <input type="text" id="dispDibatalkan" inputmode="numeric"
-                               placeholder="0" readonly
+                               placeholder="—" readonly
                                class="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white text-sm focus:outline-none cursor-default">
                     </div>
 
-                    {{-- Catatan --}}
                     <div>
                         <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
                             <i class="fas fa-sticky-note text-slate-400 mr-1"></i>Catatan (opsional)
@@ -131,8 +138,9 @@
                     </div>
                 </div>
 
+                {{-- Tombol simpan --}}
                 <div class="flex gap-3 flex-wrap">
-                    <button type="submit" id="btnSimpan"
+                    <button type="submit"
                         class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold px-8 py-3 rounded-xl text-sm hover:opacity-90 transition shadow-lg flex items-center gap-2">
                         <i class="fas fa-save"></i> Simpan Rekap
                     </button>
@@ -141,8 +149,8 @@
                         <i class="fas fa-redo"></i> Reset Form
                     </button>
                 </div>
-            </form>
 
+            </form>
         </div>
     </div>
 
@@ -212,6 +220,8 @@
                     </tr>
                     @endforeach
                 </tbody>
+
+                {{-- Summary total --}}
                 <tfoot class="bg-slate-700/30 border-t border-slate-600">
                     <tr class="text-xs font-bold">
                         <td class="px-4 py-3 text-slate-300">TOTAL ({{ $riwayat->count() }} hari)</td>
@@ -239,66 +249,58 @@
 @push('scripts')
 <script>
 (function () {
-    const liveUrl    = "{{ route('penjaga.rekap.live') }}";
+    const liveUrl = "{{ route('penjaga.rekap.live') }}";
 
-    // UI elements
     const btnAmbil   = document.getElementById('btnAmbilData');
     const iconAmbil  = document.getElementById('iconAmbil');
     const labelAmbil = document.getElementById('labelAmbil');
     const pilihTgl   = document.getElementById('pilihTanggal');
-    const infoBox    = document.getElementById('infoBox');
-    const formRekap  = document.getElementById('formRekap');
-    const btnReset   = document.getElementById('btnReset');
 
-    // Display inputs (user-facing, formatted)
+    // Display inputs (user sees formatted value)
     const dispPendapatan  = document.getElementById('dispPendapatan');
     const dispKeuntungan  = document.getElementById('dispKeuntungan');
     const dispTotalPesanan= document.getElementById('dispTotalPesanan');
     const dispSelesai     = document.getElementById('dispSelesai');
     const dispDibatalkan  = document.getElementById('dispDibatalkan');
 
-    // Hidden inputs (sent to server, numeric only)
+    // Hidden inputs (plain numbers sent to server)
     const hidPendapatan   = document.getElementById('hidPendapatan');
     const hidKeuntungan   = document.getElementById('hidKeuntungan');
     const hidTotalPesanan = document.getElementById('hidTotalPesanan');
     const hidSelesai      = document.getElementById('hidSelesai');
     const hidDibatalkan   = document.getElementById('hidDibatalkan');
 
-    // Other
-    const inputTanggal   = document.getElementById('inputTanggal');
-    const inputHari      = document.getElementById('inputHari');
-    const inputCatatan   = document.getElementById('inputCatatan');
-    const labelHariTgl   = document.getElementById('labelHariTanggal');
-    const labelStatus    = document.getElementById('labelStatusRekap');
-    const badgeSudah     = document.getElementById('badgeSudah');
+    const fTanggal   = document.getElementById('inputTanggal');
+    const fHari      = document.getElementById('inputHari');
+    const fCatatan   = document.getElementById('inputCatatan');
+
+    const labelHariTgl = document.getElementById('labelHariTanggal');
+    const labelStatus  = document.getElementById('labelStatusRekap');
+    const badgeSudah   = document.getElementById('badgeSudah');
 
     // ── Format helpers ──────────────────────────────────────────────────
-    /** "60000" → "60.000" */
-    function formatRibuan(val) {
-        const angka = String(val).replace(/\D/g, '');
-        if (!angka) return '';
+    function toRibuan(angka) {
+        if (!angka && angka !== 0) return '';
         return parseInt(angka, 10).toLocaleString('id-ID');
     }
 
-    /** "60.000" → 60000 */
-    function stripFormat(val) {
-        return parseInt(String(val).replace(/\./g, '').replace(/,/g, ''), 10) || 0;
+    function stripRibuan(str) {
+        return parseInt(String(str).replace(/\./g, '').replace(/,/g, ''), 10) || 0;
     }
 
-    /** Attach format-on-input ke field uang editable */
+    // Pasang formatter titik ribuan ke field uang yang bisa diedit
     function attachFormatter(dispEl, hidEl) {
         dispEl.addEventListener('input', function () {
-            const raw   = this.value.replace(/\./g, '').replace(/,/g, '');
-            const angka = raw.replace(/\D/g, '');
-            this.value  = angka ? parseInt(angka, 10).toLocaleString('id-ID') : '';
-            hidEl.value = angka || '0';
+            const digits = this.value.replace(/[^\d]/g, '');
+            this.value   = digits ? parseInt(digits, 10).toLocaleString('id-ID') : '';
+            hidEl.value  = digits || '0';
         });
     }
 
     attachFormatter(dispPendapatan, hidPendapatan);
     attachFormatter(dispKeuntungan, hidKeuntungan);
 
-    // ── Ambil Data dari server ──────────────────────────────────────────
+    // ── Ambil Data ──────────────────────────────────────────────────────
     function ambilData() {
         const tanggal = pilihTgl.value;
         if (!tanggal) return;
@@ -314,17 +316,14 @@
         .then(data => {
             if (data.error) { alert(data.error); return; }
 
-            // Update hidden metadata
-            inputTanggal.value = tanggal;
-            inputHari.value    = data.hari;
-
-            // Tampilkan info box
+            fTanggal.value = tanggal;
+            fHari.value    = data.hari;
             labelHariTgl.textContent = data.hari + ', ' + data.tanggal_display;
 
-            // Isi field angka (display + hidden)
-            const pendapatan = data.total_pendapatan || 0;
-            dispPendapatan.value  = formatRibuan(pendapatan);
-            hidPendapatan.value   = pendapatan;
+            // Isi display dengan format ribuan, hidden dengan angka murni
+            const pend = data.total_pendapatan || 0;
+            dispPendapatan.value   = toRibuan(pend);
+            hidPendapatan.value    = pend;
 
             dispTotalPesanan.value = data.total_pesanan || 0;
             hidTotalPesanan.value  = data.total_pesanan || 0;
@@ -336,22 +335,19 @@
             hidDibatalkan.value  = data.pesanan_dibatalkan || 0;
 
             if (data.sudah_direkap) {
-                dispKeuntungan.value = formatRibuan(data.total_keuntungan || 0);
-                hidKeuntungan.value  = data.total_keuntungan || 0;
-                inputCatatan.value   = data.catatan || '';
+                const knt = data.total_keuntungan || 0;
+                dispKeuntungan.value = toRibuan(knt);
+                hidKeuntungan.value  = knt;
+                fCatatan.value       = data.catatan || '';
                 badgeSudah.classList.remove('hidden');
                 labelStatus.innerHTML = '<span class="text-yellow-400">⚠ Sudah pernah direkap — simpan ulang untuk update</span>';
             } else {
                 dispKeuntungan.value = '';
                 hidKeuntungan.value  = '0';
-                inputCatatan.value   = '';
+                fCatatan.value       = '';
                 badgeSudah.classList.add('hidden');
                 labelStatus.textContent = 'Data siap direkap';
             }
-
-            // Tampilkan info box dan form
-            infoBox.classList.remove('hidden');
-            formRekap.classList.remove('hidden');
         })
         .catch(() => alert('Gagal mengambil data. Coba lagi.'))
         .finally(() => {
@@ -362,40 +358,32 @@
     }
 
     btnAmbil.addEventListener('click', ambilData);
+    pilihTgl.addEventListener('change', ambilData);
 
-    // ── Sebelum submit: pastikan hidden values up to date ───────────────
-    formRekap.addEventListener('submit', function () {
-        hidPendapatan.value = stripFormat(dispPendapatan.value) || 0;
-        hidKeuntungan.value = stripFormat(dispKeuntungan.value) || 0;
-        // total pesanan, selesai, dibatalkan sudah di-set langsung dari fetch
+    // ── Sebelum submit: sinkronkan hidden values ─────────────────────────
+    document.getElementById('formRekap').addEventListener('submit', function () {
+        hidPendapatan.value = stripRibuan(dispPendapatan.value);
+        hidKeuntungan.value = stripRibuan(dispKeuntungan.value);
     });
 
-    // ── Reset Form ───────────────────────────────────────────────────────
-    btnReset.addEventListener('click', function () {
-        // Kosongkan semua field display
+    // ── Reset ────────────────────────────────────────────────────────────
+    document.getElementById('btnReset').addEventListener('click', function () {
         dispPendapatan.value   = '';
         dispKeuntungan.value   = '';
         dispTotalPesanan.value = '';
         dispSelesai.value      = '';
         dispDibatalkan.value   = '';
-        inputCatatan.value     = '';
-
-        // Reset hidden
-        hidPendapatan.value   = '0';
-        hidKeuntungan.value   = '0';
-        hidTotalPesanan.value = '0';
-        hidSelesai.value      = '0';
-        hidDibatalkan.value   = '0';
-
-        // Sembunyikan form & info box
-        infoBox.classList.add('hidden');
-        formRekap.classList.add('hidden');
+        fCatatan.value         = '';
+        hidPendapatan.value    = '0';
+        hidKeuntungan.value    = '0';
+        hidTotalPesanan.value  = '0';
+        hidSelesai.value       = '0';
+        hidDibatalkan.value    = '0';
+        pilihTgl.value         = pilihTgl.max;
+        labelHariTgl.textContent = "{{ $hariIni }}, {{ $today->format('d/m/Y') }}";
+        labelStatus.textContent  = 'Data belum diambil';
         badgeSudah.classList.add('hidden');
-
-        // Kembalikan tanggal ke hari ini
-        pilihTgl.value = pilihTgl.max;
     });
-
 })();
 </script>
 @endpush
