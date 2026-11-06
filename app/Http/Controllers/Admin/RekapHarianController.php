@@ -70,8 +70,8 @@ class RekapHarianController extends Controller
                 $nama = Stand::find($request->stand_id)?->nama_stand ?? 'Stand';
                 session()->flash('success', "Rekap harian & pendapatan \"{$nama}\" berhasil direset.");
             } else {
-                // Reset semua stand
-                RekapHarian::truncate();
+                // Reset semua stand — pakai delete() bukan truncate() agar aman dalam transaction
+                RekapHarian::query()->delete();
                 Stand::query()->update(['total_pendapatan' => 0]);
                 session()->flash('success', 'Semua rekap harian & pendapatan seluruh stand berhasil direset.');
             }
