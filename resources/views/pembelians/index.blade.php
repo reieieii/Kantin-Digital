@@ -10,7 +10,7 @@
     <style>
         body { font-family: 'Poppins', sans-serif; }
         .hero-gradient { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .btn-orange { background: linear-gradient(45deg, #f59e0b, #f97316); }
+        .btn-orange-gradient { background: linear-gradient(45deg, #f59e0b, #f97316); }
         .badge-pending    { background:#fef3c7; color:#92400e; }
         .badge-diproses   { background:#dbeafe; color:#1e40af; }
         .badge-selesai    { background:#d1fae5; color:#065f46; }
@@ -20,36 +20,36 @@
 <body class="bg-gray-50 min-h-screen flex flex-col">
 
     {{-- ── NAVBAR ────────────────────────────────────────────────────────── --}}
-    <nav class="fixed top-0 w-full z-50 hero-gradient shadow-lg">
-        <div class="container mx-auto px-6 py-4">
+    <header class="hero-gradient text-white shadow-lg fixed top-0 w-full z-50">
+        <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
-                <a href="{{ route('landing') }}" class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                        <i class="fas fa-utensils text-white text-sm"></i>
+                <a href="{{ route('landing') }}" class="flex items-center space-x-3 group">
+                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-utensils text-orange-500"></i>
                     </div>
                     <div class="hidden sm:block">
-                        <p class="text-white font-black text-base leading-tight">Kantin Digital</p>
-                        <p class="text-purple-200 text-xs font-medium">BEST SCHOOL CANTEEN</p>
+                        <span class="text-white font-black text-xl tracking-tight">Kantin Digital</span>
+                        <p class="text-[10px] text-white/70 font-bold uppercase tracking-widest leading-none">Best School Canteen</p>
                     </div>
                 </a>
-                <div class="flex items-center gap-3">
-                    <a href="{{ route('landing') }}" class="text-white/80 hover:text-white text-sm font-medium transition">Beranda</a>
-                    <a href="{{ route('stands.index') }}" class="text-white/80 hover:text-white text-sm font-medium transition">Daftar Stand</a>
-                    @auth
-                        <a href="{{ route('pembelians.index') }}"
-                            class="btn-orange text-sm font-black text-white px-5 py-2.5 rounded-xl hover:scale-105 transition-all shadow-md">
-                            <i class="fas fa-receipt mr-2"></i>Pesanan Saya
-                        </a>
-                    @else
-                        <a href="{{ route('login') }}"
-                            class="btn-orange text-sm font-black text-white px-5 py-2.5 rounded-xl hover:scale-105 transition-all shadow-md">
-                            Login
-                        </a>
-                    @endauth
-                </div>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="{{ url('/') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Beranda</a>
+                    <a href="{{ url('/stands') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Daftar Stand</a>
+                    <a href="{{ url('/cart') }}" class="relative text-white/80 hover:text-white transition-all p-2 bg-white/10 rounded-xl border border-white/10 group">
+                        <i class="fas fa-shopping-cart text-lg"></i>
+                        @php $cartCount = count(session('cart', [])); @endphp
+                        <span class="absolute -top-1 -right-1 bg-gradient-to-br from-orange-400 to-orange-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">
+                            {{ $cartCount }}
+                        </span>
+                    </a>
+                    <a href="{{ url('/pembelians') }}"
+                        class="btn-orange-gradient text-sm font-black text-white px-6 py-2.5 rounded-xl hover:scale-105 transition-all shadow-md hover:shadow-lg shadow-orange-900/20 text-center">
+                        <i class="fas fa-receipt mr-2"></i>Pesanan Saya
+                    </a>
+                </nav>
             </div>
         </div>
-    </nav>
+    </header>
 
     {{-- ── CONTENT ────────────────────────────────────────────────────────── --}}
     <main class="flex-1 container mx-auto px-4 pt-28 pb-12 max-w-3xl">
