@@ -85,7 +85,7 @@
                         </label>
                         {{-- display input: diformat ribuan, tidak dikirim langsung --}}
                         <input type="text" id="dispPendapatan" inputmode="numeric"
-                               placeholder="Contoh: 60.000"
+                               placeholder="Isi"
                                autocomplete="off"
                                class="w-full bg-slate-700 border border-emerald-600/50 rounded-xl px-4 py-3 text-emerald-300 font-bold text-sm focus:outline-none focus:border-emerald-500">
                     </div>
@@ -95,7 +95,7 @@
                             <i class="fas fa-chart-line text-blue-400 mr-1"></i>Total Keuntungan (Rp)
                         </label>
                         <input type="text" id="dispKeuntungan" inputmode="numeric"
-                               placeholder="Isi manual, contoh: 30.000"
+                               placeholder="Isi"
                                autocomplete="off"
                                class="w-full bg-slate-700 border border-blue-600/50 rounded-xl px-4 py-3 text-blue-300 font-bold text-sm focus:outline-none focus:border-blue-500">
                     </div>
@@ -105,8 +105,9 @@
                             <i class="fas fa-shopping-bag text-slate-400 mr-1"></i>Total Pesanan
                         </label>
                         <input type="text" id="dispTotalPesanan" inputmode="numeric"
-                               placeholder="—" readonly
-                               class="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white text-sm focus:outline-none cursor-default">
+                               placeholder="Isi"
+                               class="w-full bg-slate-700 border border-slate-600 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500"
+                               autocomplete="off">
                     </div>
 
                     <div>
@@ -114,8 +115,9 @@
                             <i class="fas fa-check-circle text-emerald-400 mr-1"></i>Pesanan Selesai
                         </label>
                         <input type="text" id="dispSelesai" inputmode="numeric"
-                               placeholder="—" readonly
-                               class="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white text-sm focus:outline-none cursor-default">
+                               placeholder="Isi"
+                               class="w-full bg-slate-700 border border-slate-600 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500"
+                               autocomplete="off">
                     </div>
 
                     <div>
@@ -123,8 +125,9 @@
                             <i class="fas fa-times-circle text-red-400 mr-1"></i>Pesanan Dibatalkan
                         </label>
                         <input type="text" id="dispDibatalkan" inputmode="numeric"
-                               placeholder="—" readonly
-                               class="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white text-sm focus:outline-none cursor-default">
+                               placeholder="Isi"
+                               class="w-full bg-slate-700 border border-slate-600 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500"
+                               autocomplete="off">
                     </div>
 
                     <div>
@@ -299,6 +302,9 @@
 
     attachFormatter(dispPendapatan, hidPendapatan);
     attachFormatter(dispKeuntungan, hidKeuntungan);
+    attachFormatter(dispTotalPesanan, hidTotalPesanan);
+    attachFormatter(dispSelesai, hidSelesai);
+    attachFormatter(dispDibatalkan, hidDibatalkan);
 
     // ── Ambil Data ──────────────────────────────────────────────────────
     function ambilData() {
@@ -362,8 +368,11 @@
 
     // ── Sebelum submit: sinkronkan hidden values ─────────────────────────
     document.getElementById('formRekap').addEventListener('submit', function () {
-        hidPendapatan.value = stripRibuan(dispPendapatan.value);
-        hidKeuntungan.value = stripRibuan(dispKeuntungan.value);
+        hidPendapatan.value   = stripRibuan(dispPendapatan.value);
+        hidKeuntungan.value   = stripRibuan(dispKeuntungan.value);
+        hidTotalPesanan.value = stripRibuan(dispTotalPesanan.value);
+        hidSelesai.value      = stripRibuan(dispSelesai.value);
+        hidDibatalkan.value   = stripRibuan(dispDibatalkan.value);
     });
 
     // ── Reset ────────────────────────────────────────────────────────────
