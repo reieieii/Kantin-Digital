@@ -57,6 +57,9 @@ class RekapHarianController extends Controller
      */
     public function reset(Request $request)
     {
+        // Normalisasi input konfirmasi ke uppercase sebelum validasi
+        $request->merge(['konfirmasi' => strtoupper(trim($request->konfirmasi ?? ''))]);
+
         $request->validate([
             'stand_id'   => 'nullable|exists:stands,id',
             'konfirmasi' => 'required|in:RESET',
