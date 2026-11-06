@@ -34,23 +34,41 @@
     <input type="hidden" name="status" value="{{ request('status') }}">
     <div class="flex flex-wrap gap-3 items-end">
         <div class="flex-1 min-w-[200px]">
-            <label class="text-xs text-slate-400 block mb-1">Filter Pesanan</label>
+            <label class="text-xs text-slate-400 block mb-1">Cari Pesanan</label>
             <input type="text" name="search" value="{{ request('search') }}"
                 placeholder="Kode, nama, atau email..."
                 class="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
         </div>
-        <div class="min-w-[140px]">
+        <div class="min-w-[160px]">
+            <label class="text-xs text-slate-400 block mb-1">Stand</label>
+            <select name="stand_id" class="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
+                <option value="">Semua Stand</option>
+                @foreach($stands as $s)
+                    <option value="{{ $s->id }}" {{ request('stand_id') == $s->id ? 'selected' : '' }}>{{ $s->nama_stand }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="min-w-[150px]">
+            <label class="text-xs text-slate-400 block mb-1">Kategori</label>
+            <select name="kategori" class="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
+                <option value="">Semua Kategori</option>
+                <option value="Makanan"      {{ request('kategori') == 'Makanan'      ? 'selected' : '' }}>Makanan</option>
+                <option value="Minuman"      {{ request('kategori') == 'Minuman'      ? 'selected' : '' }}>Minuman</option>
+                <option value="Snack/Cemilan"{{ request('kategori') == 'Snack/Cemilan'? 'selected' : '' }}>Snack / Cemilan</option>
+            </select>
+        </div>
+        <div class="min-w-[130px]">
             <label class="text-xs text-slate-400 block mb-1">Metode Bayar</label>
             <select name="metode" class="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
                 <option value="">Semua</option>
                 <option value="tunai" {{ request('metode') == 'tunai' ? 'selected' : '' }}>Tunai</option>
-                <option value="qris" {{ request('metode') == 'qris' ? 'selected' : '' }}>QRIS</option>
+                <option value="qris"  {{ request('metode') == 'qris'  ? 'selected' : '' }}>QRIS</option>
             </select>
         </div>
-        <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-xl text-sm font-medium transition">
-            <i class="fas fa-filter mr-1"></i>Filter
+        <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1">
+            <i class="fas fa-search"></i> Cari
         </button>
-        @if(request()->hasAny(['search','metode']))
+        @if(request()->hasAny(['search','metode','stand_id','kategori']))
             <a href="{{ route('admin.pesanans.index', ['status' => request('status')]) }}" class="text-slate-400 hover:text-white text-sm px-2">Reset</a>
         @endif
     </div>

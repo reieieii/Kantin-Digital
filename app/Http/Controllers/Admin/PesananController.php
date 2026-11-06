@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pembelian;
+use App\Models\Stand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PesananController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Pembelian::with('detailPembelians');
+        $query = Pembelian::with('detailPembelians.produk');
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -26,7 +28,28 @@ class PesananController extends Controller
             $query->where('metode_pembayaran', $request->metode);
         }
 
+        // Filter by stand
+        if ($request->filled('stand_id')) {
+            $pesananIds = DB::table('detail_pembelians')
+                ->join('produks', 'detail_pembelians.produk_id', '=', 'produks.id')
+                ->where('produks.stand_id', $request->stand_id)
+                ->pluck('detail_pembelians.pembelian_id')
+                ->unique();
+            $query->whereIn('id', $pesananIds);
+        }
+
+        // Filter by kategori produk
+        if ($request->filled('kategori')) {
+            $pesananIds = DB::table('detail_pembelians')
+                ->join('produks', 'detail_pembelians.produk_id', '=', 'produks.id')
+                ->where('produks.kategori', $request->kategori)
+                ->pluck('detail_pembelians.pembelian_id')
+                ->unique();
+            $query->whereIn('id', $pesananIds);
+        }
+
         $pesanans = $query->orderByDesc('created_at')->paginate(15)->withQueryString();
+        $stands   = Stand::orderBy('nama_stand')->get();
 
         $stats = [
             'semua'     => Pembelian::count(),
@@ -36,7 +59,7 @@ class PesananController extends Controller
             'dibatalkan'=> Pembelian::where('status', 'dibatalkan')->count(),
         ];
 
-        return view('admin.pesanans.index', compact('pesanans', 'stats'));
+        return view('admin.pesanans.index', compact('pesanans', 'stats', 'stands'));
     }
 
     public function show(Pembelian $pesanan)
