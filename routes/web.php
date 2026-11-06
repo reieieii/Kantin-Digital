@@ -96,6 +96,11 @@ Route::prefix('penjaga')->name('penjaga.')->middleware(['auth', 'penjaga'])->gro
     Route::get   ('pesanans',                     [\App\Http\Controllers\Penjaga\PesananController::class, 'index'])->name('pesanans.index');
     Route::get   ('pesanans/{pesanan}',            [\App\Http\Controllers\Penjaga\PesananController::class, 'show'])->name('pesanans.show');
     Route::patch ('pesanans/{pesanan}/status',     [\App\Http\Controllers\Penjaga\PesananController::class, 'updateStatus'])->name('pesanans.updateStatus');
+
+    // Kalkulator
+    Route::get('kalkulator', function () {
+        return view('penjaga.kalkulator');
+    })->name('kalkulator');
 });
 
 // Cart

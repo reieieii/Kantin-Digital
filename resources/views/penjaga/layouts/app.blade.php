@@ -86,6 +86,12 @@
                 <span>Pesanan Masuk</span>
             </a>
 
+            <a href="{{ route('penjaga.kalkulator') }}"
+                class="sidebar-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-300 text-sm {{ request()->routeIs('penjaga.kalkulator') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-calculator w-5 text-center text-slate-400"></i>
+                <span>Kalkulator</span>
+            </a>
+
             <p class="text-xs text-slate-500 uppercase tracking-widest px-3 mt-5 mb-2 font-semibold">Lainnya</p>
 
             <a href="{{ route('landing') }}" target="_blank"
