@@ -90,12 +90,10 @@ class PesananController extends Controller
             ->sum('detail_pembelians.subtotal');
 
         // Akumulasi pendapatan secara atomik
+        // Pendapatan hanya bertambah saat status berubah ke 'selesai'.
+        // Pembatalan atau perubahan status lain tidak mengurangi pendapatan.
         if ($statusBaru === 'selesai' && $statusLama !== 'selesai') {
-            // Pesanan baru selesai → tambah pendapatan
             $stand->tambahPendapatan((float) $subtotalStand);
-        } elseif ($statusLama === 'selesai' && $statusBaru !== 'selesai') {
-            // Pesanan di-rollback dari selesai → kurangi pendapatan
-            $stand->kurangiPendapatan((float) $subtotalStand);
         }
 
         $pesanan->update(['status' => $statusBaru]);
