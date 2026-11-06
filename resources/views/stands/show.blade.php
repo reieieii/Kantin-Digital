@@ -321,9 +321,9 @@
                     const qrSection = document.getElementById('modalQrSection');
                     const paymentApp = document.getElementById('modalPaymentApp');
                     
-                    if (method === 'gopay' || method === 'dana') {
+                    if (method === 'qris') {
                         qrSection.classList.remove('hidden');
-                        paymentApp.textContent = method === 'gopay' ? 'GoPay' : 'Dana';
+                        paymentApp.textContent = 'QRIS';
                     } else {
                         qrSection.classList.add('hidden');
                     }
@@ -912,27 +912,14 @@
                             </div>
                         </label>
 
-                        <label class="flex items-center gap-3 p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition payment-method-modal" data-method="gopay">
-                            <input type="radio" name="modal_payment_method" value="gopay" class="w-4 h-4 text-blue-600">
+                        <label class="flex items-center gap-3 p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition payment-method-modal" data-method="qris">
+                            <input type="radio" name="modal_payment_method" value="qris" class="w-4 h-4 text-blue-600">
                             <div class="flex items-center gap-3 flex-1">
-                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                    <i class="fab fa-gopay text-blue-600"></i>
+                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-qrcode text-indigo-600"></i>
                                 </div>
                                 <div>
-                                    <h5 class="font-semibold text-gray-800">GoPay</h5>
-                                    <p class="text-xs text-gray-600">Scan QR Code</p>
-                                </div>
-                            </div>
-                        </label>
-
-                        <label class="flex items-center gap-3 p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition payment-method-modal" data-method="dana">
-                            <input type="radio" name="modal_payment_method" value="dana" class="w-4 h-4 text-blue-600">
-                            <div class="flex items-center gap-3 flex-1">
-                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-wallet text-blue-600"></i>
-                                </div>
-                                <div>
-                                    <h5 class="font-semibold text-gray-800">Dana</h5>
+                                    <h5 class="font-semibold text-gray-800">QRIS</h5>
                                     <p class="text-xs text-gray-600">Scan QR Code</p>
                                 </div>
                             </div>
@@ -947,7 +934,7 @@
                         <div class="w-32 h-32 mx-auto bg-white rounded-lg flex items-center justify-center mb-3">
                             <i class="fas fa-qrcode text-4xl text-gray-400"></i>
                         </div>
-                        <p class="text-sm text-gray-600">Scan dengan <span id="modalPaymentApp">GoPay</span></p>
+                        <p class="text-sm text-gray-600">Scan dengan <span id="modalPaymentApp">QRIS</span></p>
                     </div>
                 </div>
 

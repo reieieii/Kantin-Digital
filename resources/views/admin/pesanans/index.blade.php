@@ -44,8 +44,7 @@
             <select name="metode" class="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
                 <option value="">Semua</option>
                 <option value="tunai" {{ request('metode') == 'tunai' ? 'selected' : '' }}>Tunai</option>
-                <option value="gopay" {{ request('metode') == 'gopay' ? 'selected' : '' }}>GoPay</option>
-                <option value="dana" {{ request('metode') == 'dana' ? 'selected' : '' }}>DANA</option>
+                <option value="qris" {{ request('metode') == 'qris' ? 'selected' : '' }}>QRIS</option>
             </select>
         </div>
         <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-xl text-sm font-medium transition">

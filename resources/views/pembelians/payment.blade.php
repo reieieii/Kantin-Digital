@@ -180,30 +180,16 @@
                             </div>
                         </label>
 
-                        <!-- Gopay -->
-                        <label class="flex items-center gap-4 p-5 border-2 border-slate-100 rounded-2xl cursor-pointer hover:border-indigo-500 transition-all duration-300 payment-method group" data-method="gopay">
-                            <input type="radio" name="payment_method" value="gopay" class="w-5 h-5 text-indigo-600">
+                        <!-- QRIS -->
+                        <label class="flex items-center gap-4 p-5 border-2 border-slate-100 rounded-2xl cursor-pointer hover:border-indigo-500 transition-all duration-300 payment-method group" data-method="qris">
+                            <input type="radio" name="payment_method" value="qris" class="w-5 h-5 text-indigo-600">
                             <div class="flex items-center gap-4 flex-1">
-                                <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                                    <i class="fab fa-gopay text-2xl"></i>
+                                <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-qrcode text-2xl"></i>
                                 </div>
                                 <div>
-                                    <h3 class="font-bold text-slate-800">GoPay</h3>
+                                    <h3 class="font-bold text-slate-800">QRIS</h3>
                                     <p class="text-xs text-slate-500 font-medium">Scan QRIS untuk pembayaran digital</p>
-                                </div>
-                            </div>
-                        </label>
-
-                        <!-- Dana -->
-                        <label class="flex items-center gap-4 p-5 border-2 border-slate-100 rounded-2xl cursor-pointer hover:border-indigo-500 transition-all duration-300 payment-method group" data-method="dana">
-                            <input type="radio" name="payment_method" value="dana" class="w-5 h-5 text-indigo-600">
-                            <div class="flex items-center gap-4 flex-1">
-                                <div class="w-14 h-14 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                                    <i class="fas fa-wallet text-xl"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-bold text-slate-800">Dana</h3>
-                                    <p class="text-xs text-slate-500 font-medium">Pembayaran mudah melalui aplikasi Dana</p>
                                 </div>
                             </div>
                         </label>
@@ -216,7 +202,7 @@
                             <div class="w-48 h-48 mx-auto bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-indigo-50">
                                 <i class="fas fa-qrcode text-7xl text-slate-200"></i>
                             </div>
-                            <p class="text-sm font-bold text-slate-600">Buka aplikasi <span id="payment-app" class="text-indigo-600 italic">GoPay</span></p>
+                            <p class="text-sm font-bold text-slate-600">Buka aplikasi <span id="payment-app" class="text-indigo-600 italic">QRIS</span></p>
                             <p class="text-2xl font-black text-slate-900 mt-2 tracking-tight">Rp {{ number_format($totalHarga, 0, ',', '.') }}</p>
                         </div>
                     </div>
@@ -360,9 +346,9 @@
                 const qrSection = document.getElementById('qr-section');
                 const paymentApp = document.getElementById('payment-app');
                 
-                if (method === 'gopay' || method === 'dana') {
+                if (method === 'qris') {
                     qrSection.classList.remove('hidden');
-                    paymentApp.textContent = method === 'gopay' ? 'GoPay' : 'Dana';
+                    paymentApp.textContent = 'QRIS';
                 } else {
                     qrSection.classList.add('hidden');
                 }

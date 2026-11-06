@@ -147,7 +147,7 @@ Route::get('/pembelians/payment', function () {
 
 Route::post('/pembelians/process-payment', function (Illuminate\Http\Request $request) {
     $request->validate([
-        'payment_method' => 'required|in:tunai,gopay,dana',
+        'payment_method' => 'required|in:tunai,qris',
         'nama_pembeli' => 'required|string|max:255',
         'email' => 'nullable|email|max:255',
         'no_telepon' => 'nullable|string|max:20',
