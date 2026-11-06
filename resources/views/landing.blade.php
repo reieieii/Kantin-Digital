@@ -137,6 +137,11 @@
                                     <p class="text-xs text-gray-400">Masuk sebagai</p>
                                     <p class="text-sm font-semibold text-white truncate">{{ Auth::user()->email }}</p>
                                 </div>
+                                <a href="{{ route('profile.show') }}"
+                                    class="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition flex items-center space-x-2">
+                                    <i class="fas fa-user-circle w-4"></i>
+                                    <span>Profil Saya</span>
+                                </a>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit"
@@ -180,6 +185,11 @@
                                 <p class="text-gray-400 text-xs">{{ Auth::user()->email }}</p>
                             </div>
                         </div>
+                        <a href="{{ route('profile.show') }}"
+                            class="flex items-center space-x-2 text-gray-300 hover:text-white font-semibold transition text-sm mb-3">
+                            <i class="fas fa-user-circle"></i>
+                            <span>Profil Saya</span>
+                        </a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit"
@@ -188,7 +198,6 @@
                                 <span>Keluar</span>
                             </button>
                         </form>
-                    @else
                         <a href="{{ route('login') }}" class="block text-yellow-300 hover:text-yellow-400 font-bold transition">Masuk / Login</a>
                     @endauth
                 </div>

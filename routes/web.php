@@ -72,6 +72,12 @@ Route::get('/stands/{stand}', [App\Http\Controllers\StandController::class, 'sho
 Route::middleware('auth')->group(function () {
     Route::get ('/favorit',        [FavoritController::class, 'index'])->name('favorit.index');
     Route::post('/favorit/toggle', [FavoritController::class, 'toggle'])->name('favorit.toggle');
+
+    // ─── Profil ───────────────────────────────────────────────────────────────
+    Route::get   ('/profil',                  [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
+    Route::put   ('/profil/nama',             [\App\Http\Controllers\ProfileController::class, 'updateName'])->name('profile.updateName');
+    Route::put   ('/profil/password',         [\App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
+    Route::delete('/profil/hapus',            [\App\Http\Controllers\ProfileController::class, 'deleteAccount'])->name('profile.delete');
 });
 
 // ─── Penjaga Stand Routes ─────────────────────────────────────────────────────
