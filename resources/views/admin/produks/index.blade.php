@@ -33,7 +33,7 @@
             </select>
         </div>
         <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-xl text-sm font-medium transition">
-            <i class="fas fa-search mr-1"></i>Filter
+            <i class="fas fa-search mr-1"></i>Cari
         </button>
         @if(request()->hasAny(['search','stand_id','kategori']))
             <a href="{{ route('admin.produks.index') }}" class="text-slate-400 hover:text-white text-sm transition px-2">Reset</a>

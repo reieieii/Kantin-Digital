@@ -61,7 +61,7 @@
             </div>
             <button type="submit"
                 class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition flex items-center gap-2">
-                <i class="fas fa-filter"></i> Filter
+                <i class="fas fa-search"></i> Cari
             </button>
             @if(request()->hasAny(['stand_id','dari','sampai']))
                 <a href="{{ route('admin.rekap.index') }}"
