@@ -10,88 +10,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
-        * {
-            font-family: 'Poppins', sans-serif;
-        }
-        
+        body { font-family: 'Poppins', sans-serif; }
         .hero-gradient { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
         .btn-orange-gradient {
             background: linear-gradient(45deg, #f59e0b, #f97316);
             color: white;
             transition: all 0.3s ease;
         }
-        .bg-blue-600 { background-color: #2563eb; }
-        .bg-blue-700 { background-color: #1d4ed8; }
-        .bg-blue-100 { background-color: #dbeafe; }
-        .bg-green-500 { background-color: #10b981; }
-        .bg-green-100 { background-color: #dcfce7; }
-        .bg-yellow-500 { background-color: #eab308; }
-        .bg-yellow-100 { background-color: #fef3c7; }
-        .bg-red-500 { background-color: #ef4444; }
-        .bg-red-100 { background-color: #fef2f2; }
-        .bg-gray-100 { background-color: #f3f4f6; }
-        .bg-gray-200 { background-color: #e5e7eb; }
-        .text-blue-600 { color: #2563eb; }
-        .text-blue-700 { color: #1d4ed8; }
-        .text-green-600 { color: #059669; }
-        .text-green-700 { color: #047857; }
-        .text-yellow-600 { color: #ca8a04; }
-        .text-yellow-700 { color: #a16207; }
-        .text-red-600 { color: #dc2626; }
-        .text-red-700 { color: #b91c1c; }
-        .text-white { color: white; }
-        .text-gray-800 { color: #1f2937; }
-        .text-gray-600 { color: #4b5563; }
-        .text-gray-500 { color: #6b7280; }
-        .bg-white { background-color: white; }
-        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
-        .rounded-lg { border-radius: 0.5rem; }
-        .rounded-full { border-radius: 9999px; }
-        .p-4 { padding: 1rem; }
-        .p-6 { padding: 1.5rem; }
-        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-        .px-4 { padding-left: 1rem; padding-right: 1rem; }
-        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
-        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-        .mb-4 { margin-bottom: 1rem; }
-        .mb-6 { margin-bottom: 1.5rem; }
-        .mb-8 { margin-bottom: 2rem; }
-        .text-sm { font-size: 0.875rem; font-weight: 400; }
-        .text-base { font-size: 1rem; font-weight: 500; }
-        .text-lg { font-size: 1.125rem; font-weight: 500; }
-        .text-xl { font-size: 1.25rem; font-weight: 600; }
-        .text-2xl { font-size: 1.5rem; font-weight: 700; }
-        .text-3xl { font-size: 1.875rem; font-weight: 700; }
-        .font-semibold { font-weight: 600; }
-        .font-bold { font-weight: 700; }
-        .hover:bg-blue-700:hover { background-color: #1d4ed8; }
-        .transition { transition: all 0.3s ease; }
-        .cursor-pointer { cursor: pointer; }
-        .w-full { width: 100%; }
-        .w-20 { width: 5rem; }
-        .h-20 { height: 5rem; }
-        .object-cover { object-fit: cover; }
-        .rounded-lg { border-radius: 0.5rem; }
-        .overflow-hidden { overflow: hidden; }
-        .relative { position: relative; }
-        .absolute { position: absolute; }
-        .top-2 { top: 0.5rem; }
-        .right-2 { right: 0.5rem; }
-        .flex { display: flex; }
-        .items-center { align-items: center; }
-        .justify-between { justify-content: space-between; }
-        .space-x-4 > * + * { margin-left: 1rem; }
-        .space-y-4 > * + * { margin-top: 1rem; }
-        .space-y-6 > * + * { margin-top: 1.5rem; }
-        .grid { display: grid; }
-        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        .gap-6 { gap: 1.5rem; }
-        .border { border: 1px solid; }
-        .border-gray-200 { border-color: #e5e7eb; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        .badge-pending    { background:#fef3c7; color:#92400e; }
+        .badge-diproses   { background:#dbeafe; color:#1e40af; }
+        .badge-selesai    { background:#d1fae5; color:#065f46; }
+        .badge-dibatalkan { background:#fee2e2; color:#991b1b; }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -115,7 +44,8 @@
                     <a href="{{ url('/stands') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Daftar Stand</a>
                     <a href="{{ url('/cart') }}" class="relative text-white/80 hover:text-white transition-all p-2 bg-white/10 rounded-xl border border-white/10 group">
                         <i class="fas fa-shopping-cart text-lg"></i>
-                        <span id="cart-count" class="absolute -top-1 -right-1 bg-gradient-to-br from-orange-400 to-orange-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span>
+                        @php $cartCount = count(session('cart', [])); @endphp
+                        <span class="absolute -top-1 -right-1 bg-gradient-to-br from-orange-400 to-orange-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">{{ $cartCount }}</span>
                     </a>
                     <a href="{{ url('/pembelians') }}" class="btn-orange-gradient text-sm font-black text-white px-6 py-2.5 rounded-xl hover:scale-105 transition-all shadow-md hover:shadow-lg shadow-orange-900/20 text-center">
                         <i class="fas fa-receipt mr-2"></i>Pesanan Saya
