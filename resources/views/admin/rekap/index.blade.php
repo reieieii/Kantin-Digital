@@ -82,9 +82,10 @@
                 <h3 class="font-bold text-red-300 text-sm">Reset Rekap Harian & Pendapatan Stand</h3>
                 <p class="text-slate-400 text-xs mt-1">
                     Gunakan fitur ini saat <strong class="text-white">pergantian penjaga</strong> setiap minggunya.
-                    Reset akan <strong class="text-red-300">menghapus semua catatan rekap harian</strong> dan
-                    <strong class="text-red-300">mengosongkan total pendapatan</strong> stand yang dipilih, sehingga
-                    penjaga baru bisa mulai dari nol.
+                    Reset akan <strong class="text-red-300">menghapus semua pesanan (dashboard & menu pesanan)</strong>,
+                    <strong class="text-red-300">catatan rekap harian</strong>, dan
+                    <strong class="text-red-300">total pendapatan</strong> stand yang dipilih —
+                    semua mulai dari nol untuk penjaga baru.
                 </p>
             </div>
         </div>
@@ -244,7 +245,10 @@
 
         const ok = confirm(
             '⚠️ PERHATIAN!\n\n' +
-            'Kamu akan mereset rekap harian dan total pendapatan ' + target + '.\n\n' +
+            'Kamu akan mereset SEMUA DATA stand ' + target + ':\n' +
+            '• Seluruh pesanan (dashboard & menu pesanan)\n' +
+            '• Semua catatan rekap harian\n' +
+            '• Total pendapatan → Rp 0\n\n' +
             'Tindakan ini TIDAK BISA DIBATALKAN.\n\n' +
             'Lanjutkan?'
         );

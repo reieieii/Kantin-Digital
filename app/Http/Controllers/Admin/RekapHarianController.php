@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Pembelian;
 use App\Models\RekapHarian;
 use App\Models\Stand;
 use Illuminate\Http\Request;
@@ -49,14 +50,16 @@ class RekapHarianController extends Controller
     }
 
     /**
-     * Reset rekap harian + total_pendapatan stand.
-     * stand_id = tertentu, kosong = semua stand.
+     * Reset TOTAL untuk satu atau semua stand:
+     * - Hapus semua pesanan (pembelians + detail_pembelians) milik stand
+     * - Hapus semua rekap harian stand
+     * - Reset total_pendapatan stand ke 0
      */
     public function reset(Request $request)
     {
         $request->validate([
-            'stand_id'    => 'nullable|exists:stands,id',
-            'konfirmasi'  => 'required|in:RESET',
+            'stand_id'   => 'nullable|exists:stands,id',
+            'konfirmasi' => 'required|in:RESET',
         ], [
             'konfirmasi.required' => 'Ketik "RESET" untuk konfirmasi.',
             'konfirmasi.in'       => 'Konfirmasi salah. Ketik persis: RESET',
@@ -64,16 +67,35 @@ class RekapHarianController extends Controller
 
         DB::transaction(function () use ($request) {
             if ($request->filled('stand_id')) {
-                // Reset satu stand
-                RekapHarian::where('stand_id', $request->stand_id)->delete();
-                Stand::where('id', $request->stand_id)->update(['total_pendapatan' => 0]);
-                $nama = Stand::find($request->stand_id)?->nama_stand ?? 'Stand';
-                session()->flash('success', "Rekap harian & pendapatan \"{$nama}\" berhasil direset.");
+                $standId = $request->stand_id;
+
+                // Ambil semua pembelian_id yang punya item dari stand ini
+                $pesananIds = DB::table('detail_pembelians')
+                    ->join('produks', 'detail_pembelians.produk_id', '=', 'produks.id')
+                    ->where('produks.stand_id', $standId)
+                    ->pluck('detail_pembelians.pembelian_id')
+                    ->unique();
+
+                // Hapus detail_pembelians lalu pembelians
+                DB::table('detail_pembelians')->whereIn('pembelian_id', $pesananIds)->delete();
+                Pembelian::whereIn('id', $pesananIds)->delete();
+
+                // Hapus rekap harian stand ini
+                RekapHarian::where('stand_id', $standId)->delete();
+
+                // Reset pendapatan stand
+                Stand::where('id', $standId)->update(['total_pendapatan' => 0]);
+
+                $nama = Stand::find($standId)?->nama_stand ?? 'Stand';
+                session()->flash('success', "✅ Stand \"{$nama}\" berhasil direset sepenuhnya: pesanan, rekap, dan pendapatan dihapus.");
             } else {
-                // Reset semua stand — pakai delete() bukan truncate() agar aman dalam transaction
+                // Reset SEMUA stand
+                DB::table('detail_pembelians')->delete();
+                Pembelian::query()->delete();
                 RekapHarian::query()->delete();
                 Stand::query()->update(['total_pendapatan' => 0]);
-                session()->flash('success', 'Semua rekap harian & pendapatan seluruh stand berhasil direset.');
+
+                session()->flash('success', '✅ Semua stand berhasil direset sepenuhnya: seluruh pesanan, rekap, dan pendapatan dihapus.');
             }
         });
 
