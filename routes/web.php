@@ -68,7 +68,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     })->name('kalkulator');
 
     // Rekap Harian (read-only)
-    Route::get('rekap', [\App\Http\Controllers\Admin\RekapHarianController::class, 'index'])->name('rekap.index');
+    Route::get ('rekap',       [\App\Http\Controllers\Admin\RekapHarianController::class, 'index'])->name('rekap.index');
+    Route::post('rekap/reset', [\App\Http\Controllers\Admin\RekapHarianController::class, 'reset'])->name('rekap.reset');
 });
 
 
