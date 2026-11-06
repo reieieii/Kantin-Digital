@@ -78,7 +78,6 @@
             <h3 class="font-semibold text-white flex items-center gap-2">
                 <i class="fas fa-clipboard-list text-orange-400 text-sm"></i>
                 Catatan Rekap Harian
-                <span class="text-slate-500 text-xs font-normal">(hanya baca)</span>
             </h3>
             <span class="text-slate-500 text-xs">{{ $rekaps->total() }} rekap ditemukan</span>
         </div>
