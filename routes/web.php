@@ -61,6 +61,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get   ('pesanans/{pesanan}',          [AdminPesananController::class, 'show'])->name('pesanans.show');
     Route::patch ('pesanans/{pesanan}/status',   [AdminPesananController::class, 'updateStatus'])->name('pesanans.updateStatus');
     Route::delete('pesanans/{pesanan}',          [AdminPesananController::class, 'destroy'])->name('pesanans.destroy');
+
+    // Kalkulator
+    Route::get('kalkulator', function () {
+        return view('admin.kalkulator');
+    })->name('kalkulator');
+
+    // Rekap Harian (read-only)
+    Route::get('rekap', [\App\Http\Controllers\Admin\RekapHarianController::class, 'index'])->name('rekap.index');
 });
 
 
