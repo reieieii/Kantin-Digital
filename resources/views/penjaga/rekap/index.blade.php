@@ -327,22 +327,26 @@
             labelHariTgl.textContent = data.hari + ', ' + data.tanggal_display;
 
             // Isi display dengan format ribuan, hidden dengan angka murni
+            // Jika nilainya 0 dan bukan rekap yang sudah ada → biarkan kosong (tidak tampilkan "0")
             const pend = data.total_pendapatan || 0;
-            dispPendapatan.value   = toRibuan(pend);
+            dispPendapatan.value   = pend > 0 ? toRibuan(pend) : '';
             hidPendapatan.value    = pend;
 
-            dispTotalPesanan.value = data.total_pesanan || 0;
-            hidTotalPesanan.value  = data.total_pesanan || 0;
+            const tot = data.total_pesanan || 0;
+            dispTotalPesanan.value = tot > 0 ? String(tot) : '';
+            hidTotalPesanan.value  = tot;
 
-            dispSelesai.value  = data.pesanan_selesai || 0;
-            hidSelesai.value   = data.pesanan_selesai || 0;
+            const sel = data.pesanan_selesai || 0;
+            dispSelesai.value  = sel > 0 ? String(sel) : '';
+            hidSelesai.value   = sel;
 
-            dispDibatalkan.value = data.pesanan_dibatalkan || 0;
-            hidDibatalkan.value  = data.pesanan_dibatalkan || 0;
+            const batal = data.pesanan_dibatalkan || 0;
+            dispDibatalkan.value = batal > 0 ? String(batal) : '';
+            hidDibatalkan.value  = batal;
 
             if (data.sudah_direkap) {
                 const knt = data.total_keuntungan || 0;
-                dispKeuntungan.value = toRibuan(knt);
+                dispKeuntungan.value = knt > 0 ? toRibuan(knt) : '';
                 hidKeuntungan.value  = knt;
                 fCatatan.value       = data.catatan || '';
                 badgeSudah.classList.remove('hidden');
