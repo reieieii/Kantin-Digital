@@ -92,7 +92,7 @@
     {{-- ── PESANAN TERBARU ──────────────────────────────────────────────────── --}}
     <div class="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden">
         <div class="flex items-center justify-between px-5 py-4 border-b border-slate-700">
-            <h3 class="font-semibold text-white">Pesanan Terbaru</h3>
+            <h3 class="font-semibold text-white">Pesanan</h3>
             <a href="{{ route('admin.pesanans.index') }}"
                 class="text-xs text-orange-400 hover:text-orange-300 transition">Lihat semua →</a>
         </div>
@@ -131,7 +131,7 @@
     {{-- ── STAND AKTIF ─────────────────────────────────────────────────────── --}}
     <div class="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden">
         <div class="flex items-center justify-between px-5 py-4 border-b border-slate-700">
-            <h3 class="font-semibold text-white">Stand Aktif</h3>
+            <h3 class="font-semibold text-white">Stand</h3>
             <a href="{{ route('admin.stands.index') }}"
                 class="text-xs text-orange-400 hover:text-orange-300 transition">Kelola →</a>
         </div>
