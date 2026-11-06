@@ -130,12 +130,13 @@ Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add')
 Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
 Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
 
-// Pembelian - Implementasi Lengkap dengan Metode Pembayaran
-Route::get('/pembelians', function () {
+// Pesanan Saya — hanya pesanan milik user yang login
+Route::middleware('auth')->get('/pembelians', function () {
     $pembelians = \App\Models\Pembelian::with('detailPembelians.produk')
-        ->orderBy('created_at', 'desc')
+        ->where('user_id', auth()->id())
+        ->orderByDesc('created_at')
         ->paginate(10);
-    
+
     return view('pembelians.index', compact('pembelians'));
 })->name('pembelians.index');
 
@@ -208,15 +209,16 @@ Route::post('/pembelians/process-payment', function (Illuminate\Http\Request $re
     }
 
     $pembelian = \App\Models\Pembelian::create([
-        'kode_pembelian' => \App\Models\Pembelian::generateKodePembelian(),
-        'nama_pembeli' => $request->nama_pembeli,
-        'email' => $request->email,
-        'no_telepon' => $request->no_telepon,
-        'alamat' => $request->alamat,
-        'total_harga' => $totalHarga,
-        'status' => 'pending',
-        'catatan' => $request->catatan,
-        'metode_pembayaran' => $request->payment_method
+        'user_id'          => auth()->id(), // null jika tidak login (guest)
+        'kode_pembelian'   => \App\Models\Pembelian::generateKodePembelian(),
+        'nama_pembeli'     => $request->nama_pembeli,
+        'email'            => $request->email,
+        'no_telepon'       => $request->no_telepon,
+        'alamat'           => $request->alamat,
+        'total_harga'      => $totalHarga,
+        'status'           => 'pending',
+        'catatan'          => $request->catatan,
+        'metode_pembayaran'=> $request->payment_method
     ]);
 
     foreach ($cartItems as $item) {

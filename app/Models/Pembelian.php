@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Pembelian extends Model
 {
     protected $fillable = [
+        'user_id',
         'kode_pembelian',
         'nama_pembeli',
         'email',
@@ -26,6 +27,11 @@ class Pembelian extends Model
     public function detailPembelians(): HasMany
     {
         return $this->hasMany(DetailPembelian::class);
+    }
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(\App\Models\User::class);
     }
 
     public static function generateKodePembelian(): string
