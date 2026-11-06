@@ -101,6 +101,12 @@ Route::prefix('penjaga')->name('penjaga.')->middleware(['auth', 'penjaga'])->gro
     Route::get('kalkulator', function () {
         return view('penjaga.kalkulator');
     })->name('kalkulator');
+
+    // Rekap Harian
+    Route::get ('rekap',          [\App\Http\Controllers\Penjaga\RekapHarianController::class, 'index'])->name('rekap.index');
+    Route::get ('rekap/live',     [\App\Http\Controllers\Penjaga\RekapHarianController::class, 'liveData'])->name('rekap.live');
+    Route::post('rekap',          [\App\Http\Controllers\Penjaga\RekapHarianController::class, 'store'])->name('rekap.store');
+    Route::delete('rekap/{rekap}',[\App\Http\Controllers\Penjaga\RekapHarianController::class, 'destroy'])->name('rekap.destroy');
 });
 
 // Cart
