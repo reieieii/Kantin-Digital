@@ -59,7 +59,7 @@
                     <label class="block text-sm font-medium text-slate-300 mb-1.5">Kategori <span class="text-red-400">*</span></label>
                     <select name="kategori" required
                         class="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500">
-                        @foreach(['Makanan Berat','Makanan Ringan','Minuman','Snack'] as $k)
+                        @foreach(['Makanan','Minuman','Snack/Cemilan'] as $k)
                             <option value="{{ $k }}" {{ old('kategori', $produk->kategori) == $k ? 'selected' : '' }}>{{ $k }}</option>
                         @endforeach
                     </select>

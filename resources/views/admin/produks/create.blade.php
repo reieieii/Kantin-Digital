@@ -64,10 +64,9 @@
                     <select name="kategori" required
                         class="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500">
                         <option value="">Pilih</option>
-                        <option value="Makanan Berat" {{ old('kategori') == 'Makanan Berat' ? 'selected' : '' }}>Makanan Berat</option>
-                        <option value="Makanan Ringan" {{ old('kategori') == 'Makanan Ringan' ? 'selected' : '' }}>Makanan Ringan</option>
+                        <option value="Makanan" {{ old('kategori') == 'Makanan' ? 'selected' : '' }}>Makanan</option>
                         <option value="Minuman" {{ old('kategori') == 'Minuman' ? 'selected' : '' }}>Minuman</option>
-                        <option value="Snack" {{ old('kategori') == 'Snack' ? 'selected' : '' }}>Snack</option>
+                        <option value="Snack/Cemilan" {{ old('kategori') == 'Snack/Cemilan' ? 'selected' : '' }}>Snack / Cemilan</option>
                     </select>
                 </div>
             </div>

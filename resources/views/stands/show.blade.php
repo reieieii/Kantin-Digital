@@ -709,7 +709,7 @@
                             <option value="all">Semua Kategori</option>
                             <option value="Makanan">Makanan</option>
                             <option value="Minuman">Minuman</option>
-                            <option value="Snack">Cemilan</option>
+                            <option value="Snack/Cemilan">Snack / Cemilan</option>
                         </select>
                         <i class="fas fa-chevron-down absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[10px]"></i>
                     </div>
