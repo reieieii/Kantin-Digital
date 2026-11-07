@@ -225,9 +225,16 @@
                         Solusi modern untuk kebutuhan Anda. Pesan makanan favorit dengan mudah, cepat, dan aman melalui platform digital terpercaya.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="{{ route('stands.index') }}" class="btn-primary text-white px-8 py-4 rounded-full font-semibold text-center">
-                            <i class="fa-solid fa-cart-shopping mr-2"></i>Pesan Sekarang
-                        </a>
+                        @auth
+                            <a href="{{ route('stands.index') }}" class="btn-primary text-white px-8 py-4 rounded-full font-semibold text-center">
+                                <i class="fa-solid fa-cart-shopping mr-2"></i>Pesan Sekarang
+                            </a>
+                        @else
+                            <a href="#" onclick="showLoginAlert(); return false;"
+                                class="btn-primary text-white px-8 py-4 rounded-full font-semibold text-center cursor-pointer">
+                                <i class="fa-solid fa-cart-shopping mr-2"></i>Pesan Sekarang
+                            </a>
+                        @endauth
                         <a href="{{ route('favorit.index') }}" class="btn-secondary text-white px-8 py-4 rounded-full font-semibold">
                             <i class="fas fa-heart mr-2"></i>Menu Favorit
                         </a>
@@ -382,8 +389,16 @@
                 Bergabunglah dengan ribuan siswa yang telah menikmati kemudahan berbelanja di Kantin Digital SMKN 20 Jakarta.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="{{ route('stands.index') }}" class="btn-primary text-white px-8 py-4 rounded-full font-semibold text-center">
-                    <i class="fa-solid fa-cart-shopping mr-2"></i>Mulai Belanja Sekarang
+                @auth
+                    <a href="{{ route('stands.index') }}" class="btn-primary text-white px-8 py-4 rounded-full font-semibold text-center">
+                        <i class="fa-solid fa-cart-shopping mr-2"></i>Mulai Belanja Sekarang
+                    </a>
+                @else
+                    <a href="#" onclick="showLoginAlert(); return false;"
+                        class="btn-primary text-white px-8 py-4 rounded-full font-semibold text-center cursor-pointer">
+                        <i class="fa-solid fa-cart-shopping mr-2"></i>Mulai Belanja Sekarang
+                    </a>
+                @endauth
                 </a>
             </div>
         </div>
@@ -535,6 +550,35 @@
             el.style.transition = 'all 0.8s ease-out';
             observer.observe(el);
         });
+    </script>
+
+    {{-- Toast notif login --}}
+    <div id="loginToast"
+        class="hidden fixed top-6 left-1/2 -translate-x-1/2 z-[9999] bg-white border border-orange-200 shadow-xl rounded-2xl px-6 py-4 flex items-center gap-3 min-w-[320px] max-w-sm">
+        <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-lock text-orange-500"></i>
+        </div>
+        <div class="flex-1">
+            <p class="font-bold text-gray-800 text-sm">Login terlebih dahulu</p>
+            <p class="text-gray-500 text-xs mt-0.5">Login untuk mulai belanja di Kantin Digital</p>
+        </div>
+        <a href="{{ route('login') }}"
+            class="bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold px-4 py-2 rounded-xl transition whitespace-nowrap">
+            Login
+        </a>
+    </div>
+
+    <script>
+    function showLoginAlert() {
+        const toast = document.getElementById('loginToast');
+        toast.classList.remove('hidden');
+        toast.classList.add('flex');
+        clearTimeout(window._loginToastTimer);
+        window._loginToastTimer = setTimeout(() => {
+            toast.classList.add('hidden');
+            toast.classList.remove('flex');
+        }, 4000);
+    }
     </script>
 </body>
 </html>

@@ -89,6 +89,11 @@
         }
 
         function addToCart(productId) {
+            @guest
+            showNotifLogin();
+            return;
+            @endguest
+
             const quantity = quantities[productId] || 1;
             
             $.ajax({
@@ -161,6 +166,11 @@
         };
         
         function openPaymentModal(element) {
+            @guest
+            showNotifLogin();
+            return;
+            @endguest
+
             if (!element) return;
             
             const productId = element.getAttribute('data-id');
@@ -976,5 +986,35 @@
             <p>&copy; 2024 Kantin Digital SMK Negeri 1 Jakarta. All rights reserved.</p>
         </div>
     </footer>
+
+    {{-- Toast notif login --}}
+    @guest
+    <div id="notifLogin"
+        class="hidden fixed top-6 left-1/2 -translate-x-1/2 z-[9999] bg-white border border-orange-200 shadow-xl rounded-2xl px-6 py-4 flex items-center gap-3 min-w-[300px] max-w-sm">
+        <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-lock text-orange-500"></i>
+        </div>
+        <div class="flex-1">
+            <p class="font-bold text-gray-800 text-sm">Login terlebih dahulu</p>
+            <p class="text-gray-500 text-xs mt-0.5">untuk mulai belanja di Kantin Digital</p>
+        </div>
+        <a href="{{ route('login') }}"
+            class="bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold px-4 py-2 rounded-xl transition whitespace-nowrap">
+            Login
+        </a>
+    </div>
+    <script>
+    function showNotifLogin() {
+        const el = document.getElementById('notifLogin');
+        el.classList.remove('hidden');
+        el.classList.add('flex');
+        clearTimeout(window._loginTimer);
+        window._loginTimer = setTimeout(() => {
+            el.classList.add('hidden');
+            el.classList.remove('flex');
+        }, 4000);
+    }
+    </script>
+    @endguest
 </body>
 </html>

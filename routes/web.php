@@ -124,11 +124,13 @@ Route::prefix('penjaga')->name('penjaga.')->middleware(['auth', 'penjaga'])->gro
     Route::delete('rekap/{rekap}',[\App\Http\Controllers\Penjaga\RekapHarianController::class, 'destroy'])->name('rekap.destroy');
 });
 
-// Cart
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
-Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
-Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
+// Cart — butuh login
+Route::middleware('auth')->group(function () {
+    Route::get ('/cart',         [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add',    [CartController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
+    Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
+});
 
 // Pesanan Saya — hanya pesanan milik user yang login
 Route::middleware('auth')->get('/pembelians', function () {
@@ -140,7 +142,7 @@ Route::middleware('auth')->get('/pembelians', function () {
     return view('pembelians.index', compact('pembelians'));
 })->name('pembelians.index');
 
-Route::get('/pembelians/payment', function () {
+Route::middleware('auth')->get('/pembelians/payment', function () {
     $cart = session('cart', []);
     
     // Jika keranjang kosong, redirect ke stands untuk memilih produk
@@ -172,7 +174,7 @@ Route::get('/pembelians/payment', function () {
     return view('pembelians.payment', compact('cartItems', 'totalHarga'));
 })->name('pembelians.payment');
 
-Route::post('/pembelians/process-payment', function (Illuminate\Http\Request $request) {
+Route::middleware('auth')->post('/pembelians/process-payment', function (Illuminate\Http\Request $request) {
     $request->validate([
         'payment_method' => 'required|in:tunai,qris',
         'nama_pembeli' => 'required|string|max:255',
