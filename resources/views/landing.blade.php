@@ -157,9 +157,15 @@
                         <a href="{{ route('login') }}" class="text-white hover:text-yellow-300 font-semibold hidden md:block transition mr-2">Masuk</a>
                     @endauth
 
-                    <a href="{{ route('stands.index') }}" class="btn-primary text-white px-6 py-2.5 rounded-full font-semibold text-sm shadow-md">
-                        <i class="fa-solid fa-store mr-2"></i><span class="hidden sm:inline">Mulai Belanja</span><span class="sm:hidden">Belanja</span>
-                    </a>
+                    @auth
+                        <a href="{{ route('stands.index') }}" class="btn-primary text-white px-6 py-2.5 rounded-full font-semibold text-sm shadow-md">
+                            <i class="fa-solid fa-store mr-2"></i><span class="hidden sm:inline">Mulai Belanja</span><span class="sm:hidden">Belanja</span>
+                        </a>
+                    @else
+                        <a href="#" onclick="showLoginAlert(); return false;" class="btn-primary text-white px-6 py-2.5 rounded-full font-semibold text-sm shadow-md cursor-pointer">
+                            <i class="fa-solid fa-store mr-2"></i><span class="hidden sm:inline">Mulai Belanja</span><span class="sm:hidden">Belanja</span>
+                        </a>
+                    @endauth
                     <button class="md:hidden text-white" onclick="toggleMobileMenu()">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
