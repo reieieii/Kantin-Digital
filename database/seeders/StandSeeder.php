@@ -13,6 +13,7 @@ class StandSeeder extends Seeder
      */
     public function run(): void
     {
+        // Gunakan updateOrCreate agar tidak duplikat saat seeder dijalankan ulang
         $stands = [
             [
                 'nama_stand' => 'Stand Rekayasa Perangkat Lunak',
@@ -21,8 +22,6 @@ class StandSeeder extends Seeder
                 'pemilik' => 'Pak Haji',
                 'no_telepon' => '0812-1111-2222',
                 'status_buka' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'nama_stand' => 'Stand Bisnis Digital',
