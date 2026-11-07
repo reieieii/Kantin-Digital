@@ -38,6 +38,18 @@ class PesananController extends Controller
                   ->orWhere('nama_pembeli', 'like', '%' . $request->search . '%');
             });
         }
+        if ($request->filled('metode')) {
+            $query->where('metode_pembayaran', $request->metode);
+        }
+        if ($request->filled('kategori')) {
+            $katIds = \DB::table('detail_pembelians')
+                ->join('produks', 'detail_pembelians.produk_id', '=', 'produks.id')
+                ->where('produks.stand_id', $stand->id)
+                ->where('produks.kategori', $request->kategori)
+                ->pluck('detail_pembelians.pembelian_id')
+                ->unique();
+            $query->whereIn('id', $katIds);
+        }
 
         $pesanans = $query->orderByDesc('created_at')->paginate(15)->withQueryString();
 
