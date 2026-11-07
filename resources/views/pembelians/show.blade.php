@@ -26,7 +26,7 @@
 <body class="bg-gray-100">
     <!-- Header -->
     <header class="hero-gradient text-white shadow-lg">
-        <div class="container py-4">
+        <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
                     <a href="{{ route('landing') }}" class="flex items-center space-x-3 group">
