@@ -6,7 +6,11 @@
     <title>Daftar Stand - Kantin Digital</title>
     <script src="https://cdn.tailwindcss.com/3.3.0"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
+        * { font-family: 'Poppins', sans-serif; }
         .hero-gradient { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
         .btn-orange-gradient {
             background: linear-gradient(45deg, #f59e0b, #f97316);
@@ -120,8 +124,13 @@
 
     <main class="container mx-auto px-6 py-12">
         <div class="mb-12">
-            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-3 tracking-tight">Daftar Stand Kantin</h2>
-            <p class="text-slate-500 text-lg font-medium">Pilih stand favoritmu dan nikmati hidangan lezat hari ini</p>
+            <h2 class="text-4xl md:text-5xl font-black mb-3 tracking-tight leading-tight"
+                style="font-family:'Poppins',sans-serif; background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">
+                Daftar Stand Kantin
+            </h2>
+            <p class="text-slate-500 text-lg font-medium" style="font-family:'Poppins',sans-serif;">
+                Pilih stand favoritmu dan nikmati hidangan lezat hari ini
+            </p>
         </div>
 
         @if($stands->count() > 0)
