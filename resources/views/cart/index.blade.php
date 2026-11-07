@@ -10,19 +10,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
-        * {
-            font-family: 'Poppins', sans-serif;
-        }
-        
+        * { font-family: 'Poppins', sans-serif; }
         .hero-gradient { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
         .btn-primary {
             background: linear-gradient(45deg, #f59e0b, #f97316);
             color: white;
             transition: all 0.3s ease;
         }
-        
         .btn-orange-gradient {
             background: linear-gradient(45deg, #f59e0b, #f97316);
             color: white;
@@ -31,79 +25,13 @@
         .btn-primary:hover {
             transform: scale(1.05);
             box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
-            color: white;
         }
-        
-        .bg-blue-600 { background-color: #2563eb; }
-        .bg-blue-700 { background-color: #1d4ed8; }
-        .bg-blue-100 { background-color: #dbeafe; }
-        .text-blue-600 { color: #2563eb; }
-        .text-blue-700 { color: #1d4ed8; }
-        .text-white { color: white; }
-        .text-gray-800 { color: #1f2937; }
-        .text-gray-600 { color: #4b5563; }
-        .text-gray-700 { color: #374151; }
-        .text-gray-500 { color: #6b7280; }
-        .bg-white { background-color: white; }
-        .bg-gray-100 { background-color: #f3f4f6; }
-        .bg-gray-200 { background-color: #e5e7eb; }
-        .bg-red-500 { background-color: #ef4444; }
-        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
-        .rounded-lg { border-radius: 0.5rem; }
-        .rounded-full { border-radius: 9999px; }
-        .p-4 { padding: 1rem; }
-        .p-6 { padding: 1.5rem; }
-        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-        .px-4 { padding-left: 1rem; padding-right: 1rem; }
-        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
-        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-        .mb-4 { margin-bottom: 1rem; }
-        .mb-6 { margin-bottom: 1.5rem; }
-        .mb-8 { margin-bottom: 2rem; }
-        .text-sm { font-size: 0.875rem; font-weight: 400; }
-        .text-base { font-size: 1rem; font-weight: 500; }
-        .text-lg { font-size: 1.125rem; font-weight: 500; }
-        .text-xl { font-size: 1.25rem; font-weight: 600; }
-        .text-2xl { font-size: 1.5rem; font-weight: 700; }
-        .font-bold { font-weight: 700; }
-        .font-semibold { font-weight: 600; }
-        .font-medium { font-weight: 500; }
-        .hover:bg-blue-700:hover { background-color: #1d4ed8; }
-        .hover:bg-gray-300:hover { background-color: #d1d5db; }
-        .hover:text-red-500:hover { color: #ef4444; }
-        .transition { transition: all 0.3s ease; }
-        .cursor-pointer { cursor: pointer; }
-        .w-full { width: 100%; }
-        .w-8 { width: 2rem; }
-        .w-12 { width: 3rem; }
-        .h-20 { height: 5rem; }
-        .object-cover { object-fit: cover; }
-        .rounded-lg { border-radius: 0.5rem; }
-        .overflow-hidden { overflow: hidden; }
-        .relative { position: relative; }
-        .absolute { position: absolute; }
-        .top-2 { top: 0.5rem; }
-        .right-2 { right: 0.5rem; }
-        .flex { display: flex; }
-        .items-center { align-items: center; }
-        .justify-between { justify-content: space-between; }
-        .space-x-4 > * + * { margin-left: 1rem; }
-        .space-y-4 > * + * { margin-top: 1rem; }
-        .space-x-2 > * + * { margin-left: 0.5rem; }
-        .grid { display: grid; }
-        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-        .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-        .gap-6 { gap: 1.5rem; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
-        .sticky { position: sticky; top: 4rem; }
     </style>
 </head>
 <body class="bg-gray-50">
     <!-- Header -->
     <header class="hero-gradient text-white shadow-lg">
-        <div class="container py-4">
+        <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
                     <a href="{{ route('landing') }}" class="flex items-center space-x-3 group">
@@ -119,13 +47,10 @@
                 <nav class="hidden md:flex items-center space-x-8">
                     <a href="{{ url('/') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Beranda</a>
                     <a href="{{ url('/stands') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Daftar Stand</a>
-                    <a href="{{ url('/cart') }}" class="relative text-white/80 hover:text-white transition-all p-2 group" style="background:rgba(255,255,255,0.1); border-radius:0.75rem; border:1px solid rgba(255,255,255,0.1); display:inline-flex; align-items:center; justify-content:center; width:2.5rem; height:2.5rem;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="9" cy="21" r="1"></circle>
-                            <circle cx="20" cy="21" r="1"></circle>
-                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                        </svg>
-                        <span id="cart-count" class="absolute -top-1 -right-1 text-white font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm" style="background:linear-gradient(135deg,#f97316,#ea580c); font-size:10px;">0</span>
+                    <a href="{{ url('/cart') }}" class="relative text-white/80 hover:text-white transition-all p-2 bg-white/10 rounded-xl border border-white/10 group">
+                        <i class="fas fa-shopping-cart text-lg"></i>
+                        @php $cartCount = count(session('cart', [])); @endphp
+                        <span class="absolute -top-1 -right-1 bg-gradient-to-br from-orange-400 to-orange-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">{{ $cartCount }}</span>
                     </a>
                     <a href="{{ url('/pembelians') }}" class="btn-orange-gradient text-sm font-black text-white px-6 py-2.5 rounded-xl hover:scale-105 transition-all shadow-md hover:shadow-lg shadow-orange-900/20 text-center">
                         <i class="fas fa-receipt mr-2"></i>Pesanan Saya

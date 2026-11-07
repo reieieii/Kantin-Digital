@@ -217,7 +217,7 @@
         <div class="container mx-auto px-6 relative z-10">
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div class="slide-in">
-                    <h1 class="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                    <h1 class="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
                         Kantin Digital<br>
                         <span class="text-yellow-300">SMKN 20 Jakarta</span>
                     </h1>
@@ -234,18 +234,18 @@
                     </div>
                     
                     <!-- Stats -->
-                    <div class="grid grid-cols-3 gap-6 mt-12">
+                    <div class="grid grid-cols-3 gap-6 mt-8">
                         <div class="text-center">
-                            <div class="text-3xl font-bold text-yellow-300">50+</div>
-                            <div class="text-white/80">Menu Makanan</div>
+                            <div class="text-xl font-bold text-yellow-300">50+</div>
+                            <div class="text-white/80 text-sm">Menu Makanan</div>
                         </div>
                         <div class="text-center">
-                            <div class="text-3xl font-bold text-yellow-300">8+</div>
-                            <div class="text-white/80">Stand Kuliner</div>
+                            <div class="text-xl font-bold text-yellow-300">8+</div>
+                            <div class="text-white/80 text-sm">Stand Kuliner</div>
                         </div>
                         <div class="text-center">
-                            <div class="text-3xl font-bold text-yellow-300">1000+</div>
-                            <div class="text-white/80">Pelanggan Puas</div>
+                            <div class="text-xl font-bold text-yellow-300">1000+</div>
+                            <div class="text-white/80 text-sm">Pelanggan Puas</div>
                         </div>
                     </div>
                 </div>
@@ -289,39 +289,39 @@
     <section id="layanan" class="py-20 bg-gray-50">
         <div class="container mx-auto px-6">
             <div class="text-center mb-16 slide-in">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">Mengapa Memilih Kami?</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Mengapa Memilih Kami?</h2>
+                <p class="text-base text-gray-600 max-w-3xl mx-auto">
                     Platform kantin digital yang dirancang khusus untuk memenuhi kebutuhan Kantin Anda dengan kemudahan dan kenyamanan maksimal.
                 </p>
             </div>
             
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="feature-card rounded-2xl p-8 text-center slide-in">
-                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-mobile-alt text-white text-2xl"></i>
+                <div class="feature-card rounded-2xl p-6 text-center slide-in">
+                    <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-mobile-alt text-white text-lg"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Pemesanan Mudah</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3">Pemesanan Mudah</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
                         Aplikasi user-friendly yang memudahkan Anda memesan makanan favorit hanya dengan beberapa klik.
                     </p>
                 </div>
                 
-                <div class="feature-card rounded-2xl p-8 text-center slide-in" style="animation-delay: 0.2s;">
-                    <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-bolt text-white text-2xl"></i>
+                <div class="feature-card rounded-2xl p-6 text-center slide-in" style="animation-delay: 0.2s;">
+                    <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-bolt text-white text-lg"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Pelayanan Cepat</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3">Pelayanan Cepat</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
                         Pesanan Anda diproses secara cepat dan siap diambil dalam waktu singkat tanpa antri lama.
                     </p>
                 </div>
                 
-                <div class="feature-card rounded-2xl p-8 text-center slide-in" style="animation-delay: 0.4s;">
-                    <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-shield-alt text-white text-2xl"></i>
+                <div class="feature-card rounded-2xl p-6 text-center slide-in" style="animation-delay: 0.4s;">
+                    <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shield-alt text-white text-lg"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Pembayaran Aman</h3>
-                    <p class="text-gray-600 leading-relaxed">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3">Pembayaran Aman</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
                         Berbagai metode pembayaran yang aman dan terpercaya untuk kenyamanan transaksi Anda.
                     </p>
                 </div>
@@ -334,11 +334,11 @@
         <div class="container mx-auto px-6">
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div>
-                    <h2 class="text-4xl font-bold text-gray-800 mb-6">Tentang Kantin Digital</h2>
-                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Tentang Kantin Digital</h2>
+                    <p class="text-base text-gray-600 mb-6 leading-relaxed">
                         Kantin Digital SMKN 20 Jakarta adalah inovasi modern dalam layanan Kantin sekolah. Kami menghadirkan solusi teknologi untuk memudahkan siswa dan guru dalam memesan makanan di kantin sekolah.
                     </p>
-                    <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                    <p class="text-base text-gray-600 mb-8 leading-relaxed">
                         Dengan sistem digital, kami menghilangkan antrian panjang, mempercepat pelayanan, dan memberikan pengalaman berbelanja yang menyenangkan dan efisien.
                     </p>
                     
@@ -377,8 +377,8 @@
     <!-- CTA Section -->
     <section class="py-20 hero-gradient">
         <div class="container mx-auto px-6 text-center">
-            <h2 class="text-4xl font-bold text-white mb-6">Siap Memulai Pengalaman Kantin Digital?</h2>
-            <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+            <h2 class="text-2xl font-bold text-white mb-4">Siap Memulai Pengalaman Kantin Digital?</h2>
+            <p class="text-base text-white/90 mb-8 max-w-2xl mx-auto">
                 Bergabunglah dengan ribuan siswa yang telah menikmati kemudahan berbelanja di Kantin Digital SMKN 20 Jakarta.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">

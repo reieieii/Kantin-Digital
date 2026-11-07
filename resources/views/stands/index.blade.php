@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Stand - Kantin Digital</title>
-    <script src="https://cdn.tailwindcss.com/3.3.0"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,66 +17,6 @@
             color: white;
             transition: all 0.3s ease;
         }
-        .bg-blue-600 { background-color: #2563eb; }
-        .text-white { color: white; }
-        .text-blue-600 { color: #2563eb; }
-        .text-gray-800 { color: #1f2937; }
-        .text-gray-600 { color: #4b5563; }
-        .text-gray-500 { color: #6b7280; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
-        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
-        .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
-        .mb-2 { margin-bottom: 0.5rem; }
-        .mb-3 { margin-bottom: 0.75rem; }
-        .mb-4 { margin-bottom: 1rem; }
-        .mb-6 { margin-bottom: 1.5rem; }
-        .mb-8 { margin-bottom: 2rem; }
-        .mb-12 { margin-bottom: 3rem; }
-        .mt-12 { margin-top: 3rem; }
-        .flex { display: flex; }
-        .items-center { align-items: center; }
-        .justify-between { justify-content: space-between; }
-        .space-x-4 > * + * { margin-left: 1rem; }
-        .space-x-6 > * + * { margin-left: 1.5rem; }
-        .space-y-2 > * + * { margin-top: 0.5rem; }
-        .text-2xl { font-size: 1.5rem; line-height: 2rem; }
-        .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
-        .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
-        .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
-        .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
-        .font-bold { font-weight: 700; }
-        .font-semibold { font-weight: 600; }
-        .text-center { text-align: center; }
-        .grid { display: grid; }
-        .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-        .gap-6 { gap: 1.5rem; }
-        .rounded-lg { border-radius: 0.5rem; }
-        .rounded-full { border-radius: 9999px; }
-        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-        .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-        .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-        .bg-gray-50 { background-color: #f9fafb; }
-        .bg-white { background-color: white; }
-        .bg-green-100 { background-color: #dcfce7; }
-        .bg-green-800 { background-color: #166534; }
-        .bg-red-100 { background-color: #fef2f2; }
-        .bg-red-800 { background-color: #991b1b; }
-        .px-4 { padding-left: 1rem; padding-right: 1rem; }
-        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
-        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-        .hover\:bg-blue-700:hover { background-color: #1d4ed8; }
-        .hover\:shadow-xl:hover { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-        .hover\:text-blue-200:hover { color: #bfdbfe; }
-        .hover\:text-blue-800:hover { color: #1e40af; }
-        .transition { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
-        .cursor-pointer { cursor: pointer; }
-        .overflow-hidden { overflow: hidden; }
-        .object-cover { object-fit: cover; }
-        .w-full { width: 100%; }
-        .h-48 { height: 12rem; }
-        .hidden { display: none; }
-        .md\:flex { display: none; }
-        @media (min-width: 768px) { .md\:flex { display: flex; } .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
         .line-clamp-1 {
             display: -webkit-box;
             -webkit-line-clamp: 1;
@@ -124,11 +64,11 @@
 
     <main class="container mx-auto px-6 py-12">
         <div class="mb-12">
-            <h2 class="text-4xl md:text-5xl font-black mb-3 tracking-tight leading-tight"
+            <h2 class="text-2xl md:text-3xl font-black mb-2 tracking-tight leading-tight"
                 style="font-family:'Poppins',sans-serif; background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">
                 Daftar Stand Kantin
             </h2>
-            <p class="text-slate-500 text-lg font-medium" style="font-family:'Poppins',sans-serif;">
+            <p class="text-slate-500 text-sm font-medium" style="font-family:'Poppins',sans-serif;">
                 Pilih stand favoritmu dan nikmati hidangan lezat hari ini
             </p>
         </div>
