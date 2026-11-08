@@ -11,7 +11,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { font-family: 'Poppins', sans-serif; }
+        html { scroll-behavior: smooth; }
         .hero-gradient { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .banner-gradient {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+        .btn-buy {
+            background: linear-gradient(45deg, #2563eb, #7c3aed);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-buy:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
         .btn-orange-gradient {
             background: linear-gradient(45deg, #f59e0b, #f97316);
             color: white;
@@ -62,19 +83,78 @@
         </div>
     </header>
 
-    <main class="container mx-auto px-6 py-12">
-        <div class="mb-12">
-            <h2 class="text-2xl md:text-3xl font-black mb-2 tracking-tight leading-tight"
-                style="font-family:'Poppins',sans-serif; background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">
-                Daftar Stand Kantin
-            </h2>
-            <p class="text-slate-500 text-sm font-medium" style="font-family:'Poppins',sans-serif;">
-                Pilih stand favoritmu dan nikmati hidangan lezat hari ini
-            </p>
+    <!-- Breadcrumb -->
+    <div class="container mx-auto px-6 pt-6 mb-6">
+        <nav class="flex items-center space-x-3 text-xs font-bold uppercase tracking-widest">
+            <a href="{{ route('landing') }}" class="text-slate-400 hover:text-blue-600 transition-colors">Beranda</a>
+            <i class="fas fa-chevron-right text-[10px] text-slate-300"></i>
+            <span class="text-blue-600">Semua Stand</span>
+        </nav>
+    </div>
+
+    <main class="container mx-auto px-6 pb-16">
+        <!-- Banner Section -->
+        <div class="banner-gradient rounded-[2.5rem] overflow-hidden mb-12 relative border border-gray-100 shadow-sm">
+            <div class="absolute inset-0 z-0">
+                <div class="absolute top-10 left-10 w-24 h-24 bg-blue-500/5 rounded-full floating"></div>
+                <div class="absolute bottom-10 right-1/4 w-32 h-32 bg-purple-500/5 rounded-full floating" style="animation-delay: 1.5s;"></div>
+            </div>
+            
+            <div class="container mx-auto">
+                <div class="grid md:grid-cols-2 gap-8 items-center relative z-10 p-6 md:p-10">
+                    <div class="order-2 md:order-1">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <span class="bg-green-100 text-green-700 px-3 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest flex items-center shadow-sm">
+                                <span class="w-1.5 h-1.5 bg-green-500 rounded-full mr-2 animate-pulse"></span> Buka Sekarang
+                            </span>
+                            <span class="bg-blue-50 text-blue-700 px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest flex items-center border border-blue-100">
+                                <i class="fas fa-check-circle mr-2"></i> Stand Terverifikasi
+                            </span>
+                        </div>
+                        
+                        <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 mb-3 leading-tight">
+                            Daftar Stand Kantin
+                        </h1>
+                        <p class="text-sm md:text-base text-slate-500 mb-6 max-w-xl leading-relaxed">
+                            Pilih stand favoritmu dan nikmati hidangan lezat hari ini
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-3">
+                            <a href="#daftar-stand" class="btn-buy px-7 py-3 rounded-xl font-black text-white shadow-[0_8px_20px_rgba(102,126,234,0.3)] hover:shadow-[0_12px_28px_rgba(102,126,234,0.4)] transition-all flex items-center group text-sm">
+                                <span>Lihat Semua Stand</span>
+                                <i class="fas fa-arrow-down ml-2.5 group-hover:translate-y-1 transition-transform"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="order-1 md:order-2 relative px-4 text-center">
+                        <div class="relative inline-block z-10 floating">
+                            <div class="w-[260px] sm:w-[300px] md:w-[320px] h-[260px] sm:h-[300px] md:h-[320px] bg-white rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border-[8px] border-white mx-auto flex items-center justify-center p-6 sm:p-8">
+                                <img src="{{ asset('images/Logo_smkn_20_jakarta.png') }}"
+                                     alt="SMKN 20 Jakarta"
+                                     class="max-w-full max-h-full object-contain filter drop-shadow">
+                            </div>
+                            
+                            <!-- Floating Badge -->
+                            <div class="absolute -bottom-6 -left-4 bg-white p-3.5 sm:p-4 rounded-[1.5rem] shadow-2xl z-20 hidden sm:block border border-slate-50 text-left">
+                                <div class="flex items-center space-x-3">
+                                    <div class="bg-yellow-400 w-9 h-9 rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-star text-white text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-base font-black text-slate-800">4.9/5.0</p>
+                                        <p class="text-xs text-slate-400 font-bold">Rating Stand</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         @if($stands->count() > 0)
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div id="daftar-stand" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 scroll-mt-6">
                 @foreach($stands as $stand)
                     <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 cursor-pointer flex flex-col"
                          onclick="window.location.href='{{ route('stands.show', $stand->id) }}'">
