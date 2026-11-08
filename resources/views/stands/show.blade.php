@@ -943,12 +943,22 @@
                         <h5 class="font-semibold text-gray-800 mb-3">Scan QR Code</h5>
                         <div class="mx-auto mb-3">
                             @if($stand->qris_gambar)
-                                <img src="{{ asset('storage/'.$stand->qris_gambar) }}" alt="QRIS {{ $stand->nama_stand }}" class="w-48 h-auto rounded-lg mx-auto object-contain">
+                                <img id="modalQrisImg" src="{{ asset('storage/'.$stand->qris_gambar) }}" alt="QRIS {{ $stand->nama_stand }}" class="w-48 h-auto rounded-lg mx-auto object-contain">
                             @else
-                                <img src="{{ asset('images/qris.jpeg') }}" alt="QRIS" class="w-48 h-auto rounded-lg mx-auto object-contain">
+                                <img id="modalQrisImg" src="{{ asset('images/qris.jpeg') }}" alt="QRIS" class="w-48 h-auto rounded-lg mx-auto object-contain">
                             @endif
                         </div>
-                        <p class="text-sm text-gray-600">Scan dengan <span id="modalPaymentApp">QRIS</span></p>
+                        <p class="text-sm text-gray-600 mb-3">Scan dengan <span id="modalPaymentApp">QRIS</span></p>
+                        {{-- Tombol Unduh QRIS --}}
+                        <a id="btnUnduhQris"
+                           href="{{ $stand->qris_gambar ? asset('storage/'.$stand->qris_gambar) : asset('images/qris.jpeg') }}"
+                           download="{{ $stand->qris_gambar ? 'QRIS_'.$stand->nama_stand.'.'.pathinfo($stand->qris_gambar, PATHINFO_EXTENSION) : 'QRIS.jpeg' }}"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-colors duration-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/>
+                            </svg>
+                            Unduh QRIS
+                        </a>
                     </div>
                 </div>
 
