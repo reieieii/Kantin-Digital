@@ -24,6 +24,7 @@ class StandController extends Controller
             'no_telepon'  => 'required|string|max:20',
             'status_buka' => 'boolean',
             'gambar'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'qris_gambar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
         ]);
 
         $validated['status_buka'] = $request->has('status_buka');
@@ -33,6 +34,13 @@ class StandController extends Controller
                 Storage::disk('public')->delete($stand->gambar);
             }
             $validated['gambar'] = $request->file('gambar')->store('stands', 'public');
+        }
+
+        if ($request->hasFile('qris_gambar')) {
+            if ($stand->qris_gambar) {
+                Storage::disk('public')->delete($stand->qris_gambar);
+            }
+            $validated['qris_gambar'] = $request->file('qris_gambar')->store('qris', 'public');
         }
 
         $stand->update($validated);

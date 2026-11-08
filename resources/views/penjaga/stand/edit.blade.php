@@ -50,6 +50,27 @@
                 @error('gambar') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
+            {{-- QRIS --}}
+            <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
+                    <i class="fas fa-qrcode mr-1 text-emerald-400"></i>Foto QRIS Stand
+                </label>
+                @if($stand->qris_gambar)
+                <div class="mb-3">
+                    <p class="text-xs text-slate-500 mb-2">QRIS saat ini:</p>
+                    <img src="{{ asset('storage/'.$stand->qris_gambar) }}"
+                         alt="QRIS saat ini"
+                         class="h-48 rounded-xl object-contain border border-slate-600 bg-white p-2">
+                </div>
+                @else
+                <p class="text-xs text-slate-500 mb-2">Belum ada foto QRIS — upload sekarang.</p>
+                @endif
+                <input type="file" name="qris_gambar" accept="image/*"
+                    class="w-full bg-slate-700 border border-slate-600 rounded-xl px-4 py-3 text-slate-300 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-emerald-600 file:text-white file:text-xs file:font-bold cursor-pointer">
+                <p class="text-xs text-slate-500 mt-1">JPG, PNG, WebP. Maks 3MB. Kosongkan jika tidak ingin ganti.</p>
+                @error('qris_gambar') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
             <div class="flex items-center space-x-3">
                 <input type="checkbox" name="status_buka" id="status_buka" value="1"
                     {{ $stand->status_buka ? 'checked' : '' }}

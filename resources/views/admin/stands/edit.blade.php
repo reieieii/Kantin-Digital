@@ -67,6 +67,29 @@
                 </div>
             </div>
 
+            {{-- QRIS --}}
+            <div>
+                <label class="block text-sm font-medium text-slate-300 mb-1.5">
+                    <i class="fas fa-qrcode mr-1 text-orange-400"></i>Foto QRIS Stand
+                </label>
+                @if($stand->qris_gambar)
+                <div class="mb-3">
+                    <p class="text-xs text-slate-400 mb-2">QRIS saat ini:</p>
+                    <img src="{{ asset('storage/'.$stand->qris_gambar) }}"
+                         alt="QRIS saat ini" class="h-40 rounded-xl object-contain border border-slate-600 bg-white p-1"
+                         onerror="this.style.display='none'">
+                </div>
+                @endif
+                <div class="border-2 border-dashed border-slate-600 rounded-xl p-5 text-center hover:border-orange-500 transition cursor-pointer"
+                    onclick="document.getElementById('qris_gambar').click()">
+                    <img id="previewQris" src="" class="mx-auto mb-3 max-h-40 rounded-lg hidden object-contain">
+                    <i class="fas fa-qrcode text-slate-400 text-2xl mb-2 block" id="uploadQrisIcon"></i>
+                    <p class="text-slate-400 text-sm" id="uploadQrisText">Upload foto QRIS baru (opsional)</p>
+                    <p class="text-slate-500 text-xs mt-1">JPG, PNG, WEBP — maks. 3MB</p>
+                    <input type="file" name="qris_gambar" id="qris_gambar" accept="image/*" class="hidden" onchange="previewQris(event)">
+                </div>
+            </div>
+
             <div class="flex items-center space-x-3">
                 <input type="checkbox" name="status_buka" id="status_buka" value="1"
                     {{ old('status_buka', $stand->status_buka) ? 'checked' : '' }}
@@ -97,6 +120,19 @@ function previewImage(e) {
         document.getElementById('preview').classList.remove('hidden');
         document.getElementById('uploadIcon').classList.add('hidden');
         document.getElementById('uploadText').textContent = file.name;
+    };
+    reader.readAsDataURL(file);
+}
+
+function previewQris(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+        document.getElementById('previewQris').src = ev.target.result;
+        document.getElementById('previewQris').classList.remove('hidden');
+        document.getElementById('uploadQrisIcon').classList.add('hidden');
+        document.getElementById('uploadQrisText').textContent = file.name;
     };
     reader.readAsDataURL(file);
 }

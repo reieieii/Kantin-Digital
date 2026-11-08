@@ -153,9 +153,10 @@ Route::middleware('auth')->get('/pembelians/payment', function () {
 
     $totalHarga = 0;
     $cartItems = [];
+    $qrisGambar = null; // QRIS dari stand produk pertama di cart
 
     foreach ($cart as $productId => $item) {
-        $produk = \App\Models\Produk::find($productId);
+        $produk = \App\Models\Produk::with('stand')->find($productId);
         if ($produk) {
             $subtotal = $item['quantity'] * $item['price'];
             $totalHarga += $subtotal;
@@ -168,10 +169,15 @@ Route::middleware('auth')->get('/pembelians/payment', function () {
                 'subtotal' => $subtotal,
                 'gambar' => $item['image'] ?? $produk->gambar ?? 'default.jpg'
             ];
+
+            // Ambil QRIS dari stand produk pertama
+            if (!$qrisGambar && $produk->stand && $produk->stand->qris_gambar) {
+                $qrisGambar = $produk->stand->qris_gambar;
+            }
         }
     }
 
-    return view('pembelians.payment', compact('cartItems', 'totalHarga'));
+    return view('pembelians.payment', compact('cartItems', 'totalHarga', 'qrisGambar'));
 })->name('pembelians.payment');
 
 Route::middleware('auth')->post('/pembelians/process-payment', function (Illuminate\Http\Request $request) {

@@ -942,7 +942,11 @@
                     <div class="bg-gray-50 rounded-lg p-4 text-center">
                         <h5 class="font-semibold text-gray-800 mb-3">Scan QR Code</h5>
                         <div class="mx-auto mb-3">
-                            <img src="{{ asset('images/qris.jpeg') }}" alt="QRIS ReivanGH" class="w-48 h-auto rounded-lg mx-auto object-contain">
+                            @if($stand->qris_gambar)
+                                <img src="{{ asset('storage/'.$stand->qris_gambar) }}" alt="QRIS {{ $stand->nama_stand }}" class="w-48 h-auto rounded-lg mx-auto object-contain">
+                            @else
+                                <img src="{{ asset('images/qris.jpeg') }}" alt="QRIS" class="w-48 h-auto rounded-lg mx-auto object-contain">
+                            @endif
                         </div>
                         <p class="text-sm text-gray-600">Scan dengan <span id="modalPaymentApp">QRIS</span></p>
                     </div>

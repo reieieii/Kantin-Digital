@@ -10,6 +10,7 @@ class Stand extends Model
         'nama_stand',
         'deskripsi',
         'gambar',
+        'qris_gambar',
         'pemilik',
         'no_telepon',
         'status_buka',

@@ -200,7 +200,11 @@
                         <div class="bg-indigo-50/50 rounded-3xl p-8 text-center border border-indigo-100 border-dashed">
                             <p class="text-xs font-black text-indigo-600 uppercase tracking-widest mb-4">Pindai QRIS Sekarang</p>
                             <div class="mx-auto mb-6">
-                                <img src="{{ asset('images/qris.jpeg') }}" alt="QRIS ReivanGH" class="w-64 h-auto rounded-2xl mx-auto object-contain shadow-sm">
+                                @if(!empty($qrisGambar))
+                                    <img src="{{ asset('storage/'.$qrisGambar) }}" alt="QRIS Stand" class="w-64 h-auto rounded-2xl mx-auto object-contain shadow-sm">
+                                @else
+                                    <img src="{{ asset('images/qris.jpeg') }}" alt="QRIS" class="w-64 h-auto rounded-2xl mx-auto object-contain shadow-sm">
+                                @endif
                             </div>
                             <p class="text-sm font-bold text-slate-600">Scan dengan <span id="payment-app" class="text-indigo-600 italic">QRIS</span></p>
                             <p class="text-2xl font-black text-slate-900 mt-2 tracking-tight">Rp {{ number_format($totalHarga, 0, ',', '.') }}</p>
