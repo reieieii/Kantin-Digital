@@ -129,11 +129,9 @@
                     
                     <div class="order-1 md:order-2 relative px-4 text-center">
                         <div class="relative inline-block z-10 floating">
-                            <div class="w-[260px] sm:w-[300px] md:w-[320px] h-[260px] sm:h-[300px] md:h-[320px] bg-white rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border-[8px] border-white mx-auto flex items-center justify-center p-6 sm:p-8">
-                                <img src="{{ asset('images/Logo_smkn_20_jakarta.png') }}"
-                                     alt="SMKN 20 Jakarta"
-                                     class="max-w-full max-h-full object-contain filter drop-shadow">
-                            </div>
+                            <img src="{{ asset('images/KANTIN.jpeg') }}"
+                                 alt="Kantin Digital SMKN 20 Jakarta"
+                                 class="w-full max-w-[320px] h-[280px] sm:h-[320px] object-cover rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.12)] border-[8px] border-white mx-auto">
                             
                             <!-- Floating Badge -->
                             <div class="absolute -bottom-6 -left-4 bg-white p-3.5 sm:p-4 rounded-[1.5rem] shadow-2xl z-20 hidden sm:block border border-slate-50 text-left">

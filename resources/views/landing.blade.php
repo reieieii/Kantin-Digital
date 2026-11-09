@@ -265,9 +265,9 @@
                 
                 <div class="relative">
                     <div class="floating">
-                        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
-                             alt="Kantin Digital" 
-                             class="rounded-2xl shadow-2xl w-full">
+                        <img src="{{ asset('images/KANTIN.jpeg') }}" 
+                             alt="Kantin Digital SMKN 20 Jakarta" 
+                             class="rounded-2xl shadow-2xl w-full h-80 md:h-[400px] object-cover">
                     </div>
                     <!-- Floating Cards -->
                     <div class="absolute -top-6 -right-6 bg-white rounded-xl shadow-lg p-4 floating" style="animation-delay: 0.5s;">
@@ -379,9 +379,9 @@
                 </div>
                 
                 <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
-                         alt="About Us" 
-                         class="rounded-2xl shadow-xl w-full">
+                    <img src="{{ asset('images/KANTIN.jpeg') }}" 
+                         alt="Tentang Kantin Digital SMKN 20 Jakarta" 
+                         class="rounded-2xl shadow-xl w-full h-[320px] md:h-[380px] object-cover">
                 </div>
             </div>
         </div>
