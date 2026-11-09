@@ -68,9 +68,19 @@
                         </div>
                     </a>
                 </div>
-                <nav class="hidden md:flex items-center space-x-8">
+                <nav class="hidden md:flex items-center space-x-6">
                     <a href="{{ url('/') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Beranda</a>
                     <a href="{{ url('/stands') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Daftar Stand</a>
+                    @auth
+                        <a href="{{ route('notifications.index') }}" class="relative text-white/80 hover:text-white transition-all p-2 bg-white/10 rounded-xl border border-white/10 group" title="Notifikasi">
+                            <i class="fas fa-bell text-lg"></i>
+                            @if(Auth::user()->unreadNotificationsCount() > 0)
+                                <span class="absolute -top-1 -right-1 bg-gradient-to-br from-red-500 to-orange-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm animate-pulse">
+                                    {{ Auth::user()->unreadNotificationsCount() }}
+                                </span>
+                            @endif
+                        </a>
+                    @endauth
                     <a href="{{ url('/cart') }}" class="relative text-white/80 hover:text-white transition-all p-2 bg-white/10 rounded-xl border border-white/10 group">
                         <i class="fas fa-shopping-cart text-lg"></i>
                         <span id="cart-count" class="absolute -top-1 -right-1 bg-gradient-to-br from-orange-400 to-orange-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span>

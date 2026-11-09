@@ -75,8 +75,14 @@
                 <i class="fas fa-lock-open text-purple-400 text-xl"></i>
             </div>
 
-            <h1 class="text-2xl sm:text-3xl font-bold mb-2">Buat <span class="hero-gradient-text">Password Baru</span></h1>
-            <p class="text-gray-400 text-sm mb-8">Password baru harus minimal 8 karakter.</p>
+            <div class="mb-3">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    <i class="fas fa-check-circle text-emerald-400"></i> Disetujui oleh Admin
+                </span>
+            </div>
+
+            <h1 class="text-2xl sm:text-3xl font-bold mb-1">Buat <span class="hero-gradient-text">Password Baru</span></h1>
+            <p class="text-gray-400 text-xs mb-6">Akun: <span class="text-white font-medium">{{ $email }}</span> &bull; Minimal 8 karakter.</p>
 
             {{-- Error --}}
             @if ($errors->any())

@@ -54,11 +54,12 @@ class PesananController extends Controller
         $pesanans = $query->orderByDesc('created_at')->paginate(15)->withQueryString();
 
         $stats = [
-            'semua'     => Pembelian::whereIn('id', $pesananIds)->count(),
-            'pending'   => Pembelian::whereIn('id', $pesananIds)->where('status', 'pending')->count(),
-            'diproses'  => Pembelian::whereIn('id', $pesananIds)->where('status', 'diproses')->count(),
-            'selesai'   => Pembelian::whereIn('id', $pesananIds)->where('status', 'selesai')->count(),
-            'dibatalkan'=> Pembelian::whereIn('id', $pesananIds)->where('status', 'dibatalkan')->count(),
+            'semua'        => Pembelian::whereIn('id', $pesananIds)->count(),
+            'pending'      => Pembelian::whereIn('id', $pesananIds)->where('status', 'pending')->count(),
+            'diproses'     => Pembelian::whereIn('id', $pesananIds)->where('status', 'diproses')->count(),
+            'dapat_diambil'=> Pembelian::whereIn('id', $pesananIds)->where('status', 'dapat_diambil')->count(),
+            'selesai'      => Pembelian::whereIn('id', $pesananIds)->where('status', 'selesai')->count(),
+            'dibatalkan'   => Pembelian::whereIn('id', $pesananIds)->where('status', 'dibatalkan')->count(),
         ];
 
         return view('penjaga.pesanans.index', compact('pesanans', 'stats', 'stand'));
@@ -87,7 +88,7 @@ class PesananController extends Controller
         }
 
         $request->validate([
-            'status' => 'required|in:pending,diproses,selesai,dibatalkan',
+            'status' => 'required|in:pending,diproses,dapat_diambil,selesai,dibatalkan',
         ]);
 
         $stand      = Auth::user()->stand;
@@ -109,6 +110,31 @@ class PesananController extends Controller
         }
 
         $pesanan->update(['status' => $statusBaru]);
+
+        // Kirim notifikasi ke user pembeli jika akun terdaftar
+        if ($pesanan->user_id) {
+            $namaStand = $stand->nama_stand ?? 'Stand';
+            $title = match ($statusBaru) {
+                'diproses'     => 'Pesanan Sedang Diproses 🍳',
+                'dapat_diambil'=> 'Pesanan Dapat Diambil! 🛍️',
+                'selesai'      => 'Pesanan Selesai! 🎉',
+                'dibatalkan'   => 'Pesanan Dibatalkan ❌',
+                default        => 'Status Pesanan Diperbarui 📋',
+            };
+            $msg = match ($statusBaru) {
+                'diproses'     => 'Pesanan #' . $pesanan->kode_pembelian . ' sedang disiapkan oleh ' . $namaStand . '.',
+                'dapat_diambil'=> 'Pesanan #' . $pesanan->kode_pembelian . ' dari ' . $namaStand . ' sudah siap dan dapat diambil sekarang di stand!',
+                'selesai'      => 'Pesanan #' . $pesanan->kode_pembelian . ' dari ' . $namaStand . ' telah selesai diambil. Selamat menikmati!',
+                'dibatalkan'   => 'Pesanan #' . $pesanan->kode_pembelian . ' telah dibatalkan oleh ' . $namaStand . '.',
+                default        => 'Status pesanan #' . $pesanan->kode_pembelian . ' di ' . $namaStand . ' telah diubah menjadi ' . str_replace('_', ' ', ucfirst($statusBaru)) . '.',
+            };
+            \App\Models\UserNotification::create([
+                'user_id' => $pesanan->user_id,
+                'title'   => $title,
+                'message' => $msg,
+                'type'    => 'order_' . $statusBaru,
+            ]);
+        }
 
         return redirect()->back()
             ->with('success', 'Status pesanan berhasil diubah ke "' . ucfirst($statusBaru) . '".');

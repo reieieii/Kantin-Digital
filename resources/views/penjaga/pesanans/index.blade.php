@@ -8,13 +8,14 @@
 <div class="mt-6 space-y-4">
 
     {{-- Stats tabs --}}
-    <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         @foreach([
-            ['label'=>'Semua',      'key'=>'semua',      'color'=>'text-white'],
-            ['label'=>'Pending',    'key'=>'pending',    'color'=>'text-yellow-400'],
-            ['label'=>'Diproses',   'key'=>'diproses',   'color'=>'text-blue-400'],
-            ['label'=>'Selesai',    'key'=>'selesai',    'color'=>'text-emerald-400'],
-            ['label'=>'Dibatalkan', 'key'=>'dibatalkan', 'color'=>'text-red-400'],
+            ['label'=>'Semua',        'key'=>'semua',        'color'=>'text-white'],
+            ['label'=>'Pending',      'key'=>'pending',      'color'=>'text-yellow-400'],
+            ['label'=>'Diproses',     'key'=>'diproses',     'color'=>'text-blue-400'],
+            ['label'=>'Dapat Diambil','key'=>'dapat_diambil','color'=>'text-indigo-400'],
+            ['label'=>'Selesai',      'key'=>'selesai',      'color'=>'text-emerald-400'],
+            ['label'=>'Dibatalkan',   'key'=>'dibatalkan',   'color'=>'text-red-400'],
         ] as $s)
         <div class="bg-slate-800 rounded-xl p-4 border border-slate-700">
             <p class="text-xs text-slate-400 uppercase tracking-wider">{{ $s['label'] }}</p>
@@ -53,8 +54,8 @@
                 <select name="status"
                     class="w-full bg-slate-700 border border-slate-600 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-emerald-500">
                     <option value="">Semua Status</option>
-                    @foreach(['pending','diproses','selesai','dibatalkan'] as $s)
-                        <option value="{{ $s }}" {{ request('status') == $s ? 'selected' : '' }}>{{ ucfirst($s) }}</option>
+                    @foreach(['pending','diproses','dapat_diambil','selesai','dibatalkan'] as $s)
+                        <option value="{{ $s }}" {{ request('status') == $s ? 'selected' : '' }}>{{ $s === 'dapat_diambil' ? 'Dapat Diambil' : ucfirst($s) }}</option>
                     @endforeach
                 </select>
             </div>
@@ -128,14 +129,41 @@
                         </td>
                         <td class="px-4 py-4">
                             <span class="px-2.5 py-1 rounded-full text-xs font-bold badge-{{ $p->status }}">
-                                {{ ucfirst($p->status) }}
+                                {{ $p->status_label }}
                             </span>
                         </td>
                         <td class="px-4 py-4 text-right">
-                            <a href="{{ route('penjaga.pesanans.show', $p) }}"
-                                class="p-2 text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-lg transition inline-block" title="Detail">
-                                <i class="fas fa-eye"></i>
-                            </a>
+                            <div class="flex items-center justify-end space-x-1.5">
+                                <a href="{{ route('penjaga.pesanans.show', $p) }}"
+                                    class="p-2 text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-lg transition inline-block" title="Detail">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                {{-- Quick status update --}}
+                                @php
+                                    $nextStatus = match($p->status) {
+                                        'pending'       => 'diproses',
+                                        'diproses'      => 'dapat_diambil',
+                                        'dapat_diambil' => 'selesai',
+                                        default         => null,
+                                    };
+                                    $nextLabel = match($p->status) {
+                                        'pending'       => 'Proses',
+                                        'diproses'      => 'Siap Ambil',
+                                        'dapat_diambil' => 'Selesai',
+                                        default         => null,
+                                    };
+                                @endphp
+                                @if($nextStatus)
+                                <form method="POST" action="{{ route('penjaga.pesanans.updateStatus', $p) }}" class="inline">
+                                    @csrf @method('PATCH')
+                                    <input type="hidden" name="status" value="{{ $nextStatus }}">
+                                    <button type="submit"
+                                        class="bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-400 text-xs px-2.5 py-1.5 rounded-lg transition whitespace-nowrap font-medium">
+                                        {{ $nextLabel }}
+                                    </button>
+                                </form>
+                                @endif
+                            </div>
                         </td>
                     </tr>
                     @empty

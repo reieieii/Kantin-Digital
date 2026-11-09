@@ -27,6 +27,14 @@ class ProfileController extends Controller
 
         Auth::user()->update(['name' => $request->name]);
 
+        // Buat notifikasi ke user
+        \App\Models\UserNotification::create([
+            'user_id' => Auth::id(),
+            'title'   => 'Username Berhasil Diubah 👤',
+            'message' => 'Nama profil akun Anda berhasil diperbarui menjadi "' . $request->name . '".',
+            'type'    => 'profile_name',
+        ]);
+
         return back()->with('success_name', 'Username berhasil diubah menjadi "' . $request->name . '".');
     }
 
@@ -50,6 +58,14 @@ class ProfileController extends Controller
         }
 
         Auth::user()->update(['password' => Hash::make($request->password)]);
+
+        // Buat notifikasi ke user
+        \App\Models\UserNotification::create([
+            'user_id' => Auth::id(),
+            'title'   => 'Password Berhasil Diperbarui 🔐',
+            'message' => 'Password akun Anda telah berhasil diubah melalui pengaturan profil pada ' . now()->format('d M Y H:i') . '.',
+            'type'    => 'password_success',
+        ]);
 
         return back()->with('success_password', 'Password berhasil diubah. Silakan login ulang jika diperlukan.')
                      ->with('tab', 'password');

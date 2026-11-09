@@ -228,8 +228,18 @@
         }
         
         function closePaymentModal() {
+            clearModalBukti();
             document.getElementById('paymentModal').classList.add('hidden');
             document.getElementById('paymentModal').classList.remove('flex');
+        }
+
+        function clearModalBukti() {
+            const fileInput = document.getElementById('modalBuktiPembayaran');
+            if (fileInput) fileInput.value = '';
+            const previewContainer = document.getElementById('modalBuktiPreviewContainer');
+            if (previewContainer) previewContainer.classList.add('hidden');
+            const previewImg = document.getElementById('modalBuktiPreview');
+            if (previewImg) previewImg.src = '';
         }
         
         function increaseModalQuantity() {
@@ -265,6 +275,15 @@
             const telepon = document.getElementById('modalTelepon').value.trim();
             const alamat = document.getElementById('modalAlamat').value.trim();
             
+            // Validasi bukti transfer jika memilih QRIS
+            const fileInput = document.getElementById('modalBuktiPembayaran');
+            if (paymentMethod === 'qris') {
+                if (!fileInput || !fileInput.files || !fileInput.files[0]) {
+                    showNotification('Silakan unggah bukti screenshot/foto pembayaran QRIS terlebih dahulu!', 'error');
+                    return;
+                }
+            }
+
             // Add to cart first
             const cartData = {
                 product_id: currentProduct.id,
@@ -277,21 +296,26 @@
                 method: 'POST',
                 data: cartData,
                 success: function(response) {
-                    // Process payment
-                    const paymentData = {
-                        payment_method: paymentMethod,
-                        nama_pembeli: nama,
-                        email: email,
-                        no_telepon: telepon,
-                        alamat: alamat,
-                        catatan: '',
-                        _token: '{{ csrf_token() }}'
-                    };
+                    // Process payment with FormData (supports file upload)
+                    const paymentFormData = new FormData();
+                    paymentFormData.append('payment_method', paymentMethod);
+                    paymentFormData.append('nama_pembeli', nama);
+                    paymentFormData.append('email', email);
+                    paymentFormData.append('no_telepon', telepon);
+                    paymentFormData.append('alamat', alamat);
+                    paymentFormData.append('catatan', '');
+                    paymentFormData.append('_token', '{{ csrf_token() }}');
+
+                    if (fileInput && fileInput.files && fileInput.files[0]) {
+                        paymentFormData.append('bukti_pembayaran', fileInput.files[0]);
+                    }
                     
                     $.ajax({
                         url: '/pembelians/process-payment',
                         method: 'POST',
-                        data: paymentData,
+                        data: paymentFormData,
+                        processData: false,
+                        contentType: false,
                         success: function(paymentResponse) {
                             closePaymentModal();
                             showNotification('Pembayaran berhasil! Pesanan Anda sedang diproses.', 'success');
@@ -301,8 +325,9 @@
                                 window.location.href = paymentResponse.redirect_url;
                             }, 1000);
                         },
-                        error: function() {
-                            showNotification('Terjadi kesalahan saat memproses pembayaran. Silakan coba lagi.', 'error');
+                        error: function(xhr) {
+                            const errMsg = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'Terjadi kesalahan saat memproses pembayaran. Silakan coba lagi.';
+                            showNotification(errMsg, 'error');
                         }
                     });
                 },
@@ -345,6 +370,22 @@
             
             // Quantity input change handler
             document.getElementById('modalQuantity').addEventListener('input', updateModalTotal);
+
+            // Bukti Pembayaran QRIS change listener
+            const modalBuktiInput = document.getElementById('modalBuktiPembayaran');
+            if (modalBuktiInput) {
+                modalBuktiInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(evt) {
+                            document.getElementById('modalBuktiPreview').src = evt.target.result;
+                            document.getElementById('modalBuktiPreviewContainer').classList.remove('hidden');
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
         });
         
         // Initialize Search and Filter Logic
@@ -561,9 +602,19 @@
                     </div>
                 </a>
                 
-                <div class="hidden md:flex items-center space-x-10">
+                <div class="hidden md:flex items-center space-x-6">
                     <a href="{{ url('/') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Beranda</a>
                     <a href="{{ url('/stands') }}" class="text-base font-bold text-white/80 hover:text-white transition-colors">Daftar Stand</a>
+                    @auth
+                        <a href="{{ route('notifications.index') }}" class="relative text-white/80 hover:text-white transition-all p-2 bg-white/10 rounded-xl border border-white/10 group" title="Notifikasi">
+                            <i class="fas fa-bell text-lg"></i>
+                            @if(Auth::user()->unreadNotificationsCount() > 0)
+                                <span class="absolute -top-1 -right-1 bg-gradient-to-br from-red-500 to-orange-500 text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center border-2 border-white shadow-sm animate-pulse">
+                                    {{ Auth::user()->unreadNotificationsCount() }}
+                                </span>
+                            @endif
+                        </a>
+                    @endauth
                     <a href="{{ url('/cart') }}" class="relative text-white/80 hover:text-white transition-all p-2 bg-white/10 rounded-xl border border-white/10 group">
                         <i class="fas fa-shopping-cart text-lg"></i>
                         <span id="cart-count" class="absolute -top-1 -right-1 bg-gradient-to-br from-orange-400 to-orange-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span>
@@ -959,6 +1010,25 @@
                             </svg>
                             Unduh QRIS
                         </a>
+
+                        <!-- Upload Bukti Pembayaran QRIS -->
+                        <div class="mt-4 pt-4 border-t border-gray-200 text-left">
+                            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+                                <i class="fas fa-file-invoice text-indigo-600 mr-1"></i> Upload Bukti Pembayaran QRIS *
+                            </label>
+                            <input type="file" id="modalBuktiPembayaran" accept="image/*"
+                                class="w-full text-xs text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer border border-gray-300 rounded-lg p-1.5 focus:outline-none">
+                            <p class="text-[11px] text-gray-500 mt-1">Unggah foto/screenshot bukti transfer (JPG, PNG, WebP maks 5MB).</p>
+
+                            {{-- Preview Bukti --}}
+                            <div id="modalBuktiPreviewContainer" class="hidden mt-2 p-2 bg-white rounded-lg border border-gray-200">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-[11px] font-semibold text-gray-700">Preview Bukti:</span>
+                                    <button type="button" onclick="clearModalBukti()" class="text-[11px] text-red-500 hover:text-red-700 font-bold">Hapus</button>
+                                </div>
+                                <img id="modalBuktiPreview" src="" alt="Bukti Transfer" class="max-h-36 rounded-md mx-auto object-contain">
+                            </div>
+                        </div>
                     </div>
                 </div>
 

@@ -37,6 +37,7 @@ Route::middleware('guest')->group(function () {
     // ─── Forgot & Reset Password ─────────────────────────────────────────────
     Route::get ('/forgot-password',        [PasswordResetController::class, 'showForgotForm'])->name('password.forgot');
     Route::post('/forgot-password',        [PasswordResetController::class, 'sendResetLink'])->name('password.email');
+    Route::get ('/forgot-password/status', [PasswordResetController::class, 'checkStatus'])->name('password.status');
     Route::get ('/reset-password',         [PasswordResetController::class, 'showResetForm'])->name('password.reset.form');
     Route::post('/reset-password',         [PasswordResetController::class, 'resetPassword'])->name('password.reset');
 });
@@ -76,6 +77,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         $stands = \App\Models\Stand::orderBy('nama_stand')->get();
         return view('admin.reset.index', compact('stands'));
     })->name('reset.index');
+
+    // Konfirmasi Reset Password User
+    Route::get   ('password-resets',                  [\App\Http\Controllers\Admin\PasswordResetController::class, 'index'])->name('password-resets.index');
+    Route::post  ('password-resets/{id}/approve',     [\App\Http\Controllers\Admin\PasswordResetController::class, 'approve'])->name('password-resets.approve');
+    Route::post  ('password-resets/{id}/reject',      [\App\Http\Controllers\Admin\PasswordResetController::class, 'reject'])->name('password-resets.reject');
+    Route::delete('password-resets/{id}',             [\App\Http\Controllers\Admin\PasswordResetController::class, 'destroy'])->name('password-resets.destroy');
 });
 
 
@@ -93,6 +100,12 @@ Route::middleware('auth')->group(function () {
     Route::put   ('/profil/nama',             [\App\Http\Controllers\ProfileController::class, 'updateName'])->name('profile.updateName');
     Route::put   ('/profil/password',         [\App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
     Route::delete('/profil/hapus',            [\App\Http\Controllers\ProfileController::class, 'deleteAccount'])->name('profile.delete');
+
+    // ─── Notifikasi Pengguna ──────────────────────────────────────────────────
+    Route::get ('/notifikasi',                [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifikasi/{id}/read',      [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/notifikasi/read-all',       [\App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
+    Route::get ('/notifikasi/latest',         [\App\Http\Controllers\NotificationController::class, 'getLatest'])->name('notifications.latest');
 });
 
 // ─── Penjaga Stand Routes ─────────────────────────────────────────────────────
@@ -187,7 +200,8 @@ Route::middleware('auth')->post('/pembelians/process-payment', function (Illumin
         'email' => 'nullable|email|max:255',
         'no_telepon' => 'nullable|string|max:20',
         'alamat' => 'nullable|string|max:500',
-        'catatan' => 'nullable|string|max:1000'
+        'catatan' => 'nullable|string|max:1000',
+        'bukti_pembayaran' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120'
     ]);
 
     $cart = session('cart', []);
@@ -216,6 +230,11 @@ Route::middleware('auth')->post('/pembelians/process-payment', function (Illumin
         }
     }
 
+    $buktiPath = null;
+    if ($request->hasFile('bukti_pembayaran')) {
+        $buktiPath = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
+    }
+
     $pembelian = \App\Models\Pembelian::create([
         'user_id'          => auth()->id(), // null jika tidak login (guest)
         'kode_pembelian'   => \App\Models\Pembelian::generateKodePembelian(),
@@ -226,7 +245,8 @@ Route::middleware('auth')->post('/pembelians/process-payment', function (Illumin
         'total_harga'      => $totalHarga,
         'status'           => 'pending',
         'catatan'          => $request->catatan,
-        'metode_pembayaran'=> $request->payment_method
+        'metode_pembayaran'=> $request->payment_method,
+        'bukti_pembayaran' => $buktiPath
     ]);
 
     foreach ($cartItems as $item) {
@@ -249,6 +269,16 @@ Route::middleware('auth')->post('/pembelians/process-payment', function (Illumin
 
     // Clear cart
     session()->forget('cart');
+
+    // Kirim notifikasi pesanan ke user
+    if ($pembelian->user_id) {
+        \App\Models\UserNotification::create([
+            'user_id' => $pembelian->user_id,
+            'title'   => 'Pesanan Berhasil Dibuat 🛒',
+            'message' => 'Pesanan #' . $pembelian->kode_pembelian . ' sebesar Rp ' . number_format($pembelian->total_harga, 0, ',', '.') . ' berhasil dibuat dan sedang menunggu konfirmasi stand.',
+            'type'    => 'order_created',
+        ]);
+    }
 
     if ($request->ajax()) {
         return response()->json([
@@ -286,12 +316,35 @@ Route::get('/pembelians/{id}', function ($id) {
 
 Route::put('/pembelians/{id}/status', function (Illuminate\Http\Request $request, $id) {
     $request->validate([
-        'status' => 'required|in:pending,diproses,selesai,dibatalkan'
+        'status' => 'required|in:pending,diproses,dapat_diambil,selesai,dibatalkan'
     ]);
 
     $pembelian = \App\Models\Pembelian::findOrFail($id);
     $pembelian->status = $request->status;
     $pembelian->save();
+
+    if ($pembelian->user_id) {
+        $title = match ($request->status) {
+            'diproses'     => 'Pesanan Sedang Diproses 🍳',
+            'dapat_diambil'=> 'Pesanan Dapat Diambil! 🛍️',
+            'selesai'      => 'Pesanan Selesai! 🎉',
+            'dibatalkan'   => 'Pesanan Dibatalkan ❌',
+            default        => 'Status Pesanan Diperbarui 📋',
+        };
+        $msg = match ($request->status) {
+            'diproses'     => 'Pesanan #' . $pembelian->kode_pembelian . ' sedang disiapkan.',
+            'dapat_diambil'=> 'Pesanan #' . $pembelian->kode_pembelian . ' sudah selesai disiapkan dan dapat diambil sekarang di stand!',
+            'selesai'      => 'Pesanan #' . $pembelian->kode_pembelian . ' sudah selesai diambil. Selamat menikmati!',
+            'dibatalkan'   => 'Pesanan #' . $pembelian->kode_pembelian . ' telah dibatalkan.',
+            default        => 'Status pesanan #' . $pembelian->kode_pembelian . ' telah diubah menjadi ' . str_replace('_', ' ', ucfirst($request->status)) . '.',
+        };
+        \App\Models\UserNotification::create([
+            'user_id' => $pembelian->user_id,
+            'title'   => $title,
+            'message' => $msg,
+            'type'    => 'order_' . $request->status,
+        ]);
+    }
 
     return redirect()->back()
         ->with('success', 'Status pembelian berhasil diperbarui!');

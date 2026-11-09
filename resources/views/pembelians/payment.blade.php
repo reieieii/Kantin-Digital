@@ -217,6 +217,35 @@
                                 Unduh QRIS
                             </a>
                             <p class="text-2xl font-black text-slate-900 mt-2 tracking-tight">Rp {{ number_format($totalHarga, 0, ',', '.') }}</p>
+
+                            <!-- Upload Bukti Pembayaran QRIS -->
+                            <div class="mt-6 pt-6 border-t border-indigo-200/60 text-left">
+                                <label class="block text-xs font-black text-slate-700 uppercase tracking-widest mb-2">
+                                    <i class="fas fa-file-invoice text-indigo-600 mr-1.5"></i> Bukti Pembayaran QRIS <span class="text-red-500">*</span>
+                                </label>
+                                <div class="space-y-3">
+                                    <input type="file" 
+                                           name="bukti_pembayaran" 
+                                           id="bukti_pembayaran" 
+                                           form="payment-form" 
+                                           accept="image/*"
+                                           class="w-full text-xs text-slate-600 file:mr-4 file:py-2.5 file:px-5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 cursor-pointer bg-white border border-indigo-200 rounded-2xl p-2 focus:outline-none transition-all shadow-sm">
+                                    <p class="text-[11px] text-slate-500 font-medium">Unggah foto atau tangkapan layar (screenshot) bukti pembayaran QRIS (JPG, PNG, WebP maks 5MB).</p>
+
+                                    <!-- Preview Bukti -->
+                                    <div id="buktiPreviewContainer" class="hidden mt-3 p-4 bg-white rounded-2xl border border-indigo-100 shadow-sm">
+                                        <div class="flex items-center justify-between mb-2 pb-2 border-b border-slate-100">
+                                            <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                                                <i class="fas fa-image text-indigo-500"></i> Preview Bukti Transfer:
+                                            </span>
+                                            <button type="button" onclick="clearBuktiPembayaran()" class="text-xs text-red-500 hover:text-red-700 font-bold transition">
+                                                <i class="fas fa-times-circle mr-1"></i> Hapus
+                                            </button>
+                                        </div>
+                                        <img id="buktiPreview" src="" alt="Bukti Transfer" class="max-h-56 rounded-xl mx-auto object-contain border border-slate-100 shadow-inner">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -228,8 +257,9 @@
                         Data Diri & Pengiriman
                     </h2>
                     
-                    <form action="{{ route('pembelians.processPayment') }}" method="POST" class="space-y-6">
+                    <form id="payment-form" action="{{ route('pembelians.processPayment') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                         @csrf
+                        <input type="hidden" name="payment_method" id="selected_payment_method" value="tunai">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Nama Lengkap *</label>
@@ -356,6 +386,9 @@
                 
                 // Show/hide QR section
                 const method = this.dataset.method;
+                const hiddenInput = document.getElementById('selected_payment_method');
+                if (hiddenInput) hiddenInput.value = method;
+
                 const qrSection = document.getElementById('qr-section');
                 const paymentApp = document.getElementById('payment-app');
                 
@@ -370,6 +403,48 @@
 
         // Set initial active state
         document.querySelector('.payment-method[data-method="tunai"]').click();
+
+        // Bukti Pembayaran preview
+        const buktiInput = document.getElementById('bukti_pembayaran');
+        if (buktiInput) {
+            buktiInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(evt) {
+                        document.getElementById('buktiPreview').src = evt.target.result;
+                        document.getElementById('buktiPreviewContainer').classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        function clearBuktiPembayaran() {
+            const input = document.getElementById('bukti_pembayaran');
+            if (input) input.value = '';
+            const previewContainer = document.getElementById('buktiPreviewContainer');
+            if (previewContainer) previewContainer.classList.add('hidden');
+            const preview = document.getElementById('buktiPreview');
+            if (preview) preview.src = '';
+        }
+
+        // Form submit validation for QRIS
+        const paymentForm = document.getElementById('payment-form');
+        if (paymentForm) {
+            paymentForm.addEventListener('submit', function(e) {
+                const selectedMethod = document.getElementById('selected_payment_method').value;
+                if (selectedMethod === 'qris') {
+                    const bukti = document.getElementById('bukti_pembayaran');
+                    if (!bukti || !bukti.files || !bukti.files[0]) {
+                        e.preventDefault();
+                        alert('Silakan unggah foto/screenshot bukti pembayaran QRIS terlebih dahulu!');
+                        bukti.focus();
+                        return false;
+                    }
+                }
+            });
+        }
     </script>
 </body>
 </html>

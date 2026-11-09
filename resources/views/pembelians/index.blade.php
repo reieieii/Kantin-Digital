@@ -13,6 +13,7 @@
         .btn-orange-gradient { background: linear-gradient(45deg, #f59e0b, #f97316); }
         .badge-pending    { background:#fef3c7; color:#92400e; }
         .badge-diproses   { background:#dbeafe; color:#1e40af; }
+        .badge-dapat_diambil, .badge-dapat-diambil { background:#e0e7ff; color:#3730a3; }
         .badge-selesai    { background:#d1fae5; color:#065f46; }
         .badge-dibatalkan { background:#fee2e2; color:#991b1b; }
     </style>
@@ -84,7 +85,7 @@
                     <div class="flex items-center justify-between px-5 py-3 bg-gray-50 border-b border-gray-100">
                         <span class="text-xs font-mono font-bold text-gray-500">{{ $p->kode_pembelian }}</span>
                         <span class="text-xs font-bold px-2.5 py-1 rounded-full badge-{{ $p->status }}">
-                            {{ ucfirst($p->status) }}
+                            {{ $p->status_label }}
                         </span>
                     </div>
 

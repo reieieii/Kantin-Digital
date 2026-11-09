@@ -52,11 +52,12 @@ class PesananController extends Controller
         $stands   = Stand::orderBy('nama_stand')->get();
 
         $stats = [
-            'semua'     => Pembelian::count(),
-            'pending'   => Pembelian::where('status', 'pending')->count(),
-            'diproses'  => Pembelian::where('status', 'diproses')->count(),
-            'selesai'   => Pembelian::where('status', 'selesai')->count(),
-            'dibatalkan'=> Pembelian::where('status', 'dibatalkan')->count(),
+            'semua'        => Pembelian::count(),
+            'pending'      => Pembelian::where('status', 'pending')->count(),
+            'diproses'     => Pembelian::where('status', 'diproses')->count(),
+            'dapat_diambil'=> Pembelian::where('status', 'dapat_diambil')->count(),
+            'selesai'      => Pembelian::where('status', 'selesai')->count(),
+            'dibatalkan'   => Pembelian::where('status', 'dibatalkan')->count(),
         ];
 
         return view('admin.pesanans.index', compact('pesanans', 'stats', 'stands'));
@@ -64,17 +65,47 @@ class PesananController extends Controller
 
     public function show(Pembelian $pesanan)
     {
-        $pesanan->load('detailPembelians.produk');
-        return view('admin.pesanans.show', compact('pesanan'));
+        $pesanan->load('detailPembelians.produk.stand');
+        $stands = $pesanan->detailPembelians
+            ->map(fn($d) => $d->produk?->stand)
+            ->filter()
+            ->unique('id')
+            ->values();
+
+        return view('admin.pesanans.show', compact('pesanan', 'stands'));
     }
 
     public function updateStatus(Request $request, Pembelian $pesanan)
     {
         $request->validate([
-            'status' => 'required|in:pending,diproses,selesai,dibatalkan',
+            'status' => 'required|in:pending,diproses,dapat_diambil,selesai,dibatalkan',
         ]);
 
         $pesanan->update(['status' => $request->status]);
+
+        // Kirim notifikasi ke user pembeli jika akun terdaftar
+        if ($pesanan->user_id) {
+            $title = match ($request->status) {
+                'diproses'     => 'Pesanan Sedang Diproses 🍳',
+                'dapat_diambil'=> 'Pesanan Dapat Diambil! 🛍️',
+                'selesai'      => 'Pesanan Selesai! 🎉',
+                'dibatalkan'   => 'Pesanan Dibatalkan ❌',
+                default        => 'Status Pesanan Diperbarui 📋',
+            };
+            $msg = match ($request->status) {
+                'diproses'     => 'Pesanan #' . $pesanan->kode_pembelian . ' sedang disiapkan oleh pihak stand kantin.',
+                'dapat_diambil'=> 'Pesanan #' . $pesanan->kode_pembelian . ' sudah selesai disiapkan dan dapat diambil sekarang di stand!',
+                'selesai'      => 'Pesanan #' . $pesanan->kode_pembelian . ' telah selesai diambil. Selamat menikmati!',
+                'dibatalkan'   => 'Pesanan #' . $pesanan->kode_pembelian . ' telah dibatalkan oleh pihak pengelola.',
+                default        => 'Status pesanan #' . $pesanan->kode_pembelian . ' telah diubah menjadi ' . str_replace('_', ' ', ucfirst($request->status)) . '.',
+            };
+            \App\Models\UserNotification::create([
+                'user_id' => $pesanan->user_id,
+                'title'   => $title,
+                'message' => $msg,
+                'type'    => 'order_' . $request->status,
+            ]);
+        }
 
         return redirect()->back()
             ->with('success', 'Status pesanan #' . $pesanan->kode_pembelian . ' diubah ke "' . ucfirst($request->status) . '".');

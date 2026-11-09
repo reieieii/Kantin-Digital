@@ -118,6 +118,15 @@
                 
                 <div class="flex items-center space-x-4">
                     @auth
+                        {{-- Notifikasi Bell --}}
+                        @php $unreadCount = Auth::user()->unreadNotificationsCount(); @endphp
+                        <a href="{{ route('notifications.index') }}" class="relative p-2 text-white/80 hover:text-white transition-all bg-white/10 rounded-xl border border-white/10 group" title="Notifikasi">
+                            <i class="fas fa-bell text-base"></i>
+                            @if($unreadCount > 0)
+                                <span class="absolute -top-1 -right-1 bg-gradient-to-br from-red-500 to-orange-500 text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center border-2 border-white shadow-sm animate-pulse">{{ $unreadCount }}</span>
+                            @endif
+                        </a>
+
                         {{-- User sudah login: tampilkan nama + dropdown --}}
                         <div class="relative hidden md:block" id="userMenuWrapper">
                             <button onclick="toggleUserMenu()"
@@ -137,6 +146,14 @@
                                     <p class="text-xs text-gray-400">Masuk sebagai</p>
                                     <p class="text-sm font-semibold text-white truncate">{{ Auth::user()->email }}</p>
                                 </div>
+                                <a href="{{ route('notifications.index') }}"
+                                    class="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition flex items-center space-x-2 border-b border-white/5">
+                                    <i class="fas fa-bell w-4"></i>
+                                    <span>Notifikasi</span>
+                                    @if($unreadCount > 0)
+                                        <span class="ml-auto bg-orange-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">{{ $unreadCount }}</span>
+                                    @endif
+                                </a>
                                 <a href="{{ route('profile.show') }}"
                                     class="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition flex items-center space-x-2">
                                     <i class="fas fa-user-circle w-4"></i>
@@ -191,6 +208,14 @@
                                 <p class="text-gray-400 text-xs">{{ Auth::user()->email }}</p>
                             </div>
                         </div>
+                        <a href="{{ route('notifications.index') }}"
+                            class="flex items-center space-x-2 text-gray-300 hover:text-white font-semibold transition text-sm mb-3">
+                            <i class="fas fa-bell"></i>
+                            <span>Notifikasi</span>
+                            @if(Auth::user()->unreadNotificationsCount() > 0)
+                                <span class="bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full ml-auto">{{ Auth::user()->unreadNotificationsCount() }}</span>
+                            @endif
+                        </a>
                         <a href="{{ route('profile.show') }}"
                             class="flex items-center space-x-2 text-gray-300 hover:text-white font-semibold transition text-sm mb-3">
                             <i class="fas fa-user-circle"></i>

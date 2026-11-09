@@ -19,6 +19,7 @@
         }
         .badge-pending    { background:#fef3c7; color:#92400e; }
         .badge-diproses   { background:#dbeafe; color:#1e40af; }
+        .badge-dapat_diambil, .badge-dapat-diambil { background:#e0e7ff; color:#3730a3; }
         .badge-selesai    { background:#d1fae5; color:#065f46; }
         .badge-dibatalkan { background:#fee2e2; color:#991b1b; }
     </style>
@@ -63,11 +64,57 @@
             </div>
         @endif
 
+        @if($pembelian->status === 'dapat_diambil')
+            <div class="bg-indigo-50 border-2 border-indigo-300 text-indigo-900 px-5 py-4 rounded-xl mb-6 shadow-sm flex items-center gap-3">
+                <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-bag-shopping text-lg"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-sm text-indigo-900">Pesanan Sudah Dapat Diambil!</h4>
+                    <p class="text-xs text-indigo-700">Silakan kunjungi stand kantin dan tunjukkan kode pesanan <strong>{{ $pembelian->kode_pembelian }}</strong> untuk mengambil hidanganmu.</p>
+                </div>
+            </div>
+        @endif
+
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
             <div class="mb-6">
                 <h1 class="text-3xl font-bold text-gray-800 mb-2">Detail Pembelian</h1>
                 <p class="text-gray-600">Informasi lengkap pesanan pelanggan</p>
             </div>
+
+            {{-- Stepper Status Pesanan --}}
+            @if($pembelian->status !== 'dibatalkan')
+                @php
+                    $steps = [
+                        'pending' => ['label' => 'Menunggu Konfirmasi', 'icon' => 'fa-clock'],
+                        'diproses' => ['label' => 'Sedang Diproses', 'icon' => 'fa-fire-burner'],
+                        'dapat_diambil' => ['label' => 'Dapat Diambil', 'icon' => 'fa-bag-shopping'],
+                        'selesai' => ['label' => 'Selesai', 'icon' => 'fa-check-circle'],
+                    ];
+                    $orderMap = ['pending' => 1, 'diproses' => 2, 'dapat_diambil' => 3, 'selesai' => 4];
+                    $currIndex = $orderMap[$pembelian->status] ?? 1;
+                @endphp
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-6 mb-8">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        @foreach($steps as $k => $step)
+                            @php
+                                $sIndex = $orderMap[$k];
+                                $isDone = $sIndex < $currIndex;
+                                $isCurrent = $sIndex === $currIndex;
+                            @endphp
+                            <div class="flex flex-col items-center text-center">
+                                <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mb-2 shadow-sm
+                                    {{ $isCurrent ? 'bg-indigo-600 text-white ring-4 ring-indigo-100' : ($isDone ? 'bg-emerald-500 text-white' : 'bg-gray-200 text-gray-400') }}">
+                                    <i class="fas {{ $isDone ? 'fa-check' : $step['icon'] }}"></i>
+                                </div>
+                                <span class="text-xs font-bold {{ $isCurrent ? 'text-indigo-600' : ($isDone ? 'text-emerald-600' : 'text-gray-400') }}">
+                                    {{ $step['label'] }}
+                                </span>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
 
             <!-- Info Pembelian -->
             <div class="mb-8">
@@ -94,25 +141,33 @@
                         <span class="font-semibold">{{ $pembelian->alamat ?: '-' }}</span>
                     </div>
                     <div class="flex justify-between">
+                        <span class="text-gray-600">Metode Pembayaran:</span>
+                        <span class="font-bold text-gray-800 uppercase">{{ $pembelian->metode_pembayaran ?? '-' }}</span>
+                    </div>
+                    <div class="flex justify-between">
                         <span class="text-gray-600">Total Harga:</span>
                         <span class="font-bold text-xl text-blue-600">Rp {{ number_format($pembelian->total_harga, 0, ',', '.') }}</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600">Status:</span>
                         @if($pembelian->status == 'pending')
-                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                            <span class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                 Pending
                             </span>
                         @elseif($pembelian->status == 'diproses')
-                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                            <span class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                                 Diproses
                             </span>
+                        @elseif($pembelian->status == 'dapat_diambil')
+                            <span class="px-2.5 py-1 inline-flex items-center gap-1.5 text-xs leading-5 font-bold rounded-full bg-indigo-100 text-indigo-800 border border-indigo-200">
+                                <i class="fas fa-bag-shopping"></i> Dapat Diambil
+                            </span>
                         @elseif($pembelian->status == 'selesai')
-                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            <span class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                 Selesai
                             </span>
                         @elseif($pembelian->status == 'dibatalkan')
-                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                            <span class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                 Dibatalkan
                             </span>
                         @endif
@@ -127,6 +182,23 @@
                             <p class="mt-2 text-gray-800 bg-gray-100 p-3 rounded">{{ $pembelian->catatan }}</p>
                         </div>
                     @endif
+
+                    @if($pembelian->bukti_pembayaran)
+                        <div class="mt-5 pt-5 border-t border-gray-200">
+                            <span class="text-gray-700 font-bold block mb-2 text-sm flex items-center gap-1.5">
+                                <i class="fas fa-file-invoice text-indigo-600"></i> Bukti Pembayaran QRIS:
+                            </span>
+                            <div class="max-w-xs">
+                                <a href="{{ asset('storage/' . $pembelian->bukti_pembayaran) }}" target="_blank" class="block group relative overflow-hidden rounded-xl border-2 border-indigo-100 shadow-sm">
+                                    <img src="{{ asset('storage/' . $pembelian->bukti_pembayaran) }}" alt="Bukti Pembayaran" class="w-full h-44 object-cover group-hover:scale-105 transition duration-300">
+                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs font-bold transition gap-1">
+                                        <i class="fas fa-external-link-alt"></i> Lihat Penuh
+                                    </div>
+                                </a>
+                                <p class="text-[11px] text-gray-400 mt-1 italic">*Klik gambar untuk melihat resolusi penuh</p>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -138,7 +210,13 @@
                 <div class="space-y-4">
                     @foreach($pembelian->detailPembelians as $detail)
                         <div class="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg">
-                            <img src="{{ $detail->produk->gambar }}" alt="{{ $detail->nama_produk }}" class="w-20 h-20 object-cover rounded-lg">
+                            @php
+                                $itemImg = 'https://via.placeholder.com/80x80?text=Food';
+                                if ($detail->produk && $detail->produk->gambar) {
+                                    $itemImg = str_starts_with($detail->produk->gambar, 'http') ? $detail->produk->gambar : asset('storage/' . $detail->produk->gambar);
+                                }
+                            @endphp
+                            <img src="{{ $itemImg }}" alt="{{ $detail->nama_produk }}" class="w-20 h-20 object-cover rounded-lg" onerror="this.src='https://via.placeholder.com/80x80?text=Food'">
                             <div class="flex-1">
                                 <h3 class="font-semibold text-gray-800">{{ $detail->nama_produk }}</h3>
                                 <div class="flex justify-between items-center mt-2">

@@ -6,6 +6,29 @@
 
 @section('content')
 
+{{-- Alert Pengajuan Reset Password Pending --}}
+@php $pendingResets = \App\Models\PasswordResetRequest::where('status', 'pending')->count(); @endphp
+@if($pendingResets > 0)
+    <div class="bg-red-500/15 border border-red-500/40 rounded-2xl p-4 mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-lg">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center font-bold flex-shrink-0 animate-pulse">
+                <i class="fas fa-key text-base"></i>
+            </div>
+            <div>
+                <p class="text-sm font-bold text-white flex items-center gap-2">
+                    Ada {{ $pendingResets }} Pengajuan Reset Password Menunggu Konfirmasi!
+                    <span class="w-2 h-2 rounded-full bg-red-400 animate-ping"></span>
+                </p>
+                <p class="text-xs text-red-200">Pengguna membutuhkan izin admin untuk mengganti password yang lupa.</p>
+            </div>
+        </div>
+        <a href="{{ route('admin.password-resets.index', ['status' => 'pending']) }}" class="px-4 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow whitespace-nowrap">
+            <span>Konfirmasi Sekarang</span>
+            <i class="fas fa-arrow-right text-[10px]"></i>
+        </a>
+    </div>
+@endif
+
 {{-- ── STAT CARDS ──────────────────────────────────────────────────────────── --}}
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-2 mb-6">
 
@@ -55,7 +78,7 @@
 </div>
 
 {{-- ── STATUS PESANAN ───────────────────────────────────────────────────────── --}}
-<div class="grid grid-cols-3 gap-4 mb-6">
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
     <a href="{{ route('admin.pesanans.index', ['status' => 'pending']) }}"
         class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 hover:bg-amber-500/20 transition">
         <div class="flex items-center space-x-3">
@@ -73,6 +96,16 @@
             <div>
                 <p class="text-2xl font-bold text-white">{{ $stats['pesanan_diproses'] }}</p>
                 <p class="text-xs text-blue-300">Diproses</p>
+            </div>
+        </div>
+    </a>
+    <a href="{{ route('admin.pesanans.index', ['status' => 'dapat_diambil']) }}"
+        class="bg-indigo-500/10 border border-indigo-500/30 rounded-2xl p-4 hover:bg-indigo-500/20 transition">
+        <div class="flex items-center space-x-3">
+            <i class="fas fa-bag-shopping text-indigo-400 text-xl"></i>
+            <div>
+                <p class="text-2xl font-bold text-white">{{ $stats['pesanan_dapat_diambil'] }}</p>
+                <p class="text-xs text-indigo-300">Dapat Diambil</p>
             </div>
         </div>
     </a>
@@ -107,15 +140,16 @@
                     <p class="text-sm font-semibold text-white">Rp {{ number_format($p->total_harga, 0, ',', '.') }}</p>
                     @php
                         $badgeClass = match($p->status) {
-                            'pending'    => 'bg-amber-100 text-amber-800',
-                            'diproses'   => 'bg-blue-100 text-blue-800',
-                            'selesai'    => 'bg-emerald-100 text-emerald-800',
-                            'dibatalkan' => 'bg-red-100 text-red-800',
-                            default      => 'bg-slate-100 text-slate-800',
+                            'pending'       => 'bg-amber-100 text-amber-800',
+                            'diproses'      => 'bg-blue-100 text-blue-800',
+                            'dapat_diambil' => 'bg-indigo-100 text-indigo-800',
+                            'selesai'       => 'bg-emerald-100 text-emerald-800',
+                            'dibatalkan'    => 'bg-red-100 text-red-800',
+                            default         => 'bg-slate-100 text-slate-800',
                         };
                     @endphp
-                    <span class="text-xs px-2 py-0.5 rounded-full font-medium {{ $badgeClass }}">
-                        {{ ucfirst($p->status) }}
+                    <span class="text-xs px-2.5 py-1 rounded-full font-bold whitespace-nowrap inline-block {{ $badgeClass }}">
+                        {{ $p->status_label }}
                     </span>
                 </div>
             </div>

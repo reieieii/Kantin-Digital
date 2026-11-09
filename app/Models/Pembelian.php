@@ -17,7 +17,8 @@ class Pembelian extends Model
         'total_harga',
         'status',
         'catatan',
-        'metode_pembayaran'
+        'metode_pembayaran',
+        'bukti_pembayaran'
     ];
 
     protected $casts = [
@@ -37,5 +38,17 @@ class Pembelian extends Model
     public static function generateKodePembelian(): string
     {
         return 'TRX' . date('YmdHis') . rand(100, 999);
+    }
+
+    public function getStatusLabelAttribute(): string
+    {
+        return match ($this->status) {
+            'pending'       => 'Pending',
+            'diproses'      => 'Diproses',
+            'dapat_diambil' => 'Dapat Diambil',
+            'selesai'       => 'Selesai',
+            'dibatalkan'    => 'Dibatalkan',
+            default         => ucfirst($this->status),
+        };
     }
 }

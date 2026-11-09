@@ -125,6 +125,13 @@
                     </div>
                 @endif
 
+                @if (session('info'))
+                    <div class="bg-blue-500/20 border border-blue-500/40 text-blue-300 rounded-xl px-4 py-3 mb-6 flex items-center space-x-2">
+                        <i class="fas fa-info-circle text-blue-400"></i>
+                        <span class="text-sm">{{ session('info') }}</span>
+                    </div>
+                @endif
+
                 {{-- Error umum (email/password salah) --}}
                 @if ($errors->has('email') && !$errors->has('name'))
                     <div class="alert-error rounded-xl px-4 py-3 mb-6 flex items-center space-x-2">
@@ -174,7 +181,7 @@
                             <input type="checkbox" name="remember" class="w-4 h-4 rounded accent-orange-500">
                             <span class="text-xs text-gray-400">Ingat saya</span>
                         </label>
-                        <a href="{{ route('password.forgot') }}" class="text-xs text-gray-400 hover:text-white transition">Forgot Password?</a>
+                        <a href="{{ route('password.forgot') }}" class="text-xs text-orange-400 hover:text-orange-300 font-semibold transition flex items-center gap-1"><i class="fas fa-key text-[10px]"></i> Lupa Password?</a>
                     </div>
 
                     <button type="submit" class="w-full btn-gradient text-white font-bold py-4 rounded-xl mt-4 text-sm tracking-widest uppercase">

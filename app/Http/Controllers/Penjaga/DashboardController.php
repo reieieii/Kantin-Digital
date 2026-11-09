@@ -31,10 +31,23 @@ class DashboardController extends Controller
             ->pluck('detail_pembelians.pembelian_id')
             ->unique();
 
-        $totalPesanan   = Pembelian::whereIn('id', $pesananIds)->count();
-        $pesananPending = Pembelian::whereIn('id', $pesananIds)->where('status', 'pending')->count();
-        $pesananProses  = Pembelian::whereIn('id', $pesananIds)->where('status', 'diproses')->count();
-        $pesananSelesai = Pembelian::whereIn('id', $pesananIds)->where('status', 'selesai')->count();
+        $totalPesanan       = Pembelian::whereIn('id', $pesananIds)->count();
+        $pesananPending     = Pembelian::whereIn('id', $pesananIds)->where('status', 'pending')->count();
+        $pesananProses      = Pembelian::whereIn('id', $pesananIds)->where('status', 'diproses')->count();
+        $pesananDapatDiambil= Pembelian::whereIn('id', $pesananIds)->where('status', 'dapat_diambil')->count();
+        $pesananSelesai     = Pembelian::whereIn('id', $pesananIds)->where('status', 'selesai')->count();
+
+        // Total pendapatan riil dari pesanan selesai produk stand ini
+        $totalPendapatan = (float) \DB::table('detail_pembelians')
+            ->join('produks', 'detail_pembelians.produk_id', '=', 'produks.id')
+            ->join('pembelians', 'detail_pembelians.pembelian_id', '=', 'pembelians.id')
+            ->where('produks.stand_id', $stand->id)
+            ->where('pembelians.status', 'selesai')
+            ->sum('detail_pembelians.subtotal');
+
+        if ((float) $stand->total_pendapatan !== $totalPendapatan) {
+            $stand->update(['total_pendapatan' => $totalPendapatan]);
+        }
 
         // 5 pesanan terbaru
         $pesananTerbaru = Pembelian::with('detailPembelians.produk')
@@ -45,8 +58,8 @@ class DashboardController extends Controller
 
         return view('penjaga.dashboard', compact(
             'stand', 'totalProduk', 'produkTersedia', 'stokHabis',
-            'totalPesanan', 'pesananPending', 'pesananProses', 'pesananSelesai',
-            'pesananTerbaru'
+            'totalPesanan', 'pesananPending', 'pesananProses', 'pesananDapatDiambil', 'pesananSelesai',
+            'totalPendapatan', 'pesananTerbaru'
         ));
     }
 }

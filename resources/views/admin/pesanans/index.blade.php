@@ -4,17 +4,26 @@
 @section('page-title', 'Kelola Pesanan')
 @section('page-subtitle', 'Pantau dan perbarui status semua pesanan')
 
+@push('styles')
+<style>
+    body {
+        overflow-x: hidden;
+    }
+</style>
+@endpush
+
 @section('content')
 
 {{-- Status Tabs --}}
 <div class="flex flex-wrap gap-2 mb-5 mt-2">
     @php
         $tabs = [
-            'semua'      => ['label' => 'Semua',      'color' => 'bg-slate-600'],
-            'pending'    => ['label' => 'Pending',    'color' => 'bg-amber-500'],
-            'diproses'   => ['label' => 'Diproses',   'color' => 'bg-blue-500'],
-            'selesai'    => ['label' => 'Selesai',    'color' => 'bg-emerald-500'],
-            'dibatalkan' => ['label' => 'Dibatalkan', 'color' => 'bg-red-500'],
+            'semua'        => ['label' => 'Semua',        'color' => 'bg-slate-600'],
+            'pending'      => ['label' => 'Pending',      'color' => 'bg-amber-500'],
+            'diproses'     => ['label' => 'Diproses',     'color' => 'bg-blue-500'],
+            'dapat_diambil'=> ['label' => 'Dapat Diambil','color' => 'bg-indigo-500'],
+            'selesai'      => ['label' => 'Selesai',      'color' => 'bg-emerald-500'],
+            'dibatalkan'   => ['label' => 'Dibatalkan',   'color' => 'bg-red-500'],
         ];
     @endphp
     @foreach($tabs as $key => $tab)
@@ -32,14 +41,14 @@
 {{-- Search & Filter --}}
 <form method="GET" class="bg-slate-800 rounded-2xl border border-slate-700 p-4 mb-5">
     <input type="hidden" name="status" value="{{ request('status') }}">
-    <div class="flex flex-wrap gap-3 items-end">
-        <div class="flex-1 min-w-[200px]">
+    <div class="flex flex-wrap gap-2.5 items-end">
+        <div class="flex-1 min-w-[150px]">
             <label class="text-xs text-slate-400 block mb-1">Cari Pesanan</label>
             <input type="text" name="search" value="{{ request('search') }}"
                 placeholder="Kode, nama, atau email..."
                 class="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
         </div>
-        <div class="min-w-[160px]">
+        <div class="w-full sm:w-auto flex-1 sm:flex-initial sm:min-w-[130px]">
             <label class="text-xs text-slate-400 block mb-1">Stand</label>
             <select name="stand_id" class="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
                 <option value="">Semua Stand</option>
@@ -48,7 +57,7 @@
                 @endforeach
             </select>
         </div>
-        <div class="min-w-[150px]">
+        <div class="w-full sm:w-auto flex-1 sm:flex-initial sm:min-w-[130px]">
             <label class="text-xs text-slate-400 block mb-1">Kategori</label>
             <select name="kategori" class="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
                 <option value="">Semua Kategori</option>
@@ -57,7 +66,7 @@
                 <option value="Snack/Cemilan"{{ request('kategori') == 'Snack/Cemilan'? 'selected' : '' }}>Snack / Cemilan</option>
             </select>
         </div>
-        <div class="min-w-[130px]">
+        <div class="w-full sm:w-auto flex-1 sm:flex-initial sm:min-w-[120px]">
             <label class="text-xs text-slate-400 block mb-1">Metode Bayar</label>
             <select name="metode" class="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
                 <option value="">Semua</option>
@@ -65,7 +74,7 @@
                 <option value="qris"  {{ request('metode') == 'qris'  ? 'selected' : '' }}>QRIS</option>
             </select>
         </div>
-        <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1">
+        <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-xl text-sm font-medium transition flex items-center justify-center gap-1">
             <i class="fas fa-search"></i> Cari
         </button>
         @if(request()->hasAny(['search','metode','stand_id','kategori']))
@@ -74,51 +83,52 @@
     </div>
 </form>
 
-<div class="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden">
-    <div class="overflow-x-auto">
+<div class="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden w-full max-w-full">
+    <div class="overflow-x-auto w-full">
         <table class="w-full text-sm">
             <thead class="bg-slate-700/50 text-slate-400 uppercase text-xs">
                 <tr>
-                    <th class="px-4 py-3 text-left">Kode</th>
-                    <th class="px-4 py-3 text-left">Pembeli</th>
-                    <th class="px-4 py-3 text-center">Items</th>
-                    <th class="px-4 py-3 text-right">Total</th>
-                    <th class="px-4 py-3 text-center">Metode</th>
-                    <th class="px-4 py-3 text-center">Status</th>
-                    <th class="px-4 py-3 text-left">Waktu</th>
-                    <th class="px-4 py-3 text-center">Aksi</th>
+                    <th class="px-3 py-3 text-left whitespace-nowrap">Kode</th>
+                    <th class="px-3 py-3 text-left">Pembeli</th>
+                    <th class="px-3 py-3 text-center whitespace-nowrap">Items</th>
+                    <th class="px-3 py-3 text-right whitespace-nowrap">Total</th>
+                    <th class="px-3 py-3 text-center whitespace-nowrap">Metode</th>
+                    <th class="px-3 py-3 text-center whitespace-nowrap">Status</th>
+                    <th class="px-3 py-3 text-left whitespace-nowrap">Waktu</th>
+                    <th class="px-3 py-3 text-center whitespace-nowrap">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-700">
                 @forelse($pesanans as $p)
                 @php
                     $badgeClass = match($p->status) {
-                        'pending'    => 'bg-amber-100 text-amber-800',
-                        'diproses'   => 'bg-blue-100 text-blue-800',
-                        'selesai'    => 'bg-emerald-100 text-emerald-800',
-                        'dibatalkan' => 'bg-red-100 text-red-800',
-                        default      => 'bg-slate-100 text-slate-800',
+                        'pending'       => 'bg-amber-100 text-amber-800',
+                        'diproses'      => 'bg-blue-100 text-blue-800',
+                        'dapat_diambil' => 'bg-indigo-100 text-indigo-800',
+                        'selesai'       => 'bg-emerald-100 text-emerald-800',
+                        'dibatalkan'    => 'bg-red-100 text-red-800',
+                        default         => 'bg-slate-100 text-slate-800',
                     };
                 @endphp
                 <tr class="hover:bg-slate-700/30 transition">
-                    <td class="px-4 py-3 font-mono text-xs text-orange-400">{{ $p->kode_pembelian }}</td>
-                    <td class="px-4 py-3">
-                        <p class="font-medium text-white">{{ $p->nama_pembeli }}</p>
-                        <p class="text-xs text-slate-400">{{ $p->email ?: '-' }}</p>
+                    <td class="px-3 py-3 font-mono text-xs text-orange-400 whitespace-nowrap">{{ $p->kode_pembelian }}</td>
+                    <td class="px-3 py-3 max-w-[180px]">
+                        <p class="font-medium text-white truncate">{{ $p->nama_pembeli }}</p>
+                        <p class="text-xs text-slate-400 truncate" title="{{ $p->email }}">{{ $p->email ?: '-' }}</p>
                     </td>
-                    <td class="px-4 py-3 text-center text-slate-300">{{ $p->detailPembelians->count() }} item</td>
-                    <td class="px-4 py-3 text-right font-semibold text-white">Rp {{ number_format($p->total_harga, 0, ',', '.') }}</td>
-                    <td class="px-4 py-3 text-center">
+                    <td class="px-3 py-3 text-center text-slate-300 whitespace-nowrap">{{ $p->detailPembelians->count() }} item</td>
+                    <td class="px-3 py-3 text-right font-semibold text-white whitespace-nowrap">Rp {{ number_format($p->total_harga, 0, ',', '.') }}</td>
+                    <td class="px-3 py-3 text-center whitespace-nowrap">
                         <span class="bg-slate-700 text-slate-300 text-xs px-2 py-0.5 rounded-full capitalize">{{ $p->metode_pembayaran }}</span>
                     </td>
-                    <td class="px-4 py-3 text-center">
-                        <span class="text-xs px-2 py-0.5 rounded-full font-medium {{ $badgeClass }}">{{ ucfirst($p->status) }}</span>
+                    <td class="px-3 py-3 text-center whitespace-nowrap">
+                        <span class="text-xs px-2.5 py-1 rounded-full font-bold whitespace-nowrap inline-block {{ $badgeClass }}">{{ $p->status_label }}</span>
                     </td>
-                    <td class="px-4 py-3 text-xs text-slate-400">{{ $p->created_at->format('d M, H:i') }}</td>
-                    <td class="px-4 py-3">
+                    <td class="px-3 py-3 text-xs text-slate-400 whitespace-nowrap">{{ $p->created_at->format('d M, H:i') }}</td>
+                    <td class="px-3 py-3 whitespace-nowrap">
                         <div class="flex items-center justify-center space-x-1.5">
                             <a href="{{ route('admin.pesanans.show', $p) }}"
-                                class="bg-slate-700 hover:bg-slate-600 text-white text-xs px-2.5 py-1.5 rounded-lg transition">
+                                class="bg-slate-700 hover:bg-slate-600 text-white text-xs px-2.5 py-1.5 rounded-lg transition" title="Detail">
                                 <i class="fas fa-eye"></i>
                             </a>
                             {{-- Quick status update --}}
@@ -126,14 +136,16 @@
                                 @csrf @method('PATCH')
                                 @php
                                     $nextStatus = match($p->status) {
-                                        'pending'  => 'diproses',
-                                        'diproses' => 'selesai',
-                                        default    => null,
+                                        'pending'       => 'diproses',
+                                        'diproses'      => 'dapat_diambil',
+                                        'dapat_diambil' => 'selesai',
+                                        default         => null,
                                     };
                                     $nextLabel = match($p->status) {
-                                        'pending'  => 'Proses',
-                                        'diproses' => 'Selesai',
-                                        default    => null,
+                                        'pending'       => 'Proses',
+                                        'diproses'      => 'Siap Ambil',
+                                        'dapat_diambil' => 'Selesai',
+                                        default         => null,
                                     };
                                 @endphp
                                 @if($nextStatus)

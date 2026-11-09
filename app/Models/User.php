@@ -61,4 +61,19 @@ class User extends Authenticatable
     {
         return $this->favorits()->where('produk_id', $produkId)->exists();
     }
+
+    public function passwordResetRequests()
+    {
+        return $this->hasMany(PasswordResetRequest::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(UserNotification::class)->orderByDesc('created_at');
+    }
+
+    public function unreadNotificationsCount(): int
+    {
+        return $this->notifications()->where('is_read', false)->count();
+    }
 }

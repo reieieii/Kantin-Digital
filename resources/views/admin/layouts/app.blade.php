@@ -19,10 +19,11 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #1e293b; }
         ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
-        .badge-pending   { background:#fef3c7; color:#92400e; }
-        .badge-diproses  { background:#dbeafe; color:#1e40af; }
-        .badge-selesai   { background:#d1fae5; color:#065f46; }
-        .badge-dibatalkan{ background:#fee2e2; color:#991b1b; }
+        .badge-pending       { background:#fef3c7; color:#92400e; }
+        .badge-diproses      { background:#dbeafe; color:#1e40af; }
+        .badge-dapat_diambil, .badge-dapat-diambil { background:#e0e7ff; color:#3730a3; }
+        .badge-selesai       { background:#d1fae5; color:#065f46; }
+        .badge-dibatalkan    { background:#fee2e2; color:#991b1b; }
     </style>
     @stack('styles')
 </head>
@@ -87,6 +88,16 @@
                 @php $pending = \App\Models\Pembelian::where('status','pending')->count(); @endphp
                 @if($pending > 0)
                     <span class="ml-auto bg-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ $pending }}</span>
+                @endif
+            </a>
+
+            <a href="{{ route('admin.password-resets.index') }}"
+                class="sidebar-link flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-300 text-sm {{ request()->routeIs('admin.password-resets.*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-key w-5 text-center text-slate-400"></i>
+                <span>Reset Password</span>
+                @php $pendingResets = \App\Models\PasswordResetRequest::where('status','pending')->count(); @endphp
+                @if($pendingResets > 0)
+                    <span class="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full animate-pulse">{{ $pendingResets }}</span>
                 @endif
             </a>
 

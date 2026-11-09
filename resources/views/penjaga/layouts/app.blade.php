@@ -19,10 +19,11 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #1e293b; }
         ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
-        .badge-pending    { background:#fef3c7; color:#92400e; }
-        .badge-diproses   { background:#dbeafe; color:#1e40af; }
-        .badge-selesai    { background:#d1fae5; color:#065f46; }
-        .badge-dibatalkan { background:#fee2e2; color:#991b1b; }
+        .badge-pending       { background:#fef3c7; color:#92400e; }
+        .badge-diproses      { background:#dbeafe; color:#1e40af; }
+        .badge-dapat_diambil, .badge-dapat-diambil { background:#e0e7ff; color:#3730a3; }
+        .badge-selesai       { background:#d1fae5; color:#065f46; }
+        .badge-dibatalkan    { background:#fee2e2; color:#991b1b; }
     </style>
     @stack('styles')
 </head>
