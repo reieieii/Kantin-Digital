@@ -9,6 +9,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Poppins', sans-serif; }
+
+        /* Sembunyikan scrollbar tapi tetap bisa scroll */
+        html, body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
         .hero-gradient { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
         .receipt-card { border-radius: 3rem; background: #fff; box-shadow: 0 40px 100px -20px rgba(0,0,0,0.15); }
         .success-checkmark { 

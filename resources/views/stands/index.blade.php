@@ -12,6 +12,19 @@
     <style>
         * { font-family: 'Poppins', sans-serif; }
         html { scroll-behavior: smooth; }
+
+        /* Sembunyikan scrollbar tapi tetap bisa scroll */
+        html, body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
         .hero-gradient { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
         .banner-gradient {
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
