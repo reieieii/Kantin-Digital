@@ -78,7 +78,7 @@
 </div>
 
 {{-- ── STATUS PESANAN ───────────────────────────────────────────────────────── --}}
-<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
     <a href="{{ route('admin.pesanans.index', ['status' => 'pending']) }}"
         class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 hover:bg-amber-500/20 transition">
         <div class="flex items-center space-x-3">
@@ -116,6 +116,16 @@
             <div>
                 <p class="text-2xl font-bold text-white">{{ $stats['pesanan_selesai'] }}</p>
                 <p class="text-xs text-emerald-300">Selesai</p>
+            </div>
+        </div>
+    </a>
+    <a href="{{ route('admin.pesanans.index', ['status' => 'dibatalkan']) }}"
+        class="bg-red-500/10 border border-red-500/30 rounded-2xl p-4 hover:bg-red-500/20 transition">
+        <div class="flex items-center space-x-3">
+            <i class="fas fa-times-circle text-red-400 text-xl"></i>
+            <div>
+                <p class="text-2xl font-bold text-white">{{ $stats['pesanan_dibatalkan'] }}</p>
+                <p class="text-xs text-red-300">Dibatalkan</p>
             </div>
         </div>
     </a>

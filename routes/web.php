@@ -320,7 +320,26 @@ Route::put('/pembelians/{id}/status', function (Illuminate\Http\Request $request
     ]);
 
     $pembelian = \App\Models\Pembelian::findOrFail($id);
-    $pembelian->status = $request->status;
+    $statusLama = $pembelian->status;
+    $statusBaru = $request->status;
+
+    $pembelian->load('detailPembelians.produk.stand');
+
+    if ($statusBaru === 'selesai' && $statusLama !== 'selesai') {
+        foreach ($pembelian->detailPembelians as $item) {
+            if ($item->produk && $item->produk->stand) {
+                $item->produk->stand->tambahPendapatan((float) $item->subtotal);
+            }
+        }
+    } elseif ($statusLama === 'selesai' && $statusBaru !== 'selesai') {
+        foreach ($pembelian->detailPembelians as $item) {
+            if ($item->produk && $item->produk->stand) {
+                $item->produk->stand->kurangiPendapatan((float) $item->subtotal);
+            }
+        }
+    }
+
+    $pembelian->status = $statusBaru;
     $pembelian->save();
 
     if ($pembelian->user_id) {

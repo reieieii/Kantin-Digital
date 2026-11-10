@@ -74,7 +74,7 @@
     </div>
 
     {{-- ── BARIS 2: STATUS PESANAN ─────────────────────────────────────────── --}}
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         {{-- Total Pesanan --}}
         <a href="{{ route('penjaga.pesanans.index') }}"
             class="bg-slate-800 border border-slate-700 rounded-2xl p-4 hover:border-slate-500 transition block">
@@ -127,6 +127,34 @@
                 <div>
                     <p class="text-2xl font-bold text-white">{{ $pesananDapatDiambil }}</p>
                     <p class="text-xs text-indigo-300">Dapat Diambil</p>
+                </div>
+            </div>
+        </a>
+
+        {{-- Selesai --}}
+        <a href="{{ route('penjaga.pesanans.index', ['status' => 'selesai']) }}"
+            class="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-4 hover:bg-emerald-500/20 transition block">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-check-circle text-emerald-400 text-lg"></i>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-white">{{ $pesananSelesai }}</p>
+                    <p class="text-xs text-emerald-300">Selesai</p>
+                </div>
+            </div>
+        </a>
+
+        {{-- Dibatalkan --}}
+        <a href="{{ route('penjaga.pesanans.index', ['status' => 'dibatalkan']) }}"
+            class="bg-red-500/10 border border-red-500/30 rounded-2xl p-4 hover:bg-red-500/20 transition block">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-times-circle text-red-400 text-lg"></i>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-white">{{ $pesananDibatalkan }}</p>
+                    <p class="text-xs text-red-300">Dibatalkan</p>
                 </div>
             </div>
         </a>

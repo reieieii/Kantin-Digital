@@ -81,7 +81,29 @@ class PesananController extends Controller
             'status' => 'required|in:pending,diproses,dapat_diambil,selesai,dibatalkan',
         ]);
 
-        $pesanan->update(['status' => $request->status]);
+        $statusLama = $pesanan->status;
+        $statusBaru = $request->status;
+
+        $pesanan->load('detailPembelians.produk.stand');
+
+        // Akumulasi pendapatan stand:
+        // - Bertambah jika status berubah dari non-selesai ke 'selesai'
+        // - Berkurang jika status berubah dari 'selesai' ke status lain (misal 'dibatalkan')
+        if ($statusBaru === 'selesai' && $statusLama !== 'selesai') {
+            foreach ($pesanan->detailPembelians as $item) {
+                if ($item->produk && $item->produk->stand) {
+                    $item->produk->stand->tambahPendapatan((float) $item->subtotal);
+                }
+            }
+        } elseif ($statusLama === 'selesai' && $statusBaru !== 'selesai') {
+            foreach ($pesanan->detailPembelians as $item) {
+                if ($item->produk && $item->produk->stand) {
+                    $item->produk->stand->kurangiPendapatan((float) $item->subtotal);
+                }
+            }
+        }
+
+        $pesanan->update(['status' => $statusBaru]);
 
         // Kirim notifikasi ke user pembeli jika akun terdaftar
         if ($pesanan->user_id) {
@@ -114,6 +136,16 @@ class PesananController extends Controller
     public function destroy(Pembelian $pesanan)
     {
         $kode = $pesanan->kode_pembelian;
+        $pesanan->load('detailPembelians.produk.stand');
+
+        if ($pesanan->status === 'selesai') {
+            foreach ($pesanan->detailPembelians as $item) {
+                if ($item->produk && $item->produk->stand) {
+                    $item->produk->stand->kurangiPendapatan((float) $item->subtotal);
+                }
+            }
+        }
+
         $pesanan->detailPembelians()->delete();
         $pesanan->delete();
 

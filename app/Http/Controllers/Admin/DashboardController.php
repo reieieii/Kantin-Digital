@@ -21,6 +21,7 @@ class DashboardController extends Controller
             'pesanan_diproses'     => Pembelian::where('status', 'diproses')->count(),
             'pesanan_dapat_diambil'=> Pembelian::where('status', 'dapat_diambil')->count(),
             'pesanan_selesai'      => Pembelian::where('status', 'selesai')->count(),
+            'pesanan_dibatalkan'   => Pembelian::where('status', 'dibatalkan')->count(),
             'pendapatan_total'  => Pembelian::where('status', 'selesai')->sum('total_harga'),
         ];
 

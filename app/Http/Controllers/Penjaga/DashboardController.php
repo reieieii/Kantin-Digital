@@ -36,6 +36,7 @@ class DashboardController extends Controller
         $pesananProses      = Pembelian::whereIn('id', $pesananIds)->where('status', 'diproses')->count();
         $pesananDapatDiambil= Pembelian::whereIn('id', $pesananIds)->where('status', 'dapat_diambil')->count();
         $pesananSelesai     = Pembelian::whereIn('id', $pesananIds)->where('status', 'selesai')->count();
+        $pesananDibatalkan  = Pembelian::whereIn('id', $pesananIds)->where('status', 'dibatalkan')->count();
 
         // Total pendapatan riil dari pesanan selesai produk stand ini
         $totalPendapatan = (float) \DB::table('detail_pembelians')
@@ -58,7 +59,7 @@ class DashboardController extends Controller
 
         return view('penjaga.dashboard', compact(
             'stand', 'totalProduk', 'produkTersedia', 'stokHabis',
-            'totalPesanan', 'pesananPending', 'pesananProses', 'pesananDapatDiambil', 'pesananSelesai',
+            'totalPesanan', 'pesananPending', 'pesananProses', 'pesananDapatDiambil', 'pesananSelesai', 'pesananDibatalkan',
             'totalPendapatan', 'pesananTerbaru'
         ));
     }

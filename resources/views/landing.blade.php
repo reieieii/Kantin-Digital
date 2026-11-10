@@ -241,7 +241,10 @@
                                 <span>Keluar</span>
                             </button>
                         </form>
-                        <a href="{{ route('login') }}" class="block text-yellow-300 hover:text-yellow-400 font-bold transition">Masuk / Login</a>
+                    @else
+                        <a href="{{ route('login') }}" class="block text-yellow-300 hover:text-yellow-400 font-bold transition text-base py-1">
+                            <i class="fas fa-right-to-bracket mr-2"></i>Masuk / Login
+                        </a>
                     @endauth
                 </div>
             </div>
@@ -249,7 +252,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <section id="beranda" class="hero-gradient min-h-screen flex items-center relative overflow-hidden">
+    <section id="beranda" class="hero-gradient min-h-screen flex items-start md:items-center relative overflow-hidden pt-28 pb-16 md:pt-0 md:pb-0">
         <!-- Background Elements -->
         <div class="absolute inset-0">
             <div class="absolute top-20 left-10 w-32 h-32 bg-yellow-400/20 rounded-full floating"></div>
